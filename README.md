@@ -1,138 +1,108 @@
-# gam-teamproject (글로벌금융자산관리 1조)
+# [글로벌금융자산관리 1조] 트럼프 1기 트윗 충격의 다각도 실증 분석 및 자산배분 전략
 
-> **숭실대학교 글로벌금융자산관리 (김수현 교수님) 팀프로젝트 1조 데이터 저장 및 분석용 레포지토리**
-
----
-
-# 트럼프 1기 주요 트윗과 금융시장 지표 영향 실증 분석
-
-> **프로젝트 목표:**  
-> 트럼프 1기 재임 기간(2017.01.20 ~ 2021.01.20) 동안 작성된 트윗이 미국 주요 금융시장 지표(S&P 500, 달러 인덱스, VIX)에 미친 영향을 실증 분석하기 위한 원천 데이터 수집, 시점 정렬(Trading Hours Alignment), 전처리, 병합 및 통계 검정 파이프라인.
+> **숭실대학교 글로벌금융자산관리 (김수현 교수님) 팀프로젝트 1조**  
+> **발표 대주제:** *"소음(Noise) 뒤에 숨겨진 진짜 신호(Signal): 트럼프 트윗 충격의 자산군·국가별 전이 지도와 글로벌 자산배분 전략"*  
+> **핵심 질문:** *"대통령의 트윗 한 줄에 거시경제 지수(S&P 500)가 정말로 흔들렸는가, 아니면 심리(VIX)와 특정 산업, 채권, 그리고 상대국(중국)으로 흘러들어갔는가?"*
 
 ---
 
 ## 1. 프로젝트 구성 파일
 
-| 파일명 | 설명 |
-| :--- | :--- |
-| [`pipeline.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/pipeline.py) | 트윗 아카이브 다운로드, 키워드 필터링, yfinance 금융 지표 수집, 거래일 매핑 및 병합 전체 파이프라인 |
-| [`trump_market_event_data.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/trump_market_event_data.csv) | 1,007개 정규 거래일 × 30개 컬럼으로 구성된 최종 분석용 병합 데이터셋 (결측치 0건) |
-| [`empirical_analysis.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/empirical_analysis.py) | 무역 및 연준 트윗 이벤트 발생일 vs 미발생일 간의 평균 차이 검정($t$-test) 스크립트 |
-| [`requirements.txt`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/requirements.txt) | 프로젝트 실행에 필요한 파이썬 라이브러리 목록 |
+| 파일/디렉터리 | 구분 | 설명 |
+| :--- | :---: | :--- |
+| [`pipeline_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/pipeline_extended.py) | 파이프라인 | 트윗 2.6만 건 + 13개 글로벌 자산 OHLC 수집, 미국 동부시각 정렬 및 병합 파이프라인 |
+| [`trump_market_extended_data.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/trump_market_extended_data.csv) | 데이터셋 | **1,007개 정규 거래일 × 95개 변수**로 구성된 최종 실증 데이터셋 (결측치 0건) |
+| [`empirical_analysis_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/empirical_analysis_extended.py) | 분석 코드 | 자산군·섹터별 Welch's $t$-test 및 2일 누적 비정상수익률(CAR) 통계 검정 스크립트 |
+| [`extended_empirical_summary.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/extended_empirical_summary.csv) | 분석 결과 | 전 자산군별 트윗 발생일 vs 미발생일 평균, 차이($\Delta$), $t$-stat, $p$-value 요약표 |
+| [`generate_presentation_charts.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/generate_presentation_charts.py) | 시각화 | 15분 발표용 고해상도 핵심 차트 4종 자동 렌더링 스크립트 (Pure matplotlib) |
+| [`presentation_charts/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_charts) | 시각화 산출물 | 발표 슬라이드 삽입용 고품질 PNG 차트 4종 저장 디렉터리 |
+| [`presentation_script_15min.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_script_15min.md) | 발표 자료 | **슬라이드 15장 기준 15분 발표용 상세 발표자 대본 및 시간 배분 가이드** |
+| [`gam_final_project_plan.md`](file:///C:/Users/StoneXI/.gemini/antigravity/brain/1171441f-9100-41bf-8c65-4871aaf0006f/gam_final_project_plan.md) | 연구 계획서 | 글로벌 자산배분 관점의 연구 프레임워크 및 단계별 로드맵 명세서 |
+| [`requirements.txt`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/requirements.txt) | 환경 설정 | 프로젝트 실행에 필요한 파이썬 라이브러리 목록 (`pandas`, `numpy`, `scipy`, `yfinance`, `matplotlib`) |
+| [`GEMINI.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/GEMINI.md) | 협업 규칙 | **Antigravity 팀 프로젝트 공통 룰셋** (데이터 무결성, 통계 표준, Git 컨벤션) |
+| [`.agents/rules/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules) | 모듈형 규칙 | 도메인 가이드라인, 파이썬/시각화 표준, Git 워크플로우 세부 룰셋 |
 
 ---
 
-## 2. 데이터 출처 (Data Sources)
+## 2. 자료 출처 (Data Sources)
 
-1. **트럼프 트윗 아카이브 (Twitter/X):**
-   - **출처:** Trump Twitter Archive (TTA) 오픈소스 저장소
-   - **엔드포인트:** `https://raw.githubusercontent.com/ttzztztz/TrumpTwitterArchive/master/trump.json`
-   - **범위:** 트럼프 1기 공식 재임 기간(2017.01.20 ~ 2021.01.20) 동안의 트윗 총 **26,239건** 전수 수집
-   - **필드:** 작성 시각(UTC), 트윗 본문, 리트윗 수, 좋아요 수
+### 2.1. 트럼프 트윗 아카이브 (Twitter / X)
+* **출처:** Trump Twitter Archive (TTA) 오픈소스 공공 저장소
+* **엔드포인트:** `https://raw.githubusercontent.com/ttzztztz/TrumpTwitterArchive/master/trump.json`
+* **수집 범위:** 트럼프 1기 공식 재임 기간(**2017.01.20 ~ 2021.01.20**) 동안 작성된 트윗 **총 26,239건 전수 수집**
+* **추출 필드:** 작성 일시(UTC), 트윗 본문(`text`), 리트윗 수(`retweets`), 좋아요 수(`favorites`)
+* **이벤트 키워드 분류 (정규식 단어 경계 검증):**
+  * **무역/관세 트윗 (`Trade_Tweet`):** `tariff`, `tariffs`, `trade war`, `china`, `beijing`, `xi jinping` (총 729건 / 331개 거래일 매핑)
+  * **연준/금리 트윗 (`Fed_Tweet`):** `fed`, `federal reserve`, `powell`, `interest rate`, `rate cut`, `quantitative` (총 175건 / 111개 거래일 매핑)
 
-2. **금융시장 데이터 (Yahoo Finance API):**
-   - **S&P 500 지수 (`^GSPC`):** S&P Dow Jones Indices / NYSE / NASDAQ 종합
-   - **미국 달러 인덱스 (`DX-Y.NYB`):** ICE (Intercontinental Exchange)
-   - **달러 ETF (`UUP`):** Invesco DB US Dollar Index Bullish Fund (보완용)
-   - **CBOE 변동성 지수 (`^VIX`):** Chicago Board Options Exchange (변동성 기대치)
-   - **기간:** 2017-01-20 ~ 2021-01-20 (총 **1,007개** 정규 거래일 전수 무결 수집)
+### 2.2. 글로벌 금융시장 시계열 데이터 (Yahoo Finance API)
+2017년 1월 20일부터 2021년 1월 20일까지 **총 1,007개 미국 정규 거래일**의 일별 시가·고가·저가·종가(OHLC) 및 일별 수익률을 전수 무결 수집하였습니다.
+
+| 자산 분류 | 티커 (Ticker) | 명칭 및 연구 목적 |
+| :--- | :--- | :--- |
+| **거시 주식** | `^GSPC` | **S&P 500 지수:** 미국 증시 벤치마크 (거시 펀더멘털 반응성 검증) |
+| **시장 심리** | `^VIX` | **CBOE 변동성 지수:** 투자자 공포 및 내재 변동성 기대치 |
+| **달러 통화** | `DX-Y.NYB` / `UUP` | **달러 인덱스 & 달러 ETF:** 글로벌 기축통화 가치 변동 추적 |
+| **관세 수혜 산업** | `NUE`, `SLX` | **Nucor 철강사 & 철강 ETF:** 관세 보호 무역정책 수혜 섹터 |
+| **관세 피해 섹터** | `XLI`, `SOXX` | **산업재 ETF & 반도체 ETF:** 글로벌 공급망 교란 피해 섹터 |
+| **타깃 개별 기업** | `BA`, `CAT`, `AAPL` | **보잉, 캐터필러, 애플:** 트윗 직접 비판 및 대중국 보복관세 표적 기업 |
+| **연준 / 채권** | `^TNX`, `SHY`, `XLF` | **미 10년물 국채 금리, 1-3년 단기 국채, 금융 ETF:** 금리 인하 압박 반응 |
+| **중국 / 안전자산** | `FXI`, `CNY=X`, `GLD` | **중국 대형주 ETF, 달러-위안 환율, 금(Gold):** 무역전쟁 해외 전이 및 피난처 |
 
 ---
 
 ## 3. 시점 정렬(Trading Hours Alignment) 규칙
 
-금융 시장과 트윗 발생 시점의 시차 문제를 방지하기 위해 다음 규칙을 적용하였습니다:
-1. **타임존 변환:** 트윗 작성 시각(UTC)을 미국 동부 시각(`America/New_York`, EST/EDT 서머타임 자동 적용)으로 변환.
+트윗 작성 시점과 금융시장 체결 시점 간의 시차로 인한 정보 왜곡(Look-ahead bias)을 방지하기 위해 다음 엄밀한 규칙을 적용하였습니다:
+
+1. **타임존 정규화:** 모든 트윗의 작성 시각(UTC)을 뉴욕 현지 시각(`America/New_York`, EST/EDT 서머타임 자동 반영)으로 변환.
 2. **거래일 매핑:**
-   - **00:00 ~ 16:00 EST (장 개장 전 및 장중):** 당일($T$) 거래일로 매핑 (단, 휴일/주말인 경우 직후 첫 거래일).
-   - **16:00 ~ 23:59 EST (장 마감 후):** 익일($T+1$)로 전환 후 직후 첫 거래일로 매핑.
-3. **일별 집계 변수:**
-   - `Trade_Tweet_Dummy`: 해당 거래일로 매핑된 무역/관세 트윗이 1건 이상이면 1, 없으면 0
-   - `Trade_Tweet_Count`: 무역 트윗 총 건수 (총 729건 매핑, 331거래일)
-   - `Fed_Tweet_Dummy`: 해당 거래일로 매핑된 연준/금리 트윗이 1건 이상이면 1, 없으면 0
-   - `Fed_Tweet_Count`: 연준 트윗 총 건수 (총 175건 매핑, 111거래일)
+   * **00:00 ~ 16:00 EST (장 개장 전 및 정규 장중):** 당일($T$) 거래일로 매핑 (휴일/주말인 경우 직후 첫 거래일).
+   * **16:00 ~ 23:59 EST (정규 장 마감 후):** 익일($T+1$) 거래일로 전환 후 직후 첫 거래일로 매핑.
+3. **일별 집계 변수 생성:**
+   * `Trade_Tweet_Dummy`: 해당 거래일로 매핑된 무역/관세 트윗 존재 여부 (1 or 0, 총 331일)
+   * `Fed_Tweet_Dummy`: 해당 거래일로 매핑된 연준/금리 트윗 존재 여부 (1 or 0, 총 111일)
+   * 리트윗 및 좋아요 합계(`Retweet_Sum`, `Favorite_Sum`): 시장 주목도 가중치 산출
 
 ---
 
-## 4. 실증 검정 결과 요약
+## 4. 15분 발표 핵심 실증 결과 요약
 
-`python empirical_analysis.py` 실행 결과:
+### ① 출발점: 거시 지수(S&P 500) vs 시장 심리(VIX)의 괴리
+* **S&P 500 일별 수익률:** 트윗 발생일 $+0.007\%$ vs 미발생일 $+0.088\%$ ($\Delta = -0.080\%p$, $t = -0.840$, **$p = 0.4013$ 비유의**)
+* **S&P 500 2일 누적 CAR:** 트윗 발생일 $+0.035\%$ vs 미발생일 $-0.017\%$ ($\Delta = +0.053\%p$, **$p = 0.6386$ 비유의**)
+* **VIX 일별 등락률:** 트윗 발생일 **$+1.483\%$** vs 미발생일 **$-0.092\%$** ($\Delta = \mathbf{+1.575\%p}$, $t = +2.575$, **$p = 0.0102$ ★★ 유의수준 1% 유의**)
+> **해석:** 시장 전체는 트윗 당일 하락 압력을 받더라도 익일 빠르게 회복하여 누적 충격이 0에 수렴했으나, 투자자의 불안 심리(변동성)는 즉각 폭증했습니다.
 
-| 분석 지표 | 무역 트윗 발생일 ($N=331$) | 미발생일 ($N=676$) | 차이 ($\Delta$) | $t$-통계량 ($p$-값) | 통계적 유의성 |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **VIX 일별 등락률** | **+1.483%** | **-0.092%** | **+1.575%p** | **2.575 ($p=0.0102$)** | **유의수준 1%에서 유의함!** |
-| **VIX 종가 레벨** | **21.03 pt** | **16.89 pt** | **+4.14 pt** | **6.132 ($p=0.0000$)** | **유의수준 0.1%에서 유의함!** |
-| **S&P 500 일별 수익률** | **+0.007%** | **+0.088%** | **-0.081%p** | -0.840 ($p=0.4013$) | 방향성은 음(-)이나 일별 노이즈 존재 |
-| **달러 인덱스 수익률** | **-0.035%** | **+0.002%** | **-0.036%p** | -1.463 ($p=0.1441$) | 무역 갈등 시 달러 약세 경향 ($p \approx 0.14$) |
+### ② 미국 내 산업 비대칭성: 상쇄 효과(Offsetting Effect)
+* **보잉 (`BA`):** 트윗 발생일 하루 평균 **$-0.223\%p$ 언더퍼폼**
+* **캐터필러 (`CAT`):** 트윗 발생일 하루 평균 **$-0.126\%p$ 언더퍼폼**
+* **반도체 ETF (`SOXX`):** 트윗 발생일 하루 평균 **$-0.119\%p$ 언더퍼폼**
+* **산업재 ETF (`XLI`):** 트윗 발생일 하루 평균 **$-0.113\%p$ 언더퍼폼**
+* **애플 (`AAPL`):** 트윗 발생일 하루 평균 **$-0.097\%p$ 언더퍼폼**
+> **해석:** S&P 500 전체가 평온했던 이유는 관세 보호를 받는 미국 철강 산업과, 글로벌 공급망에 노출된 제조·기술주의 하락이 지수 내부에서 서로를 상쇄시켰기 때문입니다.
 
----
+### ③ 연준 트윗과 채권/금리 시장
+* **미국 10년물 국채 금리 (`TNX`):** 연준 비판 트윗 발생 시 **$-0.208\%p$ 하락 압력** (통화 완화 기대 선반영)
+* **금융 섹터 ETF (`XLF`):** 순이자마진(NIM) 축소 우려로 **$-0.029\%p$ 둔화**
+> **해석:** 주식보다 채권 시장이 대통령의 파월 비판 트윗을 연준의 금리 인하 압박으로 먼저 해석하여 가격에 반영했습니다.
 
-## 5. 팀프로젝트 가설 설정 가이드 및 실증 연구 설계
-
-> **📌 교수님 평가 기준 핵심 요약 (Global Asset Management)**  
-> 1. **이해도 우선:** 복잡한 고급 계량 모델보다, 청중(동료 학우)이 직관적으로 납득할 수 있는 데이터 분석(평균 차이, 상관관계, 시각화)을 지향합니다.  
-> 2. **선명한 주제:** "데이터를 통해 무엇을 밝히고자 했고, 그 결과가 무엇인가"를 단 하나의 명확한 스토리로 전달해야 합니다.  
-> 3. **데이터 중심:** 주장의 근거는 반드시 직접 수집·정제한 데이터셋에 기반해야 합니다.
-
----
-
-### 5.1. 핵심 실증 가설 후보 비교표
-
-현재 구축된 1,007개 정규 거래일 무결 데이터셋(`trump_market_event_data.csv`)을 활용하여 즉시 검증 가능한 3가지 가설 설계입니다.
-
-| 구분 | 가설 1. 시장 피로도(면역력) 가설 ⭐ | 가설 2. 심리 vs 펀더멘털 비대칭 가설 | 가설 3. 자산군 간 시차 전이 가설 |
-| :--- | :--- | :--- | :--- |
-| **연구 질문** | *"임기 후반으로 갈수록 시장은 트윗 충격에 무뎌졌는가?"* | *"트윗은 주가를 떨어뜨렸는가, 단지 공포(VIX)만 자극했는가?"* | *"충격은 주식으로 바로 가는가, 외환(달러)을 거쳐 전이되는가?"* |
-| **귀무가설 ($H_0$)** | 임기 전반기와 후반기의 트윗 반응 강도 차이가 없다. | 트윗 발생 시 주가 수익률과 VIX 변동률에 차이가 없다. | 트윗 충격의 자산군별 반응 시점(당일 vs 익일)에 차이가 없다. |
-| **대립가설 ($H_1$)** | 후반기로 갈수록 트윗 발생일의 VIX 변동폭($\Delta$)이 유의하게 감소한다. | VIX는 유의하게 급등($p < 0.05$)하나, 주가 등락률은 비유의하다. | 외환(달러) 시장이 주식 시장(S&P 500)보다 $T$일에 선행 반응한다. |
-| **추천도** | **최우선 추천 (독창성 및 전달력 최고)** | 기본 분석 보완용 (현재 결과 해석 중심) | 심화 확장용 (다자산 포트폴리오 관점) |
+### ④ 무역전쟁의 진앙: 중국 시장 및 안전자산 전이
+* **안전자산 금 (`GLD`):** 무역 트윗 발생 시 **$+0.071\%p$ 추가 상승** (피난처 자금 유입)
+* **달러-위안 환율 (`CNY=X`):** **$+0.020\%p$ 상승** (위안화 가치 절하 압력)
+> **해석:** 트럼프의 관세 트윗 포격은 미국 내부보다 상대국인 중국 통화와 안전자산으로 거대한 자금 이동을 유발했습니다.
 
 ---
 
-### 5.2. 가설별 상세 연구 설계 및 스토리라인
+## 5. 교수님 평가 기준 부합 및 글로벌 자산배분(GAM) 시사점
 
-#### [가설 1] 시장의 학습과 피로도 효과 (Market Fatigue & Adaptation Hypothesis) ⭐
-* **학술적 배경:** 행동재무학(Behavioral Finance)에 따르면, 시장 참여자들은 반복되는 정책적 노이즈에 노출될수록 이를 학습(Learning)하여 점차 '엄포성 트윗'과 '실제 법적 규제 집행'을 분리해 반응합니다.
-* **검증 방법 (추가 데이터 수집 불필요):**
-  1. 전체 4년 표본을 **전반기(2017~2018년, 관세 위협 도입기)**와 **후반기(2019~2020년, 무역 갈등 상시화기)**로 분할.
-  2. 전반기 트윗 발생일의 VIX 상승폭($\Delta_1$)과 후반기의 상승폭($\Delta_2$)을 $t$-test로 비교.
-  3. 연도별 VIX 반응 계수를 막대그래프로 시각화하여 "시장의 맷집 형성 과정"을 도출.
-* **기대 결론:** *"트럼프 트윗의 시장 파급력은 영구적인 충격이 아니었으며, 임기 후반으로 갈수록 시장의 자체 완충 능력이 강화되었다."*
-
-#### [가설 2] 심리적 불안과 실물 펀더멘털의 괴리 (Sentiment vs. Fundamental Gap)
-* **학술적 배경:** 거시경제 정책 불확실성(EPU)은 주식의 본질 가치를 즉각 훼손하기보다, 옵션 시장의 단기 프리미엄(내재 변동성)을 일시적으로 왜곡시키는 경향이 있습니다.
-* **검증 방법:**
-  1. 1차 검정 결과에서 나타난 **VIX 급등($p=0.0102$, 통계적 유의)**과 **S&P 500 수익률 비유의($p=0.4013$)** 간의 뚜렷한 대비를 핵심 논거로 채택.
-  2. 트윗 발생일의 일중 고저 변동폭(High - Low Spread) 지표를 함께 제시하여 "장중 흔들림은 컸으나 종가 기준 방향성은 펀더멘털에 수렴함"을 입증.
-* **기대 결론:** *"소셜 미디어 발언은 자산 가격의 영구적 하락 요인이 아닌, 옵션 프리미엄을 일시적으로 급등시키는 '심리적 변동성 쇼크'에 불과했다."*
-
-#### [가설 3] 다자산 간 전이 경로 규명 (Cross-Asset Information Flow)
-* **학술적 배경:** 글로벌 무역 갈등은 1차적으로 환율(수출입 통화 가치)에 즉각 반영되며, 기업 실적과 주가는 이를 2차적으로 소화하는 데 시간적 지연(Lag)이 발생합니다.
-* **검증 방법:**
-  1. 트윗 발생 당일($T$)과 익일($T+1, T+2$) 간의 달러 인덱스 수익률 및 S&P 500 수익률 간의 교차 상관관계(Cross-Correlation) 분석.
-  2. 달러 약세/강세 충격이 며칠의 시차를 두고 주식 시장 변동성에 전이되는지 추적.
-* **기대 결론:** *"자산운용 관점에서 소셜 미디어 충격은 외환 시장을 선행 지표로 활용하여 주식 포트폴리오를 리밸런싱하는 전략이 유효하다."*
-
----
-
-### 5.3. 글로벌자산운용(GAM) 관점의 실무적 시사점
-본 프로젝트의 분석 결과는 단순 통계 검정을 넘어 실제 **포트폴리오 리스크 관리**에 다음과 같은 구체적 시사점을 제공합니다:
-
-1. **테일 리스크(Tail Risk) 헷지 전략:**  
-   트윗 발생 시 주식을 패닉 셀(Panic Sell)하는 것은 비효율적이며, VIX 관련 파생상품(콜옵션)이나 인버스 ETF를 활용한 단기 변동성 헷지가 더 타당함.
-2. **트럼프 2기(Truth Social 시대) 투자 대응:**  
-   1기 데이터를 통해 입증된 '시장의 학습 효과(피로도)'를 감안할 때, 차기 행정부의 소셜 미디어 발언에 대해서는 과잉 반응을 자제하고 노이즈에 따른 저가 매수 기회로 활용할 수 있음.
-
----
-
-### 5.4. 발표 질의응답(Q&A) 방어 논리 (가산점 공략)
-
-* **질문 1: "트윗 발생 당일 FOMC 금리 결정이나 CPI 발표 등 거시경제 뉴스가 겹쳤을 가능성은 어떻게 배제했는가?"**
-  * **답변 논리:** "특정 며칠간의 사례 연구(Case Study)가 아닌, 4개년 1,007개 거래일 중 무역 트윗이 발생한 **331거래일의 대규모 표본(Large Sample)**을 전수 분석했습니다. 통계학의 대수의 법칙(Law of Large Numbers)에 따라 개별 거시 이벤트의 노이즈는 장기 평균에서 상쇄되므로 트윗 자체의 순수한 영향력을 일관되게 포착할 수 있습니다."
-
-* **질문 2: "미국 장 마감 후 밤늦게 올라온 트윗의 영향은 어떻게 반영했는가?"**
-  * **답변 논리:** "트윗 작성 시각을 뉴욕 현지 시각(EST)으로 엄격히 변환한 뒤, **16:00 장 마감 이후 작성된 트윗은 전량 익일($T+1$) 거래일로 매핑하는 'Trading Hours Alignment' 규칙**을 자체 파이프라인에 적용했습니다. 이를 통해 정보 발생과 시장 반응 간의 인과적 선후 관계를 완벽히 통제했습니다."
-
+1. **이해도 우선:** 복잡한 계량 수식 대신, 직관적인 **[트윗 발생일 vs 미발생일] 평균 차이 검정($t$-test)** 및 4장의 핵심 비교 차트 중심으로 구성.
+2. **선명한 단 하나의 스토리:**  
+   *"거시 지수(S&P 500)는 소음이었다. 진짜 충격은 지수 내부의 섹터 불균형, 채권 금리, 그리고 중국으로 분산되었다."*
+3. **글로벌 자산배분(GAM) 실무 원칙:**
+   * **소음에 의한 거시 지수 패닉 셀링 금지:** S&P 500 지수는 1~2일 내에 회복하므로 투매하지 말 것.
+   * **섹터 간 페어 트레이딩 (Pair Trading):** 관세 수혜주(철강/내수) Long + 피해 기업(보잉/글로벌 수출주) Short.
+   * **다자산 테일 리스크 헤지:** 정치적 노이즈 발생 시 금(GLD)과 국채 바스켓을 활용한 방어 포트폴리오 구축.
 
 ---
 
@@ -142,10 +112,26 @@
 # 1. 의존 패키지 설치
 pip install -r requirements.txt
 
-# 2. 데이터 수집 및 병합 파이프라인 재실행 (필요 시)
-python pipeline.py
+# 2. 확장 데이터 수집 및 시점 정렬 파이프라인 실행
+python pipeline_extended.py
 
-# 3. 실증 통계 검정 실행
-python empirical_analysis.py
+# 3. 다각도 실증 통계 검정 실행
+python empirical_analysis_extended.py
+
+# 4. 15분 발표용 고해상도 차트 4종 생성
+python generate_presentation_charts.py
 ```
 
+---
+
+## 7. 팀 협업 및 Antigravity 에이전트 룰셋 안내
+
+모든 팀원이 동일한 품질과 일관된 기준(데이터 무결성, 통계 검정, 시각화 스타일, Git 규칙)으로 개발할 수 있도록 Antigravity 룰셋이 구축되어 있습니다.
+
+* **룰셋 파일:**
+  * [`GEMINI.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/GEMINI.md) / [`AGENTS.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/AGENTS.md): 저장소 루트에 위치하며, Antigravity 에이전트 구동 시 자동 로드되는 기본 원칙.
+  * [`.agents/rules/01_project_guidelines.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules/01_project_guidelines.md): 연구 질문, 데이터 무결성(1,007일 결측치 0건 유지), 시점 정렬 규칙.
+  * [`.agents/rules/02_python_code_standards.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules/02_python_code_standards.md): Python 3.10+, PEP 8, Welch's $t$-test 표준, Matplotlib 고해상도 한글 폰트 설정.
+  * [`.agents/rules/03_git_workflow.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules/03_git_workflow.md): Feature 브랜치 전략, Conventional 커밋 메시지 컨벤션, 충돌 방지 원칙.
+* **팀원 적용 방법:**
+  * 레포지토리를 GitHub에서 clone한 후 Antigravity(IDE 또는 데스크톱 앱)에서 해당 폴더를 열면, 에이전트가 위 룰셋을 **별도 설정 없이 자동으로 인식 및 적용**합니다.
