@@ -18,7 +18,7 @@
 | [`presentation_charts/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_charts) | 시각화 산출물 | 발표 슬라이드 삽입용 고품질 PNG 차트 4종 저장 디렉터리 |
 | [`presentation_script_15min.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_script_15min.md) | 발표 자료 | **슬라이드 15장 기준 15분 발표용 상세 발표자 대본 및 시간 배분 가이드** |
 | [`trump_tweets_1st_term_raw.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/trump_tweets_1st_term_raw.csv) | 원본 데이터 | **트럼프 1기 4년간 작성된 트윗 26,239건 전수 원본 데이터셋 (본문, 일시, RT/좋아요)** |
-| [`trade_tweets_raw_audit.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/trade_tweets_raw_audit.csv) | 원본 데이터 | **무역·중국 키워드 매칭 729건 트윗 원문 및 세부 노이즈 감사(Audit) 데이터셋** |
+| [`trade_tweets_raw_audit.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/trade_tweets_raw_audit.csv) | 1차 필터링 | **1차 키워드 필터링 데이터셋 (7대 테마 매칭 1,237건 추출 및 기초 정책·노이즈 감사)** |
 | [`EXPLORATORY_ANALYSIS_BACKLOG.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/EXPLORATORY_ANALYSIS_BACKLOG.md) | 확장 계획 | **트윗 원문 전수조사 및 한국 시장 비교 등 후보 분석 계획 백로그** |
 | [`requirements.txt`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/requirements.txt) | 환경 설정 | 프로젝트 실행에 필요한 파이썬 라이브러리 목록 (`pandas`, `numpy`, `scipy`, `yfinance`, `matplotlib`) |
 | [`GEMINI.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/GEMINI.md) | 협업 규칙 | **Antigravity 팀 프로젝트 공통 룰셋** (데이터 무결성, 통계 표준, Git 컨벤션) |
