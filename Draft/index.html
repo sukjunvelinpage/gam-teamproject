@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trump Tweet Impact Classifier — X Edition</title>
+  
+  <!-- Pretendard Variable Font -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            xBlue: '#1d9bf0',
+            xBlueHover: '#1a8cd8',
+            xDark: '#080c10',
+            xCard: '#10151c',
+            xBorder: 'rgba(255, 255, 255, 0.08)',
+            impactBlue: '#1d9bf0',
+            noiseRed: '#f43f5e'
+          },
+          fontFamily: {
+            sans: [
+              '"Pretendard Variable"',
+              'Pretendard',
+              '-apple-system',
+              'BlinkMacSystemFont',
+              'system-ui',
+              'Roboto',
+              'sans-serif'
+            ]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    body {
+      background-color: #07090e;
+      color: #f3f4f6;
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Ambient Blue Glow inspired by X / Modern Tech */
+    .ambient-glow {
+      position: fixed;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 450px;
+      background: radial-gradient(50% 50% at 50% 20%, rgba(29, 155, 240, 0.12) 0%, rgba(29, 155, 240, 0.02) 60%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card-container {
+      perspective: 1200px;
+    }
+
+    /* Modern X-Style Monolithic Glass Card */
+    .swipe-card {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      background: rgba(16, 21, 28, 0.88);
+      backdrop-filter: blur(35px);
+      -webkit-backdrop-filter: blur(35px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 35px -8px rgba(29, 155, 240, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      cursor: grab;
+      touch-action: none;
+      will-change: transform;
+    }
+
+    .swipe-card:active {
+      cursor: grabbing;
+    }
+
+    /* Sleek High-Contrast Typographic Stamps */
+    .stamp {
+      position: absolute;
+      top: 24px;
+      padding: 6px 18px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border-radius: 9999px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 50;
+      transform: rotate(var(--rotation, 0deg));
+      transition: opacity 0.12s ease;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .stamp-impact {
+      right: 24px;
+      color: #10b981;
+      border: 2px solid #10b981;
+      background: rgba(16, 185, 129, 0.15);
+      --rotation: 7deg;
+    }
+
+    .stamp-noise {
+      left: 24px;
+      color: #ef4444;
+      border: 2px solid #ef4444;
+      background: rgba(239, 68, 68, 0.15);
+      --rotation: -7deg;
+    }
+
+    .custom-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 9999px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: rgba(29, 155, 240, 0.5);
+    }
+
+    /* Vibrant Blue Keyword Highlight */
+    .highlight-keyword {
+      background: rgba(29, 155, 240, 0.18);
+      color: #38bdf8;
+      border: 1px solid rgba(29, 155, 240, 0.35);
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 relative">
+  <div class="ambient-glow"></div>
+
+  <!-- HEADER BAR: X Blue Accents & Modern Hierarchy -->
+  <header class="w-full max-w-xl z-10 flex flex-col gap-3">
+    <!-- Top Row -->
+    <div class="flex items-center justify-between text-xs tracking-tight">
+      <div class="flex items-center gap-2.5">
+        <!-- Iconic X Logo with subtle blue accent -->
+        <div class="w-7 h-7 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-white shadow-sm">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </div>
+        <div class="flex items-baseline gap-1.5">
+          <span class="font-bold text-white text-[15px] tracking-tight">Tweet Audit</span>
+          <span class="text-[11px] font-semibold text-[#1d9bf0] bg-[#1d9bf0]/10 px-2 py-0.5 rounded-full border border-[#1d9bf0]/25">2.0</span>
+        </div>
+      </div>
+
+      <!-- Action items -->
+      <div class="flex items-center gap-2">
+        <label for="csvFileInput" class="px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] text-white/60 hover:text-white border border-white/[0.08] transition text-[11px] font-medium cursor-pointer active:scale-95">
+          Import
+        </label>
+        <input type="file" id="csvFileInput" accept=".csv" class="hidden">
+
+        <button id="btnSaveCsv" class="px-3.5 py-1.5 rounded-full bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white text-[11px] font-semibold transition flex items-center gap-1.5 shadow-[0_0_15px_rgba(29,155,240,0.3)] active:scale-95">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Export CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- Clean Progress Bar (Green V & Red X) -->
+    <div class="w-full bg-white/[0.06] rounded-full h-[3px] overflow-hidden flex">
+      <div id="barO" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%"></div>
+      <div id="barX" class="bg-red-500 h-full transition-all duration-300" style="width: 0%"></div>
+    </div>
+
+    <!-- Sub-header: Filters & Counter -->
+    <div class="flex items-center justify-between text-[11px] text-white/50 pt-0.5">
+      <!-- Modern Segmented Filter -->
+      <div class="inline-flex p-0.5 rounded-full bg-white/[0.05] border border-white/[0.08]">
+        <button data-filter="all" class="filter-btn px-2.5 py-1 rounded-full font-semibold transition text-white bg-[#1d9bf0] shadow-sm">All</button>
+        <button data-filter="pending" class="filter-btn px-2.5 py-1 rounded-full font-medium transition hover:text-white">Pending</button>
+        <button data-filter="O" class="filter-btn px-2.5 py-1 rounded-full font-medium transition hover:text-emerald-400">Impact (<span id="statCountO">0</span>)</button>
+        <button data-filter="X" class="filter-btn px-2.5 py-1 rounded-full font-medium transition hover:text-red-400">Noise (<span id="statCountX">0</span>)</button>
+      </div>
+
+      <!-- Live Counter & Jump -->
+      <div class="flex items-center gap-2 font-mono text-[11px]">
+        <span id="progressText" class="text-white/70 font-semibold">0 of 1,237</span>
+        <span class="text-white/20">|</span>
+        <div class="flex items-center gap-1">
+          <input type="number" id="jumpIndexInput" min="1" max="1237" placeholder="#" class="w-12 bg-white/[0.04] border border-white/10 rounded px-1 text-center text-white focus:border-[#1d9bf0] focus:outline-none py-0.5 text-[11px]">
+          <button id="btnJump" class="text-white/40 hover:text-[#1d9bf0] transition font-sans font-medium px-1">Go</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CARD CANVAS -->
+  <main class="w-full max-w-xl flex-1 flex flex-col items-center justify-center relative my-3 z-10">
+    <div class="card-container relative w-full h-[510px] sm:h-[530px]">
+      
+      <!-- Behind Card (Physical Depth with Soft Blue Rim) -->
+      <div id="nextCard" class="absolute inset-0 rounded-[24px] bg-[#0c1017]/70 border border-white/[0.05] scale-[0.96] translate-y-3 pointer-events-none transition-transform duration-200"></div>
+
+      <!-- Active Monolithic X-Style Card -->
+      <div id="activeCard" class="swipe-card p-6 sm:p-7 flex flex-col justify-between">
+        
+        <!-- High-Contrast Typographic Stamps -->
+        <div id="stampImpact" class="stamp stamp-impact flex items-center gap-1.5">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Impact (V)</span>
+        </div>
+        <div id="stampNoise" class="stamp stamp-noise flex items-center gap-1.5">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <span>Noise (X)</span>
+        </div>
+
+        <!-- TOP CARD HEADER: Category Tags & Author Row -->
+        <div>
+          <!-- Themes Badges (Electric Blue Accents) & Index -->
+          <div class="flex items-center justify-between mb-3.5">
+            <div id="cardThemes" class="flex items-center gap-1.5 flex-wrap">
+              <!-- Rendered tags -->
+            </div>
+            <div id="cardIndexBadge" class="text-[11px] font-mono text-white/40 font-medium">
+              #1 / 1237
+            </div>
+          </div>
+
+          <!-- Author Info & Timestamp (Twitter / X Authenticity) -->
+          <div class="flex items-center justify-between mb-3 pb-3 border-b border-white/[0.08]">
+            <div class="flex items-center gap-2.5">
+              <!-- Minimalist Avatar -->
+              <div class="w-9 h-9 rounded-full bg-white/[0.08] border border-white/10 flex items-center justify-center text-xs font-bold text-white shadow-inner">
+                DJT
+              </div>
+              <div class="flex flex-col leading-tight">
+                <div class="flex items-center gap-1">
+                  <span class="text-[14px] font-bold text-white tracking-tight">Donald J. Trump</span>
+                  <!-- Verified Blue Checkmark Badge -->
+                  <svg class="w-4 h-4 text-[#1d9bf0] fill-current" viewBox="0 0 24 24"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.67-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.34 2.19c-1.39-.46-2.9-.2-3.91.81s-1.27 2.52-.81 3.91c-1.31.67-2.19 1.91-2.19 3.34s.88 2.67 2.19 3.34c-.46 1.39-.2 2.9.81 3.91s2.52 1.27 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.67-.88 3.34-2.19c1.39.46 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.33 2.33 4.99-4.99 1.42 1.41-6.41 6.41z"/></svg>
+                </div>
+                <div class="flex items-center gap-2 text-[11px] text-white/40 font-mono">
+                  <span>@realDonaldTrump</span>
+                  <span>·</span>
+                  <span id="cardDateEastern">2019-08-01 13:26 EST</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="cardCurrentStatusBadge"></div>
+          </div>
+
+          <!-- Language Segmented Selector (With Blue Glow Pill) -->
+          <div class="flex items-center justify-end mb-2">
+            <div class="inline-flex p-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px]">
+              <button data-lang="all" class="lang-btn px-2.5 py-0.5 rounded-full transition text-white bg-[#1d9bf0] font-semibold shadow-sm">All</button>
+              <button data-lang="en" class="lang-btn px-2.5 py-0.5 rounded-full transition text-white/50 hover:text-white font-medium">EN</button>
+              <button data-lang="ko" class="lang-btn px-2.5 py-0.5 rounded-full transition text-white/50 hover:text-white font-medium">한국어</button>
+              <button data-lang="vi" class="lang-btn px-2.5 py-0.5 rounded-full transition text-white/50 hover:text-white font-medium">Tiếng Việt</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TWEET BODY: Pretendard Font & Refined Spacing -->
+        <div class="flex-1 overflow-y-auto custom-scroll pr-1.5 my-1 flex flex-col justify-start gap-3.5">
+          <!-- English (Primary) -->
+          <div id="blockEn" class="lang-block transition-opacity">
+            <p id="cardTweetText" class="text-[16px] sm:text-[17px] text-white leading-[1.6] font-normal tracking-[-0.015em] whitespace-pre-wrap select-text">
+              <!-- English text -->
+            </p>
+          </div>
+
+          <!-- Korean (Translation Block with subtle blue line) -->
+          <div id="blockKo" class="lang-block pt-3 border-t border-white/[0.08] transition-opacity">
+            <div class="text-[11px] text-[#38bdf8] font-semibold tracking-wide flex items-center gap-1 mb-1">
+              <span>한국어 번역</span>
+            </div>
+            <p id="cardTweetTextKo" class="text-[14px] sm:text-[15px] text-white/80 leading-[1.65] font-light tracking-[-0.01em] whitespace-pre-wrap select-text">
+              <!-- Korean text -->
+            </p>
+          </div>
+
+          <!-- Vietnamese (Translation Block with subtle green/teal line) -->
+          <div id="blockVi" class="lang-block pt-3 border-t border-white/[0.08] transition-opacity">
+            <div class="text-[11px] text-emerald-400 font-semibold tracking-wide flex items-center gap-1 mb-1">
+              <span>Bản dịch Tiếng Việt</span>
+            </div>
+            <p id="cardTweetTextVi" class="text-[14px] sm:text-[15px] text-white/70 leading-[1.65] font-light tracking-[-0.01em] whitespace-pre-wrap select-text">
+              <!-- Vietnamese text -->
+            </p>
+          </div>
+        </div>
+
+        <!-- FOOTER: X Metrics & Category Tag -->
+        <div class="pt-3 border-t border-white/[0.08] flex items-center justify-between text-[11px] text-white/40">
+          <div class="flex items-center gap-5 text-white/50 font-medium">
+            <!-- Reposts -->
+            <span class="flex items-center gap-1.5 hover:text-white transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <strong id="cardRetweets" class="text-white/80 font-semibold font-mono">24.5K</strong>
+            </span>
+            <!-- Likes -->
+            <span class="flex items-center gap-1.5 hover:text-white transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              <strong id="cardFavorites" class="text-white/80 font-semibold font-mono">102.8K</strong>
+            </span>
+          </div>
+
+          <div id="cardFirstStageLabel" class="text-[10px] text-white/40 bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06] font-mono">
+            Pure_Trade_Tariff
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Completion View -->
+      <div id="completionCard" class="hidden absolute inset-0 rounded-[24px] bg-[#0c1017]/95 backdrop-blur-3xl border border-white/10 p-8 flex flex-col items-center justify-center text-center gap-5">
+        <div class="w-14 h-14 rounded-full bg-[#1d9bf0]/15 border border-[#1d9bf0]/30 text-[#1d9bf0] flex items-center justify-center shadow-[0_0_25px_rgba(29,155,240,0.3)]">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <h3 class="text-2xl font-bold text-white tracking-tight">전수조사 완료!</h3>
+          <p class="text-xs text-white/50 max-w-xs">선택하신 필터의 모든 트윗 판별이 끝났습니다. 아래 버튼을 눌러 최종 결과 CSV를 저장하세요.</p>
+        </div>
+        <button id="btnCompleteDownload" class="px-6 py-2.5 rounded-full bg-[#1d9bf0] hover:bg-[#1a8cd8] text-white font-bold text-xs tracking-tight transition shadow-[0_0_20px_rgba(29,155,240,0.4)] active:scale-95 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          완료된 CSV 내보내기
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- CONTROLS: Clean Minimalist Buttons (Red X & Green V, No Glow) -->
+  <footer class="w-full max-w-xl flex flex-col items-center gap-3 z-10">
+    <div class="flex items-center justify-center gap-5 sm:gap-6">
+      <!-- NOISE (X) Button: Solid Rich Red -->
+      <button id="btnMarkNoise" title="Noise / 단순언급 (←, X)" class="group w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#dc2626] hover:bg-[#ef4444] active:bg-[#b91c1c] text-white active:scale-90 transition-all flex items-center justify-center cursor-pointer">
+        <svg class="w-7 h-7 stroke-[2.8] group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- UNDO Button -->
+      <button id="btnUndo" title="Undo / 실행취소 (Z)" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#1e2732] hover:bg-[#2c3644] active:bg-[#151c24] border border-white/10 text-white/70 hover:text-white active:scale-90 transition-all flex items-center justify-center cursor-pointer">
+        <svg class="w-4 h-4 stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+        </svg>
+      </button>
+
+      <!-- SKIP Button -->
+      <button id="btnSkip" title="Skip / 건너뛰기 (Space)" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#1e2732] hover:bg-[#2c3644] active:bg-[#151c24] border border-white/10 text-white/70 hover:text-white active:scale-90 transition-all flex items-center justify-center cursor-pointer">
+        <svg class="w-4 h-4 stroke-[2.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+        </svg>
+      </button>
+
+      <!-- IMPACT (V) Button: Solid Rich Green -->
+      <button id="btnMarkImpact" title="Impact / 시장영향 (→, V)" class="group w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#10b981] hover:bg-[#059669] active:bg-[#047857] text-white active:scale-90 transition-all flex items-center justify-center cursor-pointer">
+        <svg class="w-7 h-7 stroke-[2.8] group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Minimalist Cheatsheet -->
+    <div class="text-[11px] text-white/40 tracking-wider flex items-center gap-2.5 font-mono">
+      <span class="text-red-400 font-medium">← 단순 (X)</span>
+      <span class="text-white/20">·</span>
+      <span class="text-emerald-400 font-medium">임팩트 (V) →</span>
+      <span class="text-white/20">·</span>
+      <span>Space 건너뜀</span>
+      <span class="text-white/20">·</span>
+      <span>Z 되돌리기</span>
+    </div>
+  </footer>
+
+  <!-- EMBEDDED DATASET FALLBACK -->
+  <script src="tweets_data.js"></script>
+
+  <!-- APPLICATION LOGIC -->
+  <script>
+    (function() {
+      let tweets = [];
+      let currentIndex = 0;
+      let activeFilter = 'all';
+      let activeLang = 'all'; // 'all', 'en', 'ko', 'vi'
+      let historyStack = [];
+
+      const STORAGE_KEY = 'trump_tweet_audit_progress_v1';
+
+      // DOM Elements
+      const activeCard = document.getElementById('activeCard');
+      const nextCard = document.getElementById('nextCard');
+      const completionCard = document.getElementById('completionCard');
+      const stampImpact = document.getElementById('stampImpact');
+      const stampNoise = document.getElementById('stampNoise');
+
+      const cardThemes = document.getElementById('cardThemes');
+      const cardIndexBadge = document.getElementById('cardIndexBadge');
+      const cardCurrentStatusBadge = document.getElementById('cardCurrentStatusBadge');
+      const cardTweetText = document.getElementById('cardTweetText');
+      const cardTweetTextKo = document.getElementById('cardTweetTextKo');
+      const cardTweetTextVi = document.getElementById('cardTweetTextVi');
+      const blockEn = document.getElementById('blockEn');
+      const blockKo = document.getElementById('blockKo');
+      const blockVi = document.getElementById('blockVi');
+      const cardDateEastern = document.getElementById('cardDateEastern');
+      const cardFirstStageLabel = document.getElementById('cardFirstStageLabel');
+      const cardRetweets = document.getElementById('cardRetweets');
+      const cardFavorites = document.getElementById('cardFavorites');
+
+      const progressText = document.getElementById('progressText');
+      const statCountO = document.getElementById('statCountO');
+      const statCountX = document.getElementById('statCountX');
+      const barO = document.getElementById('barO');
+      const barX = document.getElementById('barX');
+
+      const btnMarkNoise = document.getElementById('btnMarkNoise');
+      const btnMarkImpact = document.getElementById('btnMarkImpact');
+      const btnUndo = document.getElementById('btnUndo');
+      const btnSkip = document.getElementById('btnSkip');
+      const btnSaveCsv = document.getElementById('btnSaveCsv');
+      const btnCompleteDownload = document.getElementById('btnCompleteDownload');
+      const csvFileInput = document.getElementById('csvFileInput');
+
+      const jumpIndexInput = document.getElementById('jumpIndexInput');
+      const btnJump = document.getElementById('btnJump');
+
+      // 1. Data Initialization
+      function initData() {
+        if (window.INITIAL_TWEETS_DATA && Array.isArray(window.INITIAL_TWEETS_DATA)) {
+          tweets = window.INITIAL_TWEETS_DATA.map((item, idx) => ({
+            ...item,
+            _original_index: idx,
+            manual_audit_label: item.manual_audit_label || '',
+            manual_audit_timestamp: item.manual_audit_timestamp || ''
+          }));
+        } else {
+          fetch('trade_tweets_raw_audit.csv')
+            .then(res => res.text())
+            .then(csv => parseCsv(csv))
+            .catch(err => alert('Failed to load dataset. Please import a CSV.'));
+          return;
+        }
+
+        restoreFromLocalStorage();
+        updateStats();
+        findNextIndex();
+        renderCard();
+      }
+
+      function restoreFromLocalStorage() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            const list = Array.isArray(parsed) ? parsed : (parsed.labels || []);
+            if (Array.isArray(list) && list.length === tweets.length) {
+              tweets.forEach((t, i) => {
+                if (list[i] && list[i].manual_audit_label) {
+                  t.manual_audit_label = list[i].manual_audit_label;
+                  t.manual_audit_timestamp = list[i].manual_audit_timestamp;
+                }
+              });
+              if (!Array.isArray(parsed) && typeof parsed.currentIndex === 'number') {
+                currentIndex = parsed.currentIndex;
+              }
+            }
+          } catch(e) {
+            console.error('Failed to parse localStorage:', e);
+          }
+        }
+      }
+
+      function saveToLocalStorage() {
+        try {
+          const minimal = {
+            currentIndex: currentIndex,
+            labels: tweets.map(t => ({
+              manual_audit_label: t.manual_audit_label,
+              manual_audit_timestamp: t.manual_audit_timestamp
+            }))
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(minimal));
+        } catch(e) {
+          console.error('Failed to save to localStorage:', e);
+        }
+      }
+
+      // 2. Stats
+      function updateStats() {
+        const countO = tweets.filter(t => t.manual_audit_label === 'O').length;
+        const countX = tweets.filter(t => t.manual_audit_label === 'X').length;
+        const total = tweets.length;
+        const countDecided = countO + countX;
+        const pct = total > 0 ? ((countDecided / total) * 100).toFixed(0) : 0;
+
+        progressText.textContent = `${countDecided} of ${total} (${pct}%)`;
+        statCountO.textContent = countO;
+        statCountX.textContent = countX;
+
+        barO.style.width = total > 0 ? `${(countO / total) * 100}%` : '0%';
+        barX.style.width = total > 0 ? `${(countX / total) * 100}%` : '0%';
+      }
+
+      // 3. Filter Helpers
+      function getFilteredIndices() {
+        return tweets
+          .map((t, idx) => ({ t, idx }))
+          .filter(({ t }) => {
+            if (activeFilter === 'all') return true;
+            if (activeFilter === 'pending') return !t.manual_audit_label;
+            if (activeFilter === 'O') return t.manual_audit_label === 'O';
+            if (activeFilter === 'X') return t.manual_audit_label === 'X';
+            return true;
+          })
+          .map(({ idx }) => idx);
+      }
+
+      function findNextIndex() {
+        const indices = getFilteredIndices();
+        if (indices.length === 0) {
+          currentIndex = -1;
+          return;
+        }
+        if (!indices.includes(currentIndex)) {
+          currentIndex = indices[0];
+        }
+      }
+
+      function formatNumber(num) {
+        if (!num) return '0';
+        num = Number(num);
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+        return num.toLocaleString();
+      }
+
+      function highlightKeywords(text, keywordsStr) {
+        if (!keywordsStr) return escapeHtml(text);
+        const words = keywordsStr.split(',').map(w => w.trim()).filter(Boolean);
+        if (!words.length) return escapeHtml(text);
+
+        let safeText = escapeHtml(text);
+        words.forEach(w => {
+          const regex = new RegExp(`(\\b${escapeRegex(w)}\\b)`, 'gi');
+          safeText = safeText.replace(regex, '<span class="highlight-keyword">$1</span>');
+        });
+        return safeText;
+      }
+
+      function escapeHtml(string) {
+        return String(string)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function escapeRegex(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      // 4. Render Card
+      function renderCard() {
+        resetCardTransform();
+
+        const indices = getFilteredIndices();
+        if (currentIndex < 0 || currentIndex >= tweets.length || indices.length === 0) {
+          activeCard.classList.add('hidden');
+          nextCard.classList.add('hidden');
+          completionCard.classList.remove('hidden');
+          return;
+        }
+
+        activeCard.classList.remove('hidden');
+        nextCard.classList.remove('hidden');
+        completionCard.classList.add('hidden');
+
+        const tweet = tweets[currentIndex];
+
+        // Themes Badges: Electric Blue Accents
+        cardThemes.innerHTML = '';
+        const themes = (tweet.matched_themes || '').split(';').map(s => s.trim()).filter(Boolean);
+        themes.forEach(th => {
+          const badge = document.createElement('span');
+          badge.className = 'text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-[#1d9bf0]/12 text-[#38bdf8] border border-[#1d9bf0]/25 tracking-tight';
+          badge.textContent = th;
+          cardThemes.appendChild(badge);
+        });
+
+        // Index
+        const currentPosInFilter = indices.indexOf(currentIndex) + 1;
+        cardIndexBadge.textContent = `#${currentIndex + 1} / ${tweets.length}`;
+
+        // Status indicator
+        if (tweet.manual_audit_label === 'O') {
+          cardCurrentStatusBadge.innerHTML = '<span class="text-[11px] text-emerald-400 font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">✓ Impact (V)</span>';
+        } else if (tweet.manual_audit_label === 'X') {
+          cardCurrentStatusBadge.innerHTML = '<span class="text-[11px] text-red-400 font-bold px-2.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/30">✕ Noise (X)</span>';
+        } else {
+          cardCurrentStatusBadge.innerHTML = '';
+        }
+
+        // Body Text
+        cardTweetText.innerHTML = highlightKeywords(tweet.tweet_text || '', tweet.matched_keywords);
+        cardTweetTextKo.textContent = tweet.tweet_text_ko || '(한국어 번역 준비 중)';
+        cardTweetTextVi.textContent = tweet.tweet_text_vi || '(Bản dịch đang chuẩn bị)';
+
+        applyLanguageView();
+
+        // Footer Meta
+        cardDateEastern.textContent = tweet.date_eastern || tweet.date_utc || '';
+        cardFirstStageLabel.textContent = tweet.audit_category || '';
+        cardRetweets.textContent = formatNumber(tweet.retweet_count);
+        cardFavorites.textContent = formatNumber(tweet.favorite_count);
+      }
+
+      function applyLanguageView() {
+        if (activeLang === 'all') {
+          blockEn.classList.remove('hidden');
+          blockKo.classList.remove('hidden');
+          blockVi.classList.remove('hidden');
+        } else if (activeLang === 'en') {
+          blockEn.classList.remove('hidden');
+          blockKo.classList.add('hidden');
+          blockVi.classList.add('hidden');
+        } else if (activeLang === 'ko') {
+          blockEn.classList.add('hidden');
+          blockKo.classList.remove('hidden');
+          blockVi.classList.add('hidden');
+        } else if (activeLang === 'vi') {
+          blockEn.classList.add('hidden');
+          blockKo.classList.add('hidden');
+          blockVi.classList.remove('hidden');
+        }
+      }
+
+      // 5. Actions
+      function makeDecision(decision) {
+        if (currentIndex < 0 || currentIndex >= tweets.length) return;
+
+        const tweet = tweets[currentIndex];
+        historyStack.push({
+          index: currentIndex,
+          prevLabel: tweet.manual_audit_label,
+          prevTimestamp: tweet.manual_audit_timestamp
+        });
+
+        tweet.manual_audit_label = decision;
+        tweet.manual_audit_timestamp = new Date().toISOString();
+
+        saveToLocalStorage();
+        updateStats();
+
+        animateCardExit(decision === 'O' ? 'right' : 'left', () => {
+          advanceToNext();
+        });
+      }
+
+      function skipCurrent() {
+        advanceToNext();
+      }
+
+      function undoLast() {
+        if (historyStack.length === 0) return;
+        const last = historyStack.pop();
+        tweets[last.index].manual_audit_label = last.prevLabel;
+        tweets[last.index].manual_audit_timestamp = last.prevTimestamp;
+        currentIndex = last.index;
+
+        saveToLocalStorage();
+        updateStats();
+        renderCard();
+      }
+
+      function advanceToNext() {
+        const indices = getFilteredIndices();
+        if (indices.length === 0) {
+          currentIndex = -1;
+          renderCard();
+          return;
+        }
+        const currentPos = indices.indexOf(currentIndex);
+        if (currentPos >= 0 && currentPos + 1 < indices.length) {
+          currentIndex = indices[currentPos + 1];
+        } else {
+          currentIndex = indices[0];
+        }
+        saveToLocalStorage();
+        renderCard();
+      }
+
+      // 6. Swipe Interactions
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+      let currentX = 0;
+      let currentY = 0;
+
+      function resetCardTransform() {
+        activeCard.style.transition = 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease';
+        activeCard.style.transform = 'translate3d(0, 0, 0) rotate(0deg)';
+        stampImpact.style.opacity = '0';
+        stampNoise.style.opacity = '0';
+      }
+
+      function onPointerDown(e) {
+        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
+        isDragging = true;
+        startX = e.clientX || (e.touches && e.touches[0].clientX);
+        startY = e.clientY || (e.touches && e.touches[0].clientY);
+        activeCard.style.transition = 'none';
+      }
+
+      function onPointerMove(e) {
+        if (!isDragging) return;
+        currentX = (e.clientX || (e.touches && e.touches[0].clientX)) - startX;
+        currentY = (e.clientY || (e.touches && e.touches[0].clientY)) - startY;
+
+        const rotate = currentX * 0.04;
+        activeCard.style.transform = `translate3d(${currentX}px, ${currentY * 0.4}px, 0) rotate(${rotate}deg)`;
+
+        const threshold = 60;
+        if (currentX > 0) {
+          stampImpact.style.opacity = Math.min(1, currentX / threshold);
+          stampNoise.style.opacity = '0';
+        } else {
+          stampNoise.style.opacity = Math.min(1, Math.abs(currentX) / threshold);
+          stampImpact.style.opacity = '0';
+        }
+      }
+
+      function onPointerUp() {
+        if (!isDragging) return;
+        isDragging = false;
+        const threshold = 90;
+
+        if (currentX > threshold) {
+          makeDecision('O');
+        } else if (currentX < -threshold) {
+          makeDecision('X');
+        } else {
+          resetCardTransform();
+        }
+        currentX = 0;
+        currentY = 0;
+      }
+
+      function animateCardExit(direction, callback) {
+        activeCard.style.transition = 'transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease';
+        const targetX = direction === 'right' ? window.innerWidth * 0.8 : -window.innerWidth * 0.8;
+        const targetRotate = direction === 'right' ? 20 : -20;
+        activeCard.style.transform = `translate3d(${targetX}px, 0, 0) rotate(${targetRotate}deg)`;
+        activeCard.style.opacity = '0';
+
+        setTimeout(() => {
+          activeCard.style.opacity = '1';
+          resetCardTransform();
+          if (callback) callback();
+        }, 220);
+      }
+
+      activeCard.addEventListener('mousedown', onPointerDown);
+      window.addEventListener('mousemove', onPointerMove);
+      window.addEventListener('mouseup', onPointerUp);
+
+      activeCard.addEventListener('touchstart', onPointerDown, { passive: true });
+      window.addEventListener('touchmove', onPointerMove, { passive: true });
+      window.addEventListener('touchend', onPointerUp);
+
+      // Keyboard
+      window.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'v' || e.key === 'V') {
+          e.preventDefault();
+          makeDecision('O');
+        } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' || e.key === 'x' || e.key === 'X') {
+          e.preventDefault();
+          makeDecision('X');
+        } else if (e.key === ' ' || e.key === 's' || e.key === 'S') {
+          e.preventDefault();
+          skipCurrent();
+        } else if (e.key === 'z' || e.key === 'Z' || e.key === 'Backspace') {
+          e.preventDefault();
+          undoLast();
+        }
+      });
+
+      // Buttons
+      btnMarkImpact.addEventListener('click', () => makeDecision('O'));
+      btnMarkNoise.addEventListener('click', () => makeDecision('X'));
+      btnUndo.addEventListener('click', undoLast);
+      btnSkip.addEventListener('click', skipCurrent);
+
+      // Language Switcher
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.lang-btn').forEach(b => {
+            b.classList.remove('text-white', 'bg-[#1d9bf0]', 'font-semibold', 'shadow-sm');
+            b.classList.add('text-white/50', 'font-medium');
+          });
+          e.target.classList.add('text-white', 'bg-[#1d9bf0]', 'font-semibold', 'shadow-sm');
+          e.target.classList.remove('text-white/50', 'font-medium');
+          activeLang = e.target.getAttribute('data-lang');
+          applyLanguageView();
+        });
+      });
+
+      // Filter Buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.remove('bg-[#1d9bf0]', 'text-white', 'shadow-sm', 'font-semibold');
+            b.classList.add('font-medium');
+          });
+          e.target.classList.add('bg-[#1d9bf0]', 'text-white', 'shadow-sm', 'font-semibold');
+          activeFilter = e.target.getAttribute('data-filter');
+          findNextIndex();
+          renderCard();
+        });
+      });
+
+      // Jump
+      btnJump.addEventListener('click', () => {
+        const val = parseInt(jumpIndexInput.value, 10);
+        if (isNaN(val) || val < 1 || val > tweets.length) return;
+        currentIndex = val - 1;
+        renderCard();
+      });
+
+      jumpIndexInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') btnJump.click();
+      });
+
+      // CSV Export & Import
+      function exportToCsv() {
+        if (!tweets || !tweets.length) return;
+
+        const headers = [
+          'date_utc',
+          'date_eastern',
+          'tweet_text',
+          'tweet_text_ko',
+          'tweet_text_vi',
+          'retweet_count',
+          'favorite_count',
+          'matched_themes',
+          'matched_keywords',
+          'audit_category',
+          'is_policy_signal_stage1',
+          'manual_audit_label',
+          'manual_audit_timestamp'
+        ];
+
+        let csvContent = '\uFEFF';
+        csvContent += headers.join(',') + '\r\n';
+
+        tweets.forEach(t => {
+          const row = [
+            escapeCsv(t.date_utc),
+            escapeCsv(t.date_eastern),
+            escapeCsv(t.tweet_text),
+            escapeCsv(t.tweet_text_ko || ''),
+            escapeCsv(t.tweet_text_vi || ''),
+            t.retweet_count || 0,
+            t.favorite_count || 0,
+            escapeCsv(t.matched_themes),
+            escapeCsv(t.matched_keywords),
+            escapeCsv(t.audit_category),
+            t.is_policy_signal !== undefined ? t.is_policy_signal : 0,
+            escapeCsv(t.manual_audit_label || ''),
+            escapeCsv(t.manual_audit_timestamp || '')
+          ];
+          csvContent += row.join(',') + '\r\n';
+        });
+
+        if (window.location.protocol.startsWith('http')) {
+          fetch('/save_csv', {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/csv; charset=utf-8' },
+            body: csvContent
+          }).catch(e => console.warn(e));
+        }
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'trade_tweets_manual_audited.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+
+      function escapeCsv(field) {
+        if (field === null || field === undefined) return '""';
+        const str = String(field);
+        if (str.includes('"') || str.includes(',') || str.includes('\n') || str.includes('\r')) {
+          return '"' + str.replace(/"/g, '""') + '"';
+        }
+        return str;
+      }
+
+      btnSaveCsv.addEventListener('click', exportToCsv);
+      btnCompleteDownload.addEventListener('click', exportToCsv);
+
+      csvFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          parseAndMergeCsv(evt.target.result);
+        };
+        reader.readAsText(file, 'utf-8');
+      });
+
+      function parseAndMergeCsv(csvText) {
+        const lines = csvText.split(/\r?\n/).filter(line => line.trim().length > 0);
+        if (lines.length < 2) return;
+
+        const headers = parseCsvLine(lines[0]);
+        const labelIdx = headers.indexOf('manual_audit_label');
+        const tsIdx = headers.indexOf('manual_audit_timestamp');
+
+        if (labelIdx === -1) {
+          alert('Could not find manual_audit_label column.');
+          return;
+        }
+
+        let updatedCount = 0;
+        for (let i = 1; i < lines.length; i++) {
+          const row = parseCsvLine(lines[i]);
+          if (row.length > labelIdx && row[labelIdx]) {
+            const label = row[labelIdx].trim();
+            const target = tweets[i - 1];
+            if (target) {
+              target.manual_audit_label = label;
+              if (tsIdx !== -1 && row[tsIdx]) target.manual_audit_timestamp = row[tsIdx];
+              updatedCount++;
+            }
+          }
+        }
+
+        saveToLocalStorage();
+        updateStats();
+        findNextIndex();
+        renderCard();
+      }
+
+      function parseCsvLine(text) {
+        const result = [];
+        let cur = '';
+        let inQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+          const c = text[i];
+          if (c === '"') {
+            if (inQuotes && text[i + 1] === '"') {
+              cur += '"';
+              i++;
+            } else {
+              inQuotes = !inQuotes;
+            }
+          } else if (c === ',' && !inQuotes) {
+            result.push(cur);
+            cur = '';
+          } else {
+            cur += c;
+          }
+        }
+        result.push(cur);
+        return result;
+      }
+
+      initData();
+    })();
+  </script>
+</body>
+</html>
