@@ -10,16 +10,17 @@
 
 | 파일/디렉터리 | 구분 | 설명 |
 | :--- | :---: | :--- |
-| [`pipeline_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/pipeline_extended.py) | 파이프라인 | 트윗 2.6만 건 + 13개 글로벌 자산 OHLC 수집, 미국 동부시각 정렬 및 병합 파이프라인 |
-| [`trump_market_extended_data.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/trump_market_extended_data.csv) | 데이터셋 | **1,007개 정규 거래일 × 95개 변수**로 구성된 최종 실증 데이터셋 (결측치 0건) |
-| [`empirical_analysis_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/empirical_analysis_extended.py) | 분석 코드 | 자산군·섹터별 Welch's $t$-test 및 2일 누적 비정상수익률(CAR) 통계 검정 스크립트 |
-| [`extended_empirical_summary.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/extended_empirical_summary.csv) | 분석 결과 | 전 자산군별 트윗 발생일 vs 미발생일 평균, 차이($\Delta$), $t$-stat, $p$-value 요약표 |
-| [`generate_presentation_charts.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/generate_presentation_charts.py) | 시각화 | 15분 발표용 고해상도 핵심 차트 4종 자동 렌더링 스크립트 (Pure matplotlib) |
+| [`scripts/pipeline_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/pipeline_extended.py) | 파이프라인 | 트윗 2.6만 건 + 13개 글로벌 자산 OHLC 수집, 미국 동부시각 정렬 및 병합 파이프라인 |
+| [`data/trump_market_extended_data.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/trump_market_extended_data.csv) | 데이터셋 | **1,007개 정규 거래일 × 95개 변수**로 구성된 최종 실증 데이터셋 (결측치 0건) |
+| [`scripts/empirical_analysis_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/empirical_analysis_extended.py) | 분석 코드 | 자산군·섹터별 Welch's $t$-test 및 2일 누적 비정상수익률(CAR) 통계 검정 스크립트 |
+| [`data/extended_empirical_summary.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/extended_empirical_summary.csv) | 분석 결과 | 전 자산군별 트윗 발생일 vs 미발생일 평균, 차이($\Delta$), $t$-stat, $p$-value 요약표 |
+| [`scripts/generate_presentation_charts.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/generate_presentation_charts.py) | 시각화 | 15분 발표용 고해상도 핵심 차트 4종 자동 렌더링 스크립트 (Pure matplotlib) |
 | [`presentation_charts/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_charts) | 시각화 산출물 | 발표 슬라이드 삽입용 고품질 PNG 차트 4종 저장 디렉터리 |
-| [`presentation_script_15min.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_script_15min.md) | 발표 자료 | **슬라이드 15장 기준 15분 발표용 상세 발표자 대본 및 시간 배분 가이드** |
-| [`trump_tweets_1st_term_raw.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/trump_tweets_1st_term_raw.csv) | 원본 데이터 | **트럼프 1기 4년간 작성된 트윗 26,239건 전수 원본 데이터셋 (본문, 일시, RT/좋아요)** |
+| [`docs/presentation_script_15min.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/presentation_script_15min.md) | 발표 자료 | **슬라이드 15장 기준 15분 발표용 상세 발표자 대본 및 시간 배분 가이드** |
+| [`data/trump_tweets_1st_term_raw.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/trump_tweets_1st_term_raw.csv) | 원본 데이터 | **트럼프 1기 4년간 작성된 트윗 26,239건 전수 원본 데이터셋 (본문, 일시, RT/좋아요)** |
 | [`Draft/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/Draft) | 라벨링 도구 | **트윗 금융 임팩트(O/X) 틴더 스타일 스와이프 판별 웹앱 (`index.html`)** |
-| [`EXPLORATORY_ANALYSIS_BACKLOG.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/EXPLORATORY_ANALYSIS_BACKLOG.md) | 확장 계획 | **트윗 원문 전수조사 및 한국 시장 비교 등 후보 분석 계획 백로그** |
+| [`docs/EXPLORATORY_ANALYSIS_BACKLOG.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/EXPLORATORY_ANALYSIS_BACKLOG.md) | 확장 계획 | **트윗 원문 전수조사 및 한국 시장 비교 등 후보 분석 계획 백로그** |
+| [`docs/(OT) 팀프로젝트에 관하여.pdf`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/) | 강의 자료 | **김수현 교수님 팀 프로젝트 오리엔테이션 및 평가 가이드라인** |
 | [`requirements.txt`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/requirements.txt) | 환경 설정 | 프로젝트 실행에 필요한 파이썬 라이브러리 목록 (`pandas`, `numpy`, `scipy`, `yfinance`, `matplotlib`) |
 | [`GEMINI.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/GEMINI.md) | 협업 규칙 | **Antigravity 팀 프로젝트 공통 룰셋** (데이터 무결성, 통계 표준, Git 컨벤션) |
 | [`.agents/rules/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules) | 모듈형 규칙 | 도메인 가이드라인, 파이썬/시각화 표준, Git 워크플로우 세부 룰셋 |

@@ -12,7 +12,11 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 
-DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "trump_market_event_data.csv")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_PATH = os.path.join(BASE_DIR, "data", "trump_market_event_data.csv")
+if not os.path.exists(DATA_PATH):
+    # fallback to same directory
+    DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "trump_market_event_data.csv")
 
 def run_analysis():
     if not os.path.exists(DATA_PATH):

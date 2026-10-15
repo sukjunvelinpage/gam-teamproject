@@ -15,7 +15,9 @@ import pandas as pd
 import numpy as np
 import yfinance as yf
 
-DATA_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+os.makedirs(DATA_DIR, exist_ok=True)
 OUTPUT_CSV = os.path.join(DATA_DIR, "trump_market_extended_data.csv")
 
 START_DATE = "2017-01-20"

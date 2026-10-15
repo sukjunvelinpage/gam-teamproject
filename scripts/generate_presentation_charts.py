@@ -11,8 +11,12 @@ import numpy as np
 plt.rcParams["font.sans-serif"] = ["DejaVu Sans", "Arial"]
 plt.rcParams["axes.unicode_minus"] = False
 
-DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "trump_market_extended_data.csv")
-OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "presentation_charts")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_PATH = os.path.join(BASE_DIR, "data", "trump_market_extended_data.csv")
+if not os.path.exists(DATA_PATH):
+    DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "trump_market_extended_data.csv")
+
+OUTPUT_DIR = os.path.join(BASE_DIR, "presentation_charts")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 df = pd.read_csv(DATA_PATH)

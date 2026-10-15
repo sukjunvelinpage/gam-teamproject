@@ -13,7 +13,11 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 
-DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "trump_market_extended_data.csv")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+DATA_PATH = os.path.join(DATA_DIR, "trump_market_extended_data.csv")
+if not os.path.exists(DATA_PATH):
+    DATA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "trump_market_extended_data.csv")
 
 def run_extended_analysis():
     df = pd.read_csv(DATA_PATH)
@@ -126,8 +130,9 @@ def run_extended_analysis():
 
         print(f"{asset:<8} 2-Day CAR: Event = {ev.mean():+.3f}%, None = {no.mean():+.3f}%, Diff = {ev.mean()-no.mean():+.3f}%p | t = {t_stat:+.3f}, p = {p_val:.4f} | {sig}")
 
-    res_df.to_csv("extended_empirical_summary.csv", index=False)
-    print("\nSummary saved to extended_empirical_summary.csv")
+    summary_path = os.path.join(DATA_DIR, "extended_empirical_summary.csv")
+    res_df.to_csv(summary_path, index=False)
+    print(f"\nSummary saved to {summary_path}")
 
 if __name__ == "__main__":
     run_extended_analysis()

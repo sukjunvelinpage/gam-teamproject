@@ -19,7 +19,9 @@ import os
 import re
 import pandas as pd
 
-DATA_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+os.makedirs(DATA_DIR, exist_ok=True)
 LOCAL_RAW_CSV = os.path.join(DATA_DIR, "trump_tweets_1st_term_raw.csv")
 TWEET_ARCHIVE_URL = "https://raw.githubusercontent.com/ttzztztz/TrumpTwitterArchive/master/trump.json"
 START_DATE = "2017-01-20"
