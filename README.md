@@ -6,24 +6,39 @@
 
 ---
 
-## 1. 프로젝트 구성 파일
+## 1. 🧭 프로젝트 안내판 (Directory Quick Navigation)
 
-| 파일/디렉터리 | 구분 | 설명 |
+> **"어떤 파일이 필요할 때 어디로 가야 하나요?"** — 작업 목적에 맞춰 아래 폴더를 찾아가시면 됩니다.
+
+| 찾으시는 목적 / 작업 | 바로가기 폴더 | 핵심 파일 및 설명 |
 | :--- | :---: | :--- |
-| [`scripts/pipeline_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/pipeline_extended.py) | 파이프라인 | 트윗 2.6만 건 + 13개 글로벌 자산 OHLC 수집, 미국 동부시각 정렬 및 병합 파이프라인 |
-| [`data/trump_market_extended_data.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/trump_market_extended_data.csv) | 데이터셋 | **1,007개 정규 거래일 × 95개 변수**로 구성된 최종 실증 데이터셋 (결측치 0건) |
-| [`scripts/empirical_analysis_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/empirical_analysis_extended.py) | 분석 코드 | 자산군·섹터별 Welch's $t$-test 및 2일 누적 비정상수익률(CAR) 통계 검정 스크립트 |
-| [`data/extended_empirical_summary.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/extended_empirical_summary.csv) | 분석 결과 | 전 자산군별 트윗 발생일 vs 미발생일 평균, 차이($\Delta$), $t$-stat, $p$-value 요약표 |
-| [`scripts/generate_presentation_charts.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/generate_presentation_charts.py) | 시각화 | 15분 발표용 고해상도 핵심 차트 4종 자동 렌더링 스크립트 (Pure matplotlib) |
-| [`presentation_charts/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_charts) | 시각화 산출물 | 발표 슬라이드 삽입용 고품질 PNG 차트 4종 저장 디렉터리 |
-| [`docs/presentation_script_15min.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/presentation_script_15min.md) | 발표 자료 | **슬라이드 15장 기준 15분 발표용 상세 발표자 대본 및 시간 배분 가이드** |
-| [`data/trump_tweets_1st_term_raw.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/trump_tweets_1st_term_raw.csv) | 원본 데이터 | **트럼프 1기 4년간 작성된 트윗 26,239건 전수 원본 데이터셋 (본문, 일시, RT/좋아요)** |
-| [`Draft/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/Draft) | 라벨링 도구 | **트윗 금융 임팩트(O/X) 틴더 스타일 스와이프 판별 웹앱 (`index.html`)** |
-| [`docs/EXPLORATORY_ANALYSIS_BACKLOG.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/EXPLORATORY_ANALYSIS_BACKLOG.md) | 확장 계획 | **트윗 원문 전수조사 및 한국 시장 비교 등 후보 분석 계획 백로그** |
-| [`docs/(OT) 팀프로젝트에 관하여.pdf`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/) | 강의 자료 | **김수현 교수님 팀 프로젝트 오리엔테이션 및 평가 가이드라인** |
-| [`requirements.txt`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/requirements.txt) | 환경 설정 | 프로젝트 실행에 필요한 파이썬 라이브러리 목록 (`pandas`, `numpy`, `scipy`, `yfinance`, `matplotlib`) |
-| [`GEMINI.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/GEMINI.md) | 협업 규칙 | **Antigravity 팀 프로젝트 공통 룰셋** (데이터 무결성, 통계 표준, Git 컨벤션) |
-| [`.agents/rules/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules) | 모듈형 규칙 | 도메인 가이드라인, 파이썬/시각화 표준, Git 워크플로우 세부 룰셋 |
+| 📊 **데이터셋 조회 및 다운로드**<br>- 1,007 거래일 금융 시계열<br>- 트윗 2.6만 건 원본 전수 데이터<br>- 코스피/코스닥 비교 엑셀 | [`data/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data) | • `trump_market_extended_data.csv`: 최종 통합 실증 데이터셋 (1,007일 × 95열)<br>• `trump_tweets_1st_term_raw.csv`: 트럼프 1기 4년 트윗 26,239건 원본<br>• `extended_empirical_summary.csv`: 자산군별 t-test & CAR 분석 요약표<br>• `코스피,코스닥(20170120-20210120).xlsx`: 국내 증시 비교 데이터 |
+| ⚙️ **파이프라인 실행 및 분석 코드**<br>- 최신 데이터 수집 및 미국 시각 정렬<br>- 자산군별 통계 검정 (Welch's t-test)<br>- 발표용 고해상도 차트 생성 | [`scripts/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts) | • `pipeline_extended.py`: 13개 글로벌 자산 + 트윗 시계열 수집 파이프라인<br>• `empirical_analysis_extended.py`: 다각도 실증 통계 검정 실행기<br>• `generate_presentation_charts.py`: 발표용 고해상도 차트 4종 자동 렌더링<br>• `audit_trade_tweets.py`: 무역/연준 키워드 필터링 및 전처리 |
+| 🖼️ **발표용 고해상도 차트 이미지**<br>- PPT 슬라이드 삽입용 이미지 (300 DPI)<br>- 거시/심리, 섹터, 채권/중국, CAR | [`presentation_charts/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_charts) | • `01_core_puzzle_sp500_vs_vix.png`: 거시 지수 vs VIX 변동성 괴리<br>• `02_sector_divergence.png`: 수혜 철강 vs 피해 제조·기술주 비대칭<br>• `03_yield_and_china_transmission.png`: 미 국채 금리 및 중국 위안화 전이<br>• `04_multi_day_car_persistence.png`: 2일 누적 비정상수익률(CAR) 지속성 |
+| 📝 **발표 준비 및 연구 보고서**<br>- 15분 발표 상세 대본 (슬라이드별)<br>- 확장 연구 백로그 및 연구 계획<br>- 김수현 교수님 팀플 OT 가이드 | [`docs/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs) | • `presentation_script_15min.md`: 슬라이드 15장 기준 15분 상세 발표 대본<br>• `EXPLORATORY_ANALYSIS_BACKLOG.md`: 추가 분석 아이디어 및 연구 백로그<br>• `(OT) 팀프로젝트에 관하여.pdf`: 김수현 교수님 팀플 평가 기준 및 안내 |
+| 🔍 **트윗 라벨링 & 웹 감사 도구**<br>- 트윗 금융 임팩트(O/X) 판별 웹앱<br>- 3개국어(한/영/중) 번역 및 교차 검수 | [`Draft/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/Draft) | • `index.html`: 틴더 스타일 트윗 스와이프 감사 웹앱<br>• `server.py`: 로컬 감사 결과 자동 저장 서버<br>• `merge_audits.py`: 팀원 간 교차 검수 머지 도구 |
+| 📜 **협업 규칙 및 AI 프롬프트 가이드**<br>- 데이터 무결성 규칙 & 시점 정렬 표준<br>- 통계 검정 표준 및 Git 컨벤션 | **루트 (`/`)** | • `GEMINI.md`: 프로젝트 전체 협업 및 코딩/통계 표준 원칙<br>• `AGENTS.md`: AI 에이전트 행동 지침 및 도메인 페르소나<br>• `requirements.txt`: 필수 파이썬 라이브러리 목록 |
+
+---
+
+## 2. 상세 파일 인벤토리
+
+| 파일/디렉터리 | 구분 | 위치 | 설명 |
+| :--- | :---: | :---: | :--- |
+| [`scripts/pipeline_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/pipeline_extended.py) | 파이프라인 | `scripts/` | 트윗 2.6만 건 + 13개 글로벌 자산 OHLC 수집, 미국 동부시각 정렬 및 병합 파이프라인 |
+| [`data/trump_market_extended_data.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/trump_market_extended_data.csv) | 데이터셋 | `data/` | **1,007개 정규 거래일 × 95개 변수**로 구성된 최종 실증 데이터셋 (결측치 0건) |
+| [`scripts/empirical_analysis_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/empirical_analysis_extended.py) | 분석 코드 | `scripts/` | 자산군·섹터별 Welch's $t$-test 및 2일 누적 비정상수익률(CAR) 통계 검정 스크립트 |
+| [`data/extended_empirical_summary.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/extended_empirical_summary.csv) | 분석 결과 | `data/` | 전 자산군별 트윗 발생일 vs 미발생일 평균, 차이($\Delta$), $t$-stat, $p$-value 요약표 |
+| [`scripts/generate_presentation_charts.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/generate_presentation_charts.py) | 시각화 | `scripts/` | 15분 발표용 고해상도 핵심 차트 4종 자동 렌더링 스크립트 (Pure matplotlib) |
+| [`presentation_charts/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_charts) | 시각화 산출물 | `presentation_charts/` | 발표 슬라이드 삽입용 고품질 PNG 차트 4종 저장 디렉터리 |
+| [`docs/presentation_script_15min.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/presentation_script_15min.md) | 발표 자료 | `docs/` | **슬라이드 15장 기준 15분 발표용 상세 발표자 대본 및 시간 배분 가이드** |
+| [`data/trump_tweets_1st_term_raw.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/trump_tweets_1st_term_raw.csv) | 원본 데이터 | `data/` | **트럼프 1기 4년간 작성된 트윗 26,239건 전수 원본 데이터셋 (본문, 일시, RT/좋아요)** |
+| [`Draft/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/Draft) | 라벨링 도구 | `Draft/` | **트윗 금융 임팩트(O/X) 틴더 스타일 스와이프 판별 웹앱 (`index.html`)** |
+| [`docs/EXPLORATORY_ANALYSIS_BACKLOG.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/EXPLORATORY_ANALYSIS_BACKLOG.md) | 확장 계획 | `docs/` | **트윗 원문 전수조사 및 한국 시장 비교 등 후보 분석 계획 백로그** |
+| [`docs/(OT) 팀프로젝트에 관하여.pdf`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/) | 강의 자료 | `docs/` | **김수현 교수님 팀 프로젝트 오리엔테이션 및 평가 가이드라인** |
+| [`requirements.txt`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/requirements.txt) | 환경 설정 | 루트 | 프로젝트 실행에 필요한 파이썬 라이브러리 목록 (`pandas`, `numpy`, `scipy`, `yfinance`, `matplotlib`) |
+| [`GEMINI.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/GEMINI.md) | 협업 규칙 | 루트 | **Antigravity 팀 프로젝트 공통 룰셋** (데이터 무결성, 통계 표준, Git 컨벤션) |
+| [`.agents/rules/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules) | 모듈형 규칙 | `.agents/` | 도메인 가이드라인, 파이썬/시각화 표준, Git 워크플로우 세부 룰셋 |
 
 ---
 
@@ -116,13 +131,13 @@
 pip install -r requirements.txt
 
 # 2. 확장 데이터 수집 및 시점 정렬 파이프라인 실행
-python pipeline_extended.py
+python scripts/pipeline_extended.py
 
 # 3. 다각도 실증 통계 검정 실행
-python empirical_analysis_extended.py
+python scripts/empirical_analysis_extended.py
 
 # 4. 15분 발표용 고해상도 차트 4종 생성
-python generate_presentation_charts.py
+python scripts/generate_presentation_charts.py
 ```
 
 ---
