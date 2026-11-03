@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "checks": [
+    "24,556개 고유원문 키와 분담입력집합 완전일치",
+    "판정합계 24,556 일치",
+    "전체26,239행 열람범위갱신",
+    "원본3개 체크섬보존(finalizer검사)",
+    "주요보고수치·UTF-8 확인",
+    "Python syntax compile"
+  ],
+  "remaining_context_required": 3627,
+  "note": "본문 검토 완료는 연결 매체 복원 또는 두 독립 평가자의 합의 완료를 뜻하지 않음"
+}

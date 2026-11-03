@@ -1,0 +1,9 @@
+.tweet-audit-report { --data-app-layout-intent: authored-report; --data-app-content-width: 920px; }
+.tweet-audit-report .report-hero { margin-bottom: 36px; }
+.tweet-audit-report .report-hero h1 { font-size: clamp(30px, 4vw, 44px); line-height: 1.25; word-break: keep-all; }
+.tweet-audit-report section { margin-bottom: 28px; }
+.tweet-audit-report blockquote { margin: 18px 0; padding: 14px 20px; border-left: 3px solid var(--border); overflow-wrap: anywhere; }
+.tweet-audit-report code { overflow-wrap: anywhere; word-break: break-word; }
+.tweet-audit-report .audit-table-heading { margin: 24px 0 12px; font-size: 18px; }
+.tweet-audit-report p, .tweet-audit-report li { line-height: 1.85; }
+@media print { .tweet-audit-report section { break-inside: avoid; } }

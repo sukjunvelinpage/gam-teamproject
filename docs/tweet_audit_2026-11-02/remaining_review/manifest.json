@@ -1,0 +1,30 @@
+[
+  {
+    "part": "part_0",
+    "count": 6139,
+    "min_raw_row": 0,
+    "max_raw_row": 6407,
+    "sha256": "c0a240bd5b20b3e7a0754344d9639c72c363c6835edfdaa30b77ae9299ae4e88"
+  },
+  {
+    "part": "part_1",
+    "count": 6139,
+    "min_raw_row": 6408,
+    "max_raw_row": 12843,
+    "sha256": "9fe25278cb735525ac786a332b9f03e08412151e9fd21417c28df75b5dc78119"
+  },
+  {
+    "part": "part_2",
+    "count": 6139,
+    "min_raw_row": 12844,
+    "max_raw_row": 19507,
+    "sha256": "90aeb39f9dac9b886fb0686acbe1b36df56ec307b6f1c72bbec1092f94649b4d"
+  },
+  {
+    "part": "part_3",
+    "count": 6139,
+    "min_raw_row": 19508,
+    "max_raw_row": 26238,
+    "sha256": "260e8c42bce45a95672da17d56f5713f27b9a24f40f747518b641714798de828"
+  }
+]

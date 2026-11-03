@@ -12,46 +12,27 @@
 
 | 찾으시는 목적 / 작업 | 바로가기 폴더 | 핵심 파일 및 설명 |
 | :--- | :---: | :--- |
-| 📊 **데이터셋 조회 및 다운로드**<br>- 1,007 거래일 금융 시계열<br>- 트윗 2.6만 건 원본 전수 데이터<br>- 코스피/코스닥 비교 엑셀 | [`data/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data) | • `trump_market_extended_data.csv`: 최종 통합 실증 데이터셋 (1,007일 × 95열)<br>• `trump_tweets_1st_term_raw.csv`: 트럼프 1기 4년 트윗 26,239건 원본<br>• `extended_empirical_summary.csv`: 자산군별 t-test & CAR 분석 요약표<br>• `코스피,코스닥(20170120-20210120).xlsx`: 국내 증시 비교 데이터 |
-| ⚙️ **파이프라인 실행 및 분석 코드**<br>- 최신 데이터 수집 및 미국 시각 정렬<br>- 자산군별 통계 검정 (Welch's t-test)<br>- 발표용 고해상도 차트 생성 | [`scripts/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts) | • `pipeline_extended.py`: 13개 글로벌 자산 + 트윗 시계열 수집 파이프라인<br>• `empirical_analysis_extended.py`: 다각도 실증 통계 검정 실행기<br>• `generate_presentation_charts.py`: 발표용 고해상도 차트 4종 자동 렌더링<br>• `audit_trade_tweets.py`: 무역/연준 키워드 필터링 및 전처리 |
-| 🖼️ **발표용 고해상도 차트 이미지**<br>- PPT 슬라이드 삽입용 이미지 (300 DPI)<br>- 거시/심리, 섹터, 채권/중국, CAR | [`presentation_charts/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_charts) | • `01_core_puzzle_sp500_vs_vix.png`: 거시 지수 vs VIX 변동성 괴리<br>• `02_sector_divergence.png`: 수혜 철강 vs 피해 제조·기술주 비대칭<br>• `03_yield_and_china_transmission.png`: 미 국채 금리 및 중국 위안화 전이<br>• `04_multi_day_car_persistence.png`: 2일 누적 비정상수익률(CAR) 지속성 |
-| 📝 **발표 준비 및 연구 보고서**<br>- 15분 발표 상세 대본 (슬라이드별)<br>- 확장 연구 백로그 및 연구 계획<br>- 김수현 교수님 팀플 OT 가이드 | [`docs/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs) | • `presentation_script_15min.md`: 슬라이드 15장 기준 15분 상세 발표 대본<br>• `EXPLORATORY_ANALYSIS_BACKLOG.md`: 추가 분석 아이디어 및 연구 백로그<br>• `(OT) 팀프로젝트에 관하여.pdf`: 김수현 교수님 팀플 평가 기준 및 안내 |
-| 🔍 **트윗 라벨링 & 웹 감사 도구**<br>- 트윗 금융 임팩트(O/X) 판별 웹앱<br>- 3개국어(한/영/중) 번역 및 교차 검수 | [`Draft/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/Draft) | • `index.html`: 틴더 스타일 트윗 스와이프 감사 웹앱<br>• `server.py`: 로컬 감사 결과 자동 저장 서버<br>• `merge_audits.py`: 팀원 간 교차 검수 머지 도구 |
+| 📊 **데이터셋 조회 및 다운로드**<br>- 1,007 거래일 통합 금융 시계열<br>- 전수 문맥 기반 긍정/부정 트윗<br>- 기존 버전 아카이브 | [`data/`](file:///C:/Users/StoneXI/Agent_Workspace/gam-teamproject/data) | • **`trump_market_analysis_input.csv` (핵심 일별)**: 기존 1,246건 + 신규 4,377건 일별 긍정/부정 변수가 결합된 1,007거래일 통합 데이터셋 (134개 컬럼)<br>• **`trump_tweets_analysis_input.csv` (핵심 트윗)**: 26,239건 원본 중 5,623건(1,246건 기존 + 4,377건 신규) 전수 문맥 기반 긍정/부정 분류 및 한국어 판정 사유 완비<br>• `archive/`: 과거 중간 산출물 및 이전 버전 데이터셋 보관 |
+| ⚙️ **파이프라인 실행 및 분석 코드**<br>- 전수 문맥 분류 및 일별 데이터 생성<br>- 1,246건 vs 4,377건 비교 실증 검정<br>- 발표용 고해상도 차트 생성 | [`scripts/`](file:///C:/Users/StoneXI/Agent_Workspace/gam-teamproject/scripts) | • `build_analysis_ready_tweet_data.py`: 트윗 톤 감사 결과와 금융 시계열을 병합해 일별 분석 입력 데이터를 생성하는 공식 빌더<br>• `compare_1246_vs_4377.py`: 기존 무역 중심 1,246건과 확장 4,377건 간 16개 자산군 비교 실증 분석기<br>• `empirical_context_sentiment.py`: 문맥 감성 기반 Welch's t-test 및 다기간 누적수익률(CAR) 검정 스크립트<br>• `generate_presentation_charts.py`: 발표용 고해상도 차트 4종 자동 렌더링 |
+| 🖼️ **발표용 고해상도 차트 이미지**<br>- PPT 슬라이드 삽입용 이미지 (300 DPI)<br>- 거시/심리, 섹터, 채권/중국, CAR | [`presentation_charts/`](file:///C:/Users/StoneXI/Agent_Workspace/gam-teamproject/presentation_charts) | • `01_core_puzzle_sp500_vs_vix.png`: 거시 지수 vs VIX 변동성 괴리<br>• `02_sector_divergence.png`: 수혜 철강 vs 피해 제조·기술주 비대칭<br>• `03_yield_and_china_transmission.png`: 미 국채 금리 및 중국 위안화 전이<br>• `04_multi_day_car_persistence.png`: 2일 누적 비정상수익률(CAR) 지속성 |
+| 📝 **발표 준비 및 연구 보고서**<br>- 질답 대비 분류 방법론 및 기준 정리<br>- 15분 발표 상세 대본 (슬라이드별)<br>- 김수현 교수님 팀플 OT 가이드 | [`docs/`](file:///C:/Users/StoneXI/Agent_Workspace/gam-teamproject/docs) | • **`TWEET_CLASSIFICATION_METHODOLOGY_QA.md`**: 전수 문맥 기반 분류 방법론, 도구, 파이프라인, 객관적 판정 기준 완벽 대비 Q&A<br>• `presentation_script_15min.md`: 슬라이드 15장 기준 15분 상세 발표 대본<br>• `tweet_audit_2026-11-02/`: 4,377건 트윗 톤 전수 감사 원장(Core/Ext A/B/C/Screen) 및 요약 JSON |
+| 🔍 **트윗 라벨링 & 웹 감사 도구**<br>- 트윗 금융 임팩트(O/X) 판별 웹앱<br>- 3개국어(한/영/중) 번역 및 교차 검수 | [`Draft/`](file:///C:/Users/StoneXI/Agent_Workspace/gam-teamproject/Draft) | • `index.html`: 틴더 스타일 트윗 스와이프 감사 웹앱<br>• `server.py`: 로컬 감사 결과 자동 저장 서버<br>• `merge_audits.py`: 팀원 간 교차 검수 머지 도구 |
 | 📜 **협업 규칙 및 AI 프롬프트 가이드**<br>- 데이터 무결성 규칙 & 시점 정렬 표준<br>- 통계 검정 표준 및 Git 컨벤션 | **루트 (`/`)** | • `GEMINI.md`: 프로젝트 전체 협업 및 코딩/통계 표준 원칙<br>• `AGENTS.md`: AI 에이전트 행동 지침 및 도메인 페르소나<br>• `requirements.txt`: 필수 파이썬 라이브러리 목록 |
 
 ---
 
-## 2. 상세 파일 인벤토리
-
-| 파일/디렉터리 | 구분 | 위치 | 설명 |
-| :--- | :---: | :---: | :--- |
-| [`scripts/pipeline_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/pipeline_extended.py) | 파이프라인 | `scripts/` | 트윗 2.6만 건 + 13개 글로벌 자산 OHLC 수집, 미국 동부시각 정렬 및 병합 파이프라인 |
-| [`data/trump_market_extended_data.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/trump_market_extended_data.csv) | 데이터셋 | `data/` | **1,007개 정규 거래일 × 95개 변수**로 구성된 최종 실증 데이터셋 (결측치 0건) |
-| [`scripts/empirical_analysis_extended.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/empirical_analysis_extended.py) | 분석 코드 | `scripts/` | 자산군·섹터별 Welch's $t$-test 및 2일 누적 비정상수익률(CAR) 통계 검정 스크립트 |
-| [`data/extended_empirical_summary.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/extended_empirical_summary.csv) | 분석 결과 | `data/` | 전 자산군별 트윗 발생일 vs 미발생일 평균, 차이($\Delta$), $t$-stat, $p$-value 요약표 |
-| [`scripts/generate_presentation_charts.py`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/scripts/generate_presentation_charts.py) | 시각화 | `scripts/` | 15분 발표용 고해상도 핵심 차트 4종 자동 렌더링 스크립트 (Pure matplotlib) |
-| [`presentation_charts/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/presentation_charts) | 시각화 산출물 | `presentation_charts/` | 발표 슬라이드 삽입용 고품질 PNG 차트 4종 저장 디렉터리 |
-| [`docs/presentation_script_15min.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/presentation_script_15min.md) | 발표 자료 | `docs/` | **슬라이드 15장 기준 15분 발표용 상세 발표자 대본 및 시간 배분 가이드** |
-| [`data/trump_tweets_1st_term_raw.csv`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/data/trump_tweets_1st_term_raw.csv) | 원본 데이터 | `data/` | **트럼프 1기 4년간 작성된 트윗 26,239건 전수 원본 데이터셋 (본문, 일시, RT/좋아요)** |
-| [`Draft/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/Draft) | 라벨링 도구 | `Draft/` | **트윗 금융 임팩트(O/X) 틴더 스타일 스와이프 판별 웹앱 (`index.html`)** |
-| [`docs/EXPLORATORY_ANALYSIS_BACKLOG.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/EXPLORATORY_ANALYSIS_BACKLOG.md) | 확장 계획 | `docs/` | **트윗 원문 전수조사 및 한국 시장 비교 등 후보 분석 계획 백로그** |
-| [`docs/(OT) 팀프로젝트에 관하여.pdf`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/docs/) | 강의 자료 | `docs/` | **김수현 교수님 팀 프로젝트 오리엔테이션 및 평가 가이드라인** |
-| [`requirements.txt`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/requirements.txt) | 환경 설정 | 루트 | 프로젝트 실행에 필요한 파이썬 라이브러리 목록 (`pandas`, `numpy`, `scipy`, `yfinance`, `matplotlib`) |
-| [`GEMINI.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/GEMINI.md) | 협업 규칙 | 루트 | **Antigravity 팀 프로젝트 공통 룰셋** (데이터 무결성, 통계 표준, Git 컨벤션) |
-| [`.agents/rules/`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules) | 모듈형 규칙 | `.agents/` | 도메인 가이드라인, 파이썬/시각화 표준, Git 워크플로우 세부 룰셋 |
-
----
-
-## 2. 자료 출처 (Data Sources)
+## 2. 자료 출처 및 전수 문맥 기반 분류 체계
 
 ### 2.1. 트럼프 트윗 아카이브 (Twitter / X)
 * **출처:** Trump Twitter Archive (TTA) 오픈소스 공공 저장소
-* **엔드포인트:** `https://raw.githubusercontent.com/ttzztztz/TrumpTwitterArchive/master/trump.json`
 * **수집 범위:** 트럼프 1기 공식 재임 기간(**2017.01.20 ~ 2021.01.20**) 동안 작성된 트윗 **총 26,239건 전수 수집**
-* **추출 필드:** 작성 일시(UTC), 트윗 본문(`text`), 리트윗 수(`retweets`), 좋아요 수(`favorites`)
-* **이벤트 키워드 분류 (정규식 단어 경계 검증):**
-  * **무역/관세 트윗 (`Trade_Tweet`):** `tariff`, `tariffs`, `trade war`, `china`, `beijing`, `xi jinping` (총 729건 / 331개 거래일 매핑)
-  * **연준/금리 트윗 (`Fed_Tweet`):** `fed`, `federal reserve`, `powell`, `interest rate`, `rate cut`, `quantitative` (총 175건 / 111개 거래일 매핑)
+* **분석 대상 트윗군 구조 (총 5,623건):**
+  1. **기존 정책 트윗군 (`existing_1246`, 1,246건):**
+     * 초기 무역·관세·통상 중심 핵심 트윗군
+     * **전수 문맥 분류:** 긍정(Positive) 357건, 부정(Negative) 421건, 소음(Noise) 468건
+  2. **신규 확장 정책 트윗군 (`candidate_eligible`, 4,377건):**
+     * 전체 2.6만 건 중 무역 외에 감세, 규제 완화, 연준 압박, 2020년 코로나19 방역 및 CARES Act/PPP 등 경기부양책까지 포괄하는 정책 트윗 전수 발굴
+     * **전수 문맥 분류:** 긍정(Positive) 2,532건, 부정(Negative) 1,047건, 혼합(Mixed) 507건, 중립(Neutral) 291건, 미분류/미상 0건 (100% 완료)
 
 ### 2.2. 글로벌 금융시장 시계열 데이터 (Yahoo Finance API)
 2017년 1월 20일부터 2021년 1월 20일까지 **총 1,007개 미국 정규 거래일**의 일별 시가·고가·저가·종가(OHLC) 및 일별 수익률을 전수 무결 수집하였습니다.
@@ -77,38 +58,19 @@
 2. **거래일 매핑:**
    * **00:00 ~ 16:00 EST (장 개장 전 및 정규 장중):** 당일($T$) 거래일로 매핑 (휴일/주말인 경우 직후 첫 거래일).
    * **16:00 ~ 23:59 EST (정규 장 마감 후):** 익일($T+1$) 거래일로 전환 후 직후 첫 거래일로 매핑.
-3. **일별 집계 변수 생성:**
-   * `Trade_Tweet_Dummy`: 해당 거래일로 매핑된 무역/관세 트윗 존재 여부 (1 or 0, 총 331일)
-   * `Fed_Tweet_Dummy`: 해당 거래일로 매핑된 연준/금리 트윗 존재 여부 (1 or 0, 총 111일)
-   * 리트윗 및 좋아요 합계(`Retweet_Sum`, `Favorite_Sum`): 시장 주목도 가중치 산출
+3. **일별 집계 변수 생성 (`trump_market_analysis_input.csv`):**
+   * **기존 무역 기반:** `Policy_Pos_Dummy` (192일), `Policy_Neg_Dummy` (225일), `Trade_Pos_Dummy`, `Trade_Neg_Dummy` 등
+   * **신규 확장 기반:** `additional_tone_positive_event` (711일), `additional_tone_negative_event` (437일), `additional_tone_mixed_event` (314일), `additional_tone_neutral_event` (148일)
 
 ---
 
-## 4. 15분 발표 핵심 실증 결과 요약
+## 4. 핵심 실증 결과 비교: 기존 1,246건 vs 신규 4,377건
 
-### ① 출발점: 거시 지수(S&P 500) vs 시장 심리(VIX)의 괴리
-* **S&P 500 일별 수익률:** 트윗 발생일 $+0.007\%$ vs 미발생일 $+0.088\%$ ($\Delta = -0.080\%p$, $t = -0.840$, **$p = 0.4013$ 비유의**)
-* **S&P 500 2일 누적 CAR:** 트윗 발생일 $+0.035\%$ vs 미발생일 $-0.017\%$ ($\Delta = +0.053\%p$, **$p = 0.6386$ 비유의**)
-* **VIX 일별 등락률:** 트윗 발생일 **$+1.483\%$** vs 미발생일 **$-0.092\%$** ($\Delta = \mathbf{+1.575\%p}$, $t = +2.575$, **$p = 0.0102$ ★★ 유의수준 1% 유의**)
-> **해석:** 시장 전체는 트윗 당일 하락 압력을 받더라도 익일 빠르게 회복하여 누적 충격이 0에 수렴했으나, 투자자의 불안 심리(변동성)는 즉각 폭증했습니다.
-
-### ② 미국 내 산업 비대칭성: 상쇄 효과(Offsetting Effect)
-* **보잉 (`BA`):** 트윗 발생일 하루 평균 **$-0.223\%p$ 언더퍼폼**
-* **캐터필러 (`CAT`):** 트윗 발생일 하루 평균 **$-0.126\%p$ 언더퍼폼**
-* **반도체 ETF (`SOXX`):** 트윗 발생일 하루 평균 **$-0.119\%p$ 언더퍼폼**
-* **산업재 ETF (`XLI`):** 트윗 발생일 하루 평균 **$-0.113\%p$ 언더퍼폼**
-* **애플 (`AAPL`):** 트윗 발생일 하루 평균 **$-0.097\%p$ 언더퍼폼**
-> **해석:** S&P 500 전체가 평온했던 이유는 관세 보호를 받는 미국 철강 산업과, 글로벌 공급망에 노출된 제조·기술주의 하락이 지수 내부에서 서로를 상쇄시켰기 때문입니다.
-
-### ③ 연준 트윗과 채권/금리 시장
-* **미국 10년물 국채 금리 (`TNX`):** 연준 비판 트윗 발생 시 **$-0.208\%p$ 하락 압력** (통화 완화 기대 선반영)
-* **금융 섹터 ETF (`XLF`):** 순이자마진(NIM) 축소 우려로 **$-0.029\%p$ 둔화**
-> **해석:** 주식보다 채권 시장이 대통령의 파월 비판 트윗을 연준의 금리 인하 압박으로 먼저 해석하여 가격에 반영했습니다.
-
-### ④ 무역전쟁의 진앙: 중국 시장 및 안전자산 전이
-* **안전자산 금 (`GLD`):** 무역 트윗 발생 시 **$+0.071\%p$ 추가 상승** (피난처 자금 유입)
-* **달러-위안 환율 (`CNY=X`):** **$+0.020\%p$ 상승** (위안화 가치 절하 압력)
-> **해석:** 트럼프의 관세 트윗 포격은 미국 내부보다 상대국인 중국 통화와 안전자산으로 거대한 자금 이동을 유발했습니다.
+| 구분 | 기존 1,246건 (무역 중심 Baseline) | 확장 4,377건 (정책·부양책 Robustness) | 시사점 |
+| :--- | :--- | :--- | :--- |
+| **S&P 500 지수 반응** | 당일 차이 $+0.066\%p$ ($p=0.6248$, 비유의) | 당일 차이 $-0.030\%p$ ($p=0.8232$, 비유의) | **[결론 견고]** 트윗 톤 하나로 거시 지수 전체가 움직이지 않는다는 비유의성 일관 유지 |
+| **중국 위안화 환율 (USD/CNY)** | CAR[0,+1] 차이 **$-0.141\%p$ ($p=0.0049$ ★★★)** | CAR[0,+1] 차이 $+0.130\%p$ ($p=0.0268$ ★★) | **[도메인 분리]** 무역 타겟 트윗은 위안화 절하 충격을 즉각 유발했으나, 국내 정책 트윗 확장은 환율 충격을 희석 |
+| **산업재/제조업 민감주 (BA, CAT, XLI)** | Day T 및 CAR에서 부분적 유의성 | CAR[0,+1]에서 **보잉($-1.06\%p$, $p=0.04$), 캐터필러($-0.79\%p$, $p=0.02$) 유의** | **[팬데믹 부양책 효과]** 2020년 트윗의 위기 경고 시 대규모 유동성 부양책(CARES Act 등)이 유입되며 경기 순환주 강한 반등 유발 |
 
 ---
 
@@ -124,32 +86,14 @@
 
 ---
 
-## 6. 실행 방법
+## 6. 팀원을 위한 데이터 사용 가이드
 
-```bash
-# 1. 의존 패키지 설치
-pip install -r requirements.txt
+앞으로 분석 및 모델링을 진행할 때는 `data/` 폴더 루트에 있는 **아래 2개 핵심 파일만 사용**하시면 됩니다.
 
-# 2. 확장 데이터 수집 및 시점 정렬 파이프라인 실행
-python scripts/pipeline_extended.py
-
-# 3. 다각도 실증 통계 검정 실행
-python scripts/empirical_analysis_extended.py
-
-# 4. 15분 발표용 고해상도 차트 4종 생성
-python scripts/generate_presentation_charts.py
-```
-
----
-
-## 7. 팀 협업 및 Antigravity 에이전트 룰셋 안내
-
-모든 팀원이 동일한 품질과 일관된 기준(데이터 무결성, 통계 검정, 시각화 스타일, Git 규칙)으로 개발할 수 있도록 Antigravity 룰셋이 구축되어 있습니다.
-
-* **룰셋 파일:**
-  * [`GEMINI.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/GEMINI.md) / [`AGENTS.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/AGENTS.md): 저장소 루트에 위치하며, Antigravity 에이전트 구동 시 자동 로드되는 기본 원칙.
-  * [`.agents/rules/01_project_guidelines.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules/01_project_guidelines.md): 연구 질문, 데이터 무결성(1,007일 결측치 0건 유지), 시점 정렬 규칙.
-  * [`.agents/rules/02_python_code_standards.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules/02_python_code_standards.md): Python 3.10+, PEP 8, Welch's $t$-test 표준, Matplotlib 고해상도 한글 폰트 설정.
-  * [`.agents/rules/03_git_workflow.md`](file:///C:/Users/StoneXI/Antigravity_dev/gam-teamproject/.agents/rules/03_git_workflow.md): Feature 브랜치 전략, Conventional 커밋 메시지 컨벤션, 충돌 방지 원칙.
-* **팀원 적용 방법:**
-  * 레포지토리를 GitHub에서 clone한 후 Antigravity(IDE 또는 데스크톱 앱)에서 해당 폴더를 열면, 에이전트가 위 룰셋을 **별도 설정 없이 자동으로 인식 및 적용**합니다.
+1. **일별 시장 데이터 (1,007 거래일 × 134 컬럼):**
+   * 경로: `data/trump_market_analysis_input.csv`
+   * 기존 1,246건 기반 더미 변수와 신규 4,377건 기반 더미 변수가 모두 결합되어 있습니다.
+2. **개별 트윗 데이터 (26,239건 원본 + 5,623건 전수 문맥 분류):**
+   * 경로: `data/trump_tweets_analysis_input.csv`
+   * 기존 1,246건은 `legacy_signal`, 신규 4,377건은 `additional_tone` 및 `additional_tone_reason_ko` 컬럼을 확인하시면 됩니다.
+*(※ 과거 중간 파일 및 이전 버전 파일들은 `data/archive/` 폴더에 안전하게 보관되어 있습니다.)*

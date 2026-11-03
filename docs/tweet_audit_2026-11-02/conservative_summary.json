@@ -1,0 +1,9 @@
+{
+  "review_log_entries": 193,
+  "reviewed_unique_raw_rows": 193,
+  "provisional_included": 2,
+  "final_included": 0,
+  "corpus_rows": 26239,
+  "remaining_not_reviewed_by_new_standard": 26046,
+  "warning": "기록된 보류는 확정 제외가 아니며 후보 2건은 자료로 뒷받침되나 선행 공개 전수확인 및 최종 시점 정렬 미완료"
+}

@@ -1,0 +1,16 @@
+from pathlib import Path
+import csv
+
+rows = [
+('16559','exclude_prior_disclosure','uncertain','USMCA 합의는 트윗 당일 아침 전인 9월 30일 미 무역대표부·캐나다 장관 공동성명에서 이미 공개됐다.','https://ustr.gov/about-us/policy-offices/press-office/press-releases/2018/september/joint-statement-united-states','최초 트윗 효과로 취급하지 않음. 공개 시각은 날짜와 해당 트윗 본문의 전날 합의 서술로 비교했으며 초 단위 대조는 하지 않음.'),
+('17767','hold','escalation','EU 자동차에 조건부 20% 관세를 부과하겠다는 구체적 위협. 독립 아카이브는 14:25:01로 기록하나 원자료는 02:25:01로 12시간 충돌한다.','https://www.presidency.ucsb.edu/documents/tweets-june-22-2018','아카이브 페이지의 표기 시간대와 ID 유래 시각을 함께 확인해야 한다. 앞선 보도의 부재는 검증하지 못함.'),
+('21964','hold','deescalation','2500억 달러 대상 관세 인상일을 10월 1일에서 15일로 연기한다고 밝힌 후속 게시물이다. Axios 23:47 UTC 보도는 이 내용을 트윗 발표로 기술한다.','https://www.axios.com/2019/09/11/trump-delays-tariff-increases-on-chinese-goods','트윗 본문이 앞부분에서 잘려 연결 스레드와 시각·이전 보도 부재 검증이 필요하다.'),
+('22930','hold','escalation','9월 1일부터 중국산 잔여 상품에 10% 관세 부과를 발표한다. PIIE 연혁은 해당 날짜에 이 결정을 발표했다고 기록한다.','https://www.piie.com/sites/default/files/documents/trump-trade-war-timeline.pdf','앞뒤가 잘린 스레드 조각이므로 독립 원문·동일 사건의 최초 공개 여부 확인 전 보류한다.'),
+('19273','hold','deescalation','미중 1단계 합의 발표 및 관세 7.5% 언급. 당일 전 블룸버그 보도에 합의 승인 보도가 있으므로 최초 정보인지 구별해야 한다.','https://www.investing.com/news/commodities-news/trump-signs-off-on-china-trade-deal-to-avert-december-tariffs-2040713','인용 보도의 표시 시각대와 트윗의 구체적 7.5% 세부사항의 선행 공개 여부는 확인하지 못함.'),
+('15843','hold','uncertain','USMCA 서명 사실을 공개 행사 후 언급하는 글이다. USTR 공식 보고서는 2018-11-30 서명을 확인한다.','https://ustr.gov/sites/default/files/files/agreements/usmca/USMCA_Final_Environmental_Review.pdf','서명식 실시간 공개와 트윗의 정확한 전후관계 미확인. 새 정책 최초 공개로 확정하지 않는다.'),
+('17200','hold','escalation','터키산 철강·알루미늄 관세를 두 배 인상한다고 트윗에 적시한다. 당시 보도는 트윗을 해당 위협·발표로 기술한다.','https://www.investing.com/news/forex-news/trump-doubles-tariffs-on-turkish-steel-and-aluminum-1569445','보도 표시 시각대 및 선행 공개 여부를 전수 확인하지 못함. 철강·알루미늄 각각 실제 시행은 별개.'),
+('3145','hold','uncertain','백악관의 미중 1단계 무역합의 서명식 라이브 재게시물이다. 합의의 기본 내용이 이전에 알려진 경우 서명 자체의 신규성과 구분해야 한다.','https://www.piie.com/sites/default/files/documents/trump-trade-war-timeline.pdf','방송 내용·정확한 서명 및 최초 공개 시점 미확인. 재전송 자체를 새로운 합의 발표로 확정하지 않음.'),
+]
+out=Path(__file__).with_name('conservative_evidence_round3.csv')
+with out.open('w',encoding='utf-8-sig',newline='') as f:
+    w=csv.writer(f); w.writerow(['raw_row','decision','direction','reason_ko','evidence_url','novelty_limitation']); w.writerows(rows)

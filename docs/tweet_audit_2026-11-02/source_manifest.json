@@ -1,0 +1,64 @@
+{
+  "audit_date": "2026-11-02",
+  "input_files": [
+    {
+      "path": "data\\trump_tweets_1st_term_raw.csv",
+      "sha256": "0eb55dc345d50a04f1ce973de7a558325d7684f74b111f177710ce48b3ed9015"
+    },
+    {
+      "path": "data\\trump_policy_tweets_context_classified.csv",
+      "sha256": "46564f4f120cf01569be5df4186baa8b44c828710ae545b325319b3cdf0c4da8"
+    },
+    {
+      "path": "data\\trump_market_extended_data.csv",
+      "sha256": "2c8345e71b25c55417530f405f4db1edf1e7cd11e7358e59903ec6300de9412f"
+    }
+  ],
+  "external_snapshots": [
+    {
+      "file": "archive_reference.json",
+      "url": "https://raw.githubusercontent.com/ttzztztz/TrumpTwitterArchive/master/trump.json",
+      "retrieved_date": "2026-11-02",
+      "sha256": "d4ff0b360eb31c63050a594356994a8a2a15849da6d79f4b12ba4fe748192c3b"
+    },
+    {
+      "file": "independent_archive_reference.csv",
+      "url": "https://raw.githubusercontent.com/MarkHershey/CompleteTrumpTweetsArchive/master/data/realDonaldTrump_in_office.csv",
+      "retrieved_date": "2026-11-02",
+      "sha256": "5b35db527bff9bc730e0eb4d8947cb7229a14ef894d9f43abd7b1caf0f40e319"
+    }
+  ],
+  "review_decisions_sha256": "f6dde8c7a625bfdbc7b970e74a8728b41a673fbab87e2d251dc1e71b34f866a7",
+  "review_summary": {
+    "review_flagged_existing_unique": 152,
+    "review_retained_existing": 1094,
+    "review_flags_by_signal": {
+      "Positive": 76,
+      "Negative": 50,
+      "Noise": 26
+    },
+    "confirmed_scope_omissions": 59,
+    "confirmed_scope_omission_signal_days_fixed16": 44,
+    "expanded_search_false_positive_examples": 20,
+    "raw_fixed16_trading_date_changes_from_snowflake": 48,
+    "semantic_existing_texts_read": 1246,
+    "semantic_omission_candidate_texts_read": 437,
+    "semantic_unreviewed_raw_rows": 24556,
+    "independent_reference_matched_raw_rows_by_near_id": 23050,
+    "independent_reference_text_similarity_ge_08": 19204
+  },
+  "coverage_note": "로컬 26,239행은 자동 전수 점검. 기존 분류 1,246행 및 1차 누락 후보 437행은 텍스트 본문을 개별 열람해 판정. 링크·이미지·영상의 전수 복원 및 무경보 23,698행·거시 확장 후보 858행의 개별 의미 판독은 완료하지 않았음. 유지 판정은 독립된 정답 라벨이나 복수 평가자 합의를 뜻하지 않음.",
+  "second_review": {
+    "summary": "remaining_individual_review_summary.json",
+    "rows": 24556,
+    "status_counts": {
+      "exclude": 16611,
+      "include_extended": 3847,
+      "needs_context": 3627,
+      "include_core": 471
+    },
+    "report_sha256": "b637646f51909af133fd702624aa5ab44039603da5a07ac481e75f3aef6c3d36",
+    "ledger_sha256": "55f75763ecd6de6e7e3b33240d14f646e8dbca97ae78fdd7eea1c905064285bd",
+    "first_review_summary_is_historical": true
+  }
+}

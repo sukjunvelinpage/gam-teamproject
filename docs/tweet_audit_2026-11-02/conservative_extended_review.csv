@@ -1,0 +1,8 @@
+raw_row,screen_group,decision,topic,reason_ko,earlier_publication_verified,reviewer
+6612,additional_extended,exclude,health_diplomacy,인도에 대한 의약품 관련 감사이며 구체적 신규 무역·관세 발표가 본문에 없음,no,prior_evidence
+5649,context_restored_candidate,exclude,trade_rhetoric,중국 무역관행 비판에 대한 정치적 지지이며 구체적 신규 무역조치가 없음,no,prior_evidence
+17553,context_restored_candidate,hold,thread_incomplete,공정한 경쟁에 관한 문장 앞부분이 누락되어 정책의 대상과 시점을 확정할 수 없음,no,prior_evidence
+20849,context_restored_candidate,exclude,usmca_advocacy,USMCA 통과를 촉구하는 지지 리트윗이며 서명이나 발효 등 신규 조치를 발표하지 않음,no,prior_evidence
+22780,context_restored_candidate,exclude,usmca_advocacy,USMCA를 지지하고 민주당을 비판하나 새 합의나 관세 조치가 제시되지 않음,no,prior_evidence
+24510,context_restored_candidate,exclude,trade_rhetoric,덤핑에 대한 일반적 비판이며 대상·조치·시점이 특정되지 않음,no,prior_evidence
+14666,context_archive_verified,hold,korea_trade_diplomacy,경쟁 여건 관련 한미 협의를 환영하나 구체적 관세 변경이나 합의의 신규성이 확인되지 않음,no,prior_evidence

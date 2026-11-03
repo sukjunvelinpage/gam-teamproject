@@ -1,0 +1,141 @@
+{
+  "title": "트럼프 트윗 분류·누락 감사 보고서",
+  "generatedAt": "2026-11-02T00:00:00Z",
+  "buildStatus": "creating",
+  "queries": {
+    "audit": {
+      "rows": [
+        {
+          "check": "raw_rows",
+          "count": 26239
+        },
+        {
+          "check": "classified_rows",
+          "count": 1246
+        },
+        {
+          "check": "market_rows",
+          "count": 1007
+        },
+        {
+          "check": "market_columns",
+          "count": 120
+        },
+        {
+          "check": "raw_id_duplicate_extra_rows",
+          "count": 1
+        },
+        {
+          "check": "raw_ids_ending_00",
+          "count": 26239
+        },
+        {
+          "check": "raw_time_text_duplicate_extra_rows",
+          "count": 0
+        },
+        {
+          "check": "classified_unmatched_time_text",
+          "count": 0
+        },
+        {
+          "check": "raw_missing_from_classified",
+          "count": 24993
+        },
+        {
+          "check": "core_omission_candidates",
+          "count": 437
+        },
+        {
+          "check": "optional_only_candidates",
+          "count": 858
+        },
+        {
+          "check": "no_hit_rows",
+          "count": 23698
+        },
+        {
+          "check": "entity_flags_existing",
+          "count": 48
+        },
+        {
+          "check": "repeated_text_conflict_rows",
+          "count": 0
+        },
+        {
+          "check": "fixed16_mapping_mismatch_rows",
+          "count": 0
+        },
+        {
+          "check": "actual_close_mapping_mismatch_rows",
+          "count": 1
+        },
+        {
+          "check": "raw_snowflake_timestamp_conflicts",
+          "count": 311
+        },
+        {
+          "check": "classified_snowflake_timestamp_conflicts",
+          "count": 19
+        },
+        {
+          "check": "snowflake_fixed16_mapping_mismatch_rows",
+          "count": 1
+        },
+        {
+          "check": "snowflake_actual_close_mapping_mismatch_rows",
+          "count": 2
+        },
+        {
+          "check": "daily_aggregation_mismatch_cells",
+          "count": 0
+        },
+        {
+          "check": "daily_columns_checked",
+          "count": 25
+        },
+        {
+          "check": "reason_literal_replacement_rows",
+          "count": 0
+        },
+        {
+          "check": "raw_retweet_rows",
+          "count": 9787
+        },
+        {
+          "check": "classified_retweet_rows",
+          "count": 268
+        },
+        {
+          "check": "classified_fragment_rows",
+          "count": 529
+        },
+        {
+          "check": "classified_link_only_rows",
+          "count": 1
+        },
+        {
+          "check": "raw_before_inauguration_utc",
+          "count": 3
+        },
+        {
+          "check": "numpy_seed",
+          "count": 42
+        }
+      ],
+      "source": {
+        "label": "로컬 원문 및 분류 데이터 전수 감사",
+        "files": [
+          "data/trump_tweets_1st_term_raw.csv",
+          "data/trump_policy_tweets_context_classified.csv",
+          "data/trump_market_extended_data.csv"
+        ],
+        "description": "26,239행 원문 스크리닝, 1,246행 기존 분류 및 437행 추가 후보 점검. 무경보 행의 의미 정확성은 보증하지 않음.",
+        "methodology": "scripts/audit_context_classification.py; SHA-256은 audit_summary.json 참조",
+        "caveats": [
+          "독립 정답 라벨과 복수 평가자 합의 없음",
+          "첨부 링크·이미지·영상 전수 복원 미실시"
+        ]
+      }
+    }
+  }
+}

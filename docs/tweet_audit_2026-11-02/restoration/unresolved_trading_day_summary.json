@@ -1,0 +1,9 @@
+{
+  "unresolved_rows": 3627,
+  "unmapped_out_of_range": 0,
+  "days_with_unresolved": 672,
+  "current_no_signal_days": 690,
+  "current_no_signal_with_unresolved_days": 432,
+  "interpretation": "보류 트윗 동시 발생은 실제 정책 신호였다는 뜻이 아니다. 가격 데이터 장마감에 맞춘 노출가능성만 계산했으며 미확정 행을 0으로 보거나 신호로 확정하지 않았다.",
+  "timestamp": "Snowflake ID의 상위 비트에서 UTC를 재구성해 NYSE 실제 폐장 및 휴일을 반영. ID 하위 정밀도 손상으로 초 경계는 추가 확인 필요."
+}

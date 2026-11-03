@@ -1,0 +1,46 @@
+{
+  "input_rows": 3627,
+  "status_counts": {
+    "unmatched_or_insufficient_identity": 3479,
+    "metadata_only_review_required": 119,
+    "matched_no_material_expansion": 27,
+    "full_text_extended_review_required": 2
+  },
+  "sources": [
+    {
+      "source": "bpb_master_2017",
+      "url": "https://github.com/bpb27/trump_tweet_data_archive/blob/master/master_2017.json.zip",
+      "sha256": "9ed5adca555d841dcca18bdb6888a4f54dd8598326488d110215023d541af152",
+      "records": 2605,
+      "time_min": "2017-01-01 05:00:10+00:00",
+      "time_max": "2018-01-01 13:37:52+00:00"
+    },
+    {
+      "source": "bpb_master_2018",
+      "url": "https://github.com/bpb27/trump_tweet_data_archive/blob/master/master_2018.json.zip",
+      "sha256": "10b80e7cd6c5c673d889c6094d2638e72bbeb25ddb262c2ee669d2fca07bda1e",
+      "records": 2605,
+      "time_min": "2017-01-01 05:00:10+00:00",
+      "time_max": "2018-01-01 13:37:52+00:00"
+    },
+    {
+      "source": "pushshift",
+      "url": "https://github.com/pushshift/realdonaldtrump/blob/master/realdonaldtrump_tweets.ndjson",
+      "sha256": "ff83c7af39b38d16c3f204a8a06080dd035fba309ea59102f918c62687b69297",
+      "records": 34013,
+      "time_min": "2009-05-04 18:54:25+00:00",
+      "time_max": "2018-05-29 13:30:24+00:00"
+    }
+  ],
+  "method": "근접 ID ±512, 검증 가능한 원문 접두어 최소 18자, 소스 ID 생성시각과 공개 API 게시시각 ±2초 확인. 정확 ID 교차표가 있으면 우선 사용. 의미 판단은 수행하지 않음.",
+  "limitations": "URL만 있는 글은 동일성을 단정하지 않음. 2019~2021년 자료가 없는 스냅샷. 외부 기사·영상 원문 확인 및 개별 의미 재판정은 별도 필요.",
+  "local_reference_extensions": {
+    "rows": 141,
+    "statuses": {
+      "extended_text_review_required": 138,
+      "partial_extension_review_required": 3
+    },
+    "source_file": "docs\\tweet_audit_2026-11-02\\independent_archive_reference.csv",
+    "source_sha256": "5b35db527bff9bc730e0eb4d8947cb7229a14ef894d9f43abd7b1caf0f40e319"
+  }
+}

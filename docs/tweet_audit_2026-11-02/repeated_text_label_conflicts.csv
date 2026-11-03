@@ -1,0 +1,1 @@
+﻿id,text,isRetweet,isDeleted,device,favorites,retweets,date,isFlagged,date_utc,date_eastern,tweet_text,retweet_count,favorite_count,is_pipeline_trade,is_pipeline_fed,is_audit,mapped_trading_date,tweet_idx,context_signal,context_sub_type,context_reason_ko,signal_polarity_score,audit_key

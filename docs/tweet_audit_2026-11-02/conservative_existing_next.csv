@@ -1,0 +1,134 @@
+raw_row,decision,direction,reason_ko
+15454,exclude_vague,uncertain,상호관세 일반적 주장으로 대상과 시행일이 없다.
+15137,exclude_vague,uncertain,북한 문제를 조건으로 한 무역협정 주장이나 구체 합의가 없다.
+15121,exclude_vague,uncertain,환율조작국 지정에 대한 의견이며 실제 조치를 확인할 수 없다.
+15051,hold,uncertain,NAFTA 재협상 동의 주장이나 후속 본문과 선행 공개 여부를 확인해야 한다.
+15050,hold,uncertain,앞 글의 조건부 NAFTA 종료 발언으로 원문 연결과 신규성을 확인해야 한다.
+15041,hold,uncertain,알루미늄 관련 대통령 메모 링크만으로 구체 조치와 선행 공개 여부를 확인할 수 없다.
+14906,exclude_vague,uncertain,향후 조사결과를 기다리고 필요시 행동하겠다는 일반 발언이다.
+14670,exclude_vague,uncertain,한국 정상과 회담에 대한 평가만 있으며 구체적 무역조치가 없다.
+14614,exclude_vague,uncertain,중국 정상과 회담에 대한 평가만 있으며 구체 합의가 없다.
+14185,exclude_vague,uncertain,NAFTA 종료 가능성을 언급하나 구체 조치와 시점이 없다.
+13629,exclude_vague,uncertain,중국 정상과 무역 논의만 언급한다.
+13474,exclude_vague,uncertain,회담을 긍정적으로 평가하나 구체 무역조치가 없다.
+18706,hold,escalation,상호관세를 곧 시작하겠다고 밝혔으나 구체 대상과 선행 공개 확인이 필요하다.
+18700,hold,escalation,EU 관세 인상을 조건으로 자동차 과세를 위협하나 선행 보도와 신규성을 확인해야 한다.
+18697,hold,uncertain,철강관세 철회 조건을 NAFTA와 연계하는 글이나 문장이 잘려 있고 앞선 발표 확인이 필요하다.
+18679,exclude_vague,uncertain,철강과 알루미늄 정책회의 예고이나 구체 결정이 없다.
+18676,hold,uncertain,철강 수입 대통령 포고 링크로 본문과 최초 공표 시각 확인이 필요하다.
+18675,hold,uncertain,알루미늄 수입 대통령 포고 링크로 본문과 최초 공표 시각 확인이 필요하다.
+18670,hold,uncertain,호주 관세 면제를 위한 협상 발언이나 확정된 면제 발표인지는 불명확하다.
+18660,hold,uncertain,EU에 대한 상호관세 철회 및 자동차 과세 조건부 발언으로 신규성을 확인해야 한다.
+18549,exclude_vague,uncertain,멕시코 이민 대응을 조건으로 NAFTA 종료를 위협하나 조치 구체성이 부족하다.
+18532,exclude_vague,uncertain,이민 문제를 두고 NAFTA를 거론하나 구체적 무역조치는 없다.
+18519,exclude_recap,uncertain,기존 무역제재를 다룬 언론 보도에 대한 반박이다.
+18502,exclude_vague,uncertain,중국 무역장벽과 향후 합의에 대한 전망이며 구체 조치는 없다.
+18490,exclude_recap,uncertain,중국 정상의 기존 관세 발언에 대한 감사와 미래 전망이다.
+18489,exclude_recap,uncertain,중국 정상 발언에 대한 감사이며 유사 글 반복 가능성도 있다.
+18486,exclude_vague,uncertain,공정무역을 중시한다는 일반적 설명이며 글이 잘려 있다.
+18351,exclude_vague,uncertain,이민 문제를 NAFTA 조건으로 삼을 가능성을 언급한다.
+18294,exclude_vague,uncertain,중국과 협상 대표단 출발 및 기대를 알리나 합의 내용이 없다.
+18279,exclude_vague,uncertain,무역협상 진행과 정상관계에 대한 일반적 논평이다.
+18249,exclude_vague,uncertain,중국 정상과 예정된 대화를 예고하나 합의된 조치가 없다.
+18221,hold,uncertain,ZTE 사업 재개를 위한 상무부 지시이나 기업 규제 보조분석 대상이며 선행 발표 확인이 필요하다.
+18220,exclude_vague,uncertain,미중 무역협상에 대한 일반적 평가이며 구체 조치가 없다.
+18214,exclude_recap,uncertain,ZTE 부품 구매와 미중 관계에 대한 설명이며 신규 조치가 없다.
+18188,exclude_vague,uncertain,중국 부총리와 무역 회담만 언급하고 내용은 연결 매체에 있다.
+18158,exclude_vague,uncertain,중국과 공정무역이 이뤄질 것이라는 전망이다.
+18157,hold,uncertain,중국 관세 및 장벽 인하를 언급하나 대상과 세부 조건 및 선행 공개가 불명확하다.
+18138,exclude_vague,uncertain,중국 협상 구조에 대한 전망이며 구체 합의가 아니다.
+17944,hold,uncertain,EU와 캐나다에 조건부 관세 위협을 했으나 구체 대상과 신규성을 확인해야 한다.
+17926,hold,uncertain,G7 공동성명 승인 거부 지시 및 자동차 관세 검토지만 사전 발표와 구체 내용을 확인해야 한다.
+17731,exclude_vague,uncertain,무역장벽 철폐 요구와 상호주의 일반론이다.
+17707,exclude_recap,uncertain,무역장벽 감소를 주장하는 후속 조각으로 구체적인 신규 조치가 없다.
+17705,exclude_vague,uncertain,EU 자동차 관세 검토가 마무리되고 있다는 후속 조각이다.
+17395,hold,uncertain,EU와 이해에 도달했다는 글이나 본문이 잘렸고 기존 발표 여부를 확인해야 한다.
+17196,exclude_vague,uncertain,멕시코 협상 진척 평가와 자동차 과세 조건부 경고로 세부 조치가 없다.
+16978,exclude_recap,uncertain,멕시코와 기존 무역합의의 기대 효과를 평가한다.
+16960,exclude_vague,uncertain,미중 정상관계를 평가하는 잘린 후속 문장이다.
+16924,hold,uncertain,캐나다 제외 및 NAFTA 종료를 위협하지만 시각과 선행 발표 검토가 필요하다.
+16923,exclude_repeat,uncertain,NAFTA 관련 유사 위협을 반복한 글로 시간 순서 확인이 필요하다.
+16921,exclude_recap,uncertain,NAFTA를 비판하는 후속 글로 구체적인 새 조치가 없다.
+16690,exclude_recap,uncertain,기존 관세의 협상 효과를 자찬하며 구체적 새 조치가 없다.
+16677,exclude_vague,uncertain,중국에 대한 조건부 보복 예고지만 구체적인 정책과 세율이 없다.
+16611,exclude_vague,uncertain,일본 정상과 무역 대화 계획을 언급하나 합의 내용이 없다.
+16558,hold,uncertain,USMCA의 영향 설명으로 앞선 발표와 연결 및 최초 공개 확인이 필요하다.
+16557,exclude_repeat,uncertain,USMCA 관련 문구를 거의 동일하게 반복한 후속 글이다.
+16555,exclude_recap,uncertain,USMCA 발표 이후 예정된 기자회견을 안내한다.
+16550,exclude_recap,uncertain,기존 USMCA에 대한 긍정적 반응을 홍보한다.
+16546,exclude_recap,uncertain,USMCA 성과에 관한 기사 제목을 공유한다.
+16532,exclude_recap,uncertain,기존 USMCA를 칭찬한 정치인에게 감사하는 글이다.
+16501,exclude_recap,uncertain,기존 USMCA의 기대 효과를 강조한다.
+16481,exclude_recap,uncertain,농민들이 기존 USMCA에 만족한다는 정치 집회 발언이다.
+16432,exclude_recap,uncertain,농민의 날 축하와 기존 USMCA 기대 효과를 언급한다.
+16177,exclude_vague,uncertain,중국 정상과 통화와 향후 G20 회담을 소개하나 구체적 조치는 없다.
+15869,exclude_recap,uncertain,기존 소형트럭 관세의 효과를 회고하며 글이 잘려 있다.
+15844,hold,uncertain,USMCA 해시태그와 링크뿐이어서 연결 자료와 시각 확인이 필요하다.
+15843,hold,uncertain,USMCA 서명을 직접 언급하지만 서명은 공개 행사였으므로 트윗 선행 여부 확인이 필요하다.
+15841,exclude_recap,uncertain,이미 체결한 USMCA에 대한 평가를 반복한다.
+15828,exclude_vague,uncertain,중국 정상과 회담을 평가하며 구체적인 합의 조건은 없다.
+15826,exclude_vague,uncertain,중국 정상과 개인 관계와 협력 가능성에 대한 일반 논평이다.
+15817,hold,uncertain,중국과 90일 협상 일정을 언급하나 원문이 잘렸고 기존 발표와 시점 확인이 필요하다.
+15816,hold,uncertain,중국 농산물 구매에 대한 후속 문장이며 앞선 발언과 원문 연결 확인이 필요하다.
+15814,exclude_vague,uncertain,공정한 합의가 가능하면 서명하겠다는 가정적 발언이다.
+15809,exclude_vague,uncertain,합의 실패시 관세 가능성을 언급하나 세율이나 시행일이 없다.
+15808,hold,uncertain,중국이 관세를 원하지 않는다는 후속 단편으로 전체 문맥이 부족하다.
+15805,exclude_vague,uncertain,중국 정상과의 대화에 대한 일반적인 신뢰 표현이다.
+15804,exclude_vague,uncertain,펜타닐 규제 관련 회담 성과 주장으로 무역 관세 핵심과 구별한다.
+15793,exclude_recap,uncertain,중국의 기존 협상 관련 성명을 인용하고 동의한다.
+2729,exclude_vague,uncertain,중국과의 협상이 잘된다는 일반적 평가다.
+15745,exclude_vague,uncertain,중국과 대화가 생산적이라는 일반적 평가다.
+15724,hold,uncertain,중국의 관세 인상 중단을 언급하나 중국의 선행 발표와 저장 시각 검증이 필요하다.
+15723,exclude_repeat,uncertain,중국 관세 관련 기존 글의 유사 반복으로 선행 공개가 언급된다.
+15573,hold,uncertain,국경 폐쇄와 NAFTA의 영향을 말하는 앞부분이 누락된 글이다.
+15572,exclude_vague,uncertain,국경 폐쇄와 NAFTA 이전으로 돌아갈 가능성을 말하나 조치가 확정되지 않았다.
+15567,exclude_vague,uncertain,중국 정상과 대화 및 합의 진전에 대한 일반적 평가다.
+26208,exclude_recap,uncertain,이미 발표된 USMCA의 효과를 주장한다.
+26141,exclude_vague,uncertain,중국과 협상이 잘된다는 일반 평가다.
+25867,exclude_vague,uncertain,중국과 협상 분위기 평가이며 문장도 잘려 있다.
+25865,exclude_recap,uncertain,중국 관세 인상 기존 일정과 협상 진행을 설명하는 후속 글이다.
+25861,exclude_vague,uncertain,중국 시장 개방에 대한 바람이며 구체적 합의가 아니다.
+25744,exclude_recap,uncertain,협상 평가와 기존 관세 수입을 자찬한다.
+25735,exclude_vague,uncertain,중국 무역협상 진행에 대한 일반 평가다.
+25662,exclude_vague,uncertain,중국과 대화에 대한 일반 평가다.
+25655,hold,uncertain,대중 협상 진전과 뒤따르는 관세 연기 글의 선행 맥락 확인이 필요하다.
+25638,exclude_recap,uncertain,중국 관세 인상 연기 결정에 대한 후속 설명이다.
+25602,exclude_recap,uncertain,이전에 예정된 중국 관세 인상 미실행을 회고한다.
+25603,hold,uncertain,중국에 농산물 관세 철회를 요구하나 실제 조치 및 선행 발표 검증이 필요하다.
+25416,exclude_vague,uncertain,영국과 무역협상을 기대한다는 일반 발언이다.
+25185,exclude_vague,uncertain,경제와 미중 및 USMCA 협상에 대한 일반 평가다.
+25176,hold,escalation,멕시코산 자동차 25퍼센트 조건부 관세 위협의 후속 조각이며 선행 공개와 원문 확인이 필요하다.
+25175,hold,uncertain,앞선 관세 조치와 USMCA의 관계를 설명하는 후속 글이며 문맥이 불완전하다.
+25131,exclude_vague,uncertain,멕시코 이민 문제와 관세 가능성이나 구체적 세율 또는 일정이 없다.
+24894,hold,uncertain,EU 할리데이비슨 관세에 대한 방송 인용과 상호 조치 예고이나 구체 신규 결정이 불명확하다.
+24640,hold,escalation,추가 중국 상품에 대한 25퍼센트 관세를 언급하는 후속 조각으로 원문과 중복 사건 확인이 필요하다.
+24555,hold,escalation,추가 중국산 상품 관세 절차 개시를 언급하는 단편으로 시각과 앞뒤 문맥 확인이 필요하다.
+24556,exclude_recap,uncertain,중국과 협상 및 기존 관세 수입을 평가하는 글이다.
+24550,exclude_repeat,uncertain,같은 추가 관세 절차 관련 문구의 유사 반복이다.
+24543,exclude_repeat,uncertain,중국 협상과 기존 관세 수입 관련 유사 글의 반복이다.
+24545,exclude_repeat,uncertain,추가 관세 절차 관련 문구의 유사 반복이다.
+24530,exclude_vague,uncertain,미중 협상 경과의 일반적 설명이며 문장이 잘렸다.
+24529,exclude_recap,uncertain,이미 부과된 중국 관세의 향후 협상 가능성을 설명한다.
+24460,exclude_vague,uncertain,중국과 미래 협상을 전망하며 관세 수입을 자찬한다.
+24418,exclude_vague,uncertain,중국의 보복을 경고하나 신규 조치는 구체적이지 않다.
+24417,exclude_vague,uncertain,중국에 협상 타결을 요구하나 신규 관세 세율과 날짜가 없다.
+24405,exclude_repeat,uncertain,중국 보복을 경고한 유사 글의 반복이다.
+24391,exclude_vague,uncertain,중국과 향후 무역 합의 가능성을 일반적으로 언급한다.
+24390,exclude_vague,uncertain,WTO와 미중 무역에 관한 뒤쪽 문장으로 새 조치가 없다.
+24316,hold,uncertain,캐나다와 멕시코의 농산물 보복관세 철회를 언급하나 선행 공표 확인이 필요하다.
+24191,hold,uncertain,무역협정에 관한 잘린 제삼자 리트윗으로 원문 확인이 필요하다.
+23839,hold,uncertain,관세 철회 및 백악관 세부 사항을 언급하는 단편으로 앞선 본문 확인이 필요하다.
+24116,exclude_recap,uncertain,이미 위협한 멕시코 관세의 예상 효과를 설명한다.
+24104,exclude_recap,uncertain,멕시코 관세 상승의 예상 효과를 설명하는 잘린 후속 글이다.
+24082,exclude_vague,uncertain,국경과 기존 멕시코 관세 위협을 연계하는 잘린 후속 글이다.
+24057,exclude_vague,uncertain,영국과 향후 협정 가능성에 관한 잘린 글이다.
+24042,exclude_recap,uncertain,멕시코 관세 위협에 대한 정치적 반응을 반복한다.
+24034,exclude_vague,uncertain,영국 방문과 미래 무역협정의 가능성을 평가한다.
+24031,exclude_recap,uncertain,멕시코 관세에 대한 기존 공화당 지지 발언을 인용한다.
+24028,hold,uncertain,예정된 멕시코 관세 일정을 언급하는 잘린 글로 선행 발표 확인이 필요하다.
+24005,hold,uncertain,멕시코 농산물 구매와 5퍼센트 관세를 조건부로 언급하나 새로운 발표 여부가 불명확하다.
+23992,exclude_recap,uncertain,기존 USMCA에 대한 의회 승인을 촉구하며 정치적으로 비판한다.
+23980,exclude_repeat,uncertain,기존 멕시코 관세 유예 게시물의 리트윗이다.
+23976,exclude_vague,uncertain,관세로 되돌아갈 가능성과 언론 비판을 담은 단편이다.
+23951,hold,uncertain,승인이 이뤄지지 않으면 관세가 복원될 것이라는 단편으로 대상과 원문 확인이 필요하다.
+23927,exclude_recap,uncertain,멕시코 관세의 예상 효과 및 기존 합의를 논하는 단편이다.

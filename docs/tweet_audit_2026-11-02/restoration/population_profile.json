@@ -1,0 +1,19 @@
+{
+  "rows": 3627,
+  "source_sha256": "de549f6850863114da99483d59ef159792b08707c5be7be1abde1ee393701909",
+  "priority_exclusive_counts": {
+    "링크만": 1298,
+    "링크와짧은본문": 814,
+    "리트윗_확인": 593,
+    "기타_문맥검토": 500,
+    "본문단편_우선": 422
+  },
+  "overlapping_flags": {
+    "url_only": 1298,
+    "short_with_url": 1049,
+    "retweet": 901,
+    "ellipsis": 422,
+    "possible_thread_fragment": 378
+  },
+  "note": "형태 분류는 확인 우선순위이며 복원 또는 정책 관련성 판단이 아니다. 유형 간 중복 플래그와 상호배타 우선순위 수치를 구분한다."
+}

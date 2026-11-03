@@ -1,0 +1,17 @@
+{
+  "input_rows": 3627,
+  "exclusive_restoration_status": {
+    "unresolved": 3484,
+    "longer_reference_candidate_reviewed_unverified": 141,
+    "archive_expansion_reviewed": 2
+  },
+  "candidate_relevance": {
+    "범위 밖 잠정": 84,
+    "문맥 추가 필요": 38,
+    "경제정책 관련 후보": 19
+  },
+  "rows_with_linked_earlier_text": 89,
+  "rows_with_thread_candidates": 64,
+  "source_sha256": "de549f6850863114da99483d59ef159792b08707c5be7be1abde1ee393701909",
+  "caveat": "상태는 배타적이지만 링크·스레드 수는 서로 겹침. 후보와 링크는 본문이 확인된 사건으로 확정하지 않음."
+}

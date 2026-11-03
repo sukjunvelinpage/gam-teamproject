@@ -1,0 +1,31 @@
+{
+  "rows": 26239,
+  "review_state": {
+    "not_reviewed_under_conservative_standard": 20232,
+    "hold": 3389,
+    "excluded_core": 2616,
+    "provisional_include": 2
+  },
+  "reviewed_at_least_once": 6007,
+  "final_core_included": 0,
+  "provisional_include": 2,
+  "evidence_records": 29,
+  "input_sha256": {
+    "docs\\tweet_audit_2026-11-02\\conservative_review_log.csv": "6623a024dfe0e28644fb27391a2c0938ef81494eae33dc422abac2c184ba8c27",
+    "docs\\tweet_audit_2026-11-02\\conservative_existing_next.csv": "8ed8676f2e09a3b952a0900c321881bb8341db90df72fd7d3313b37cd2d6f372",
+    "docs\\tweet_audit_2026-11-02\\conservative_additional_next.csv": "2a2e534863bea91c308d3075875ae9878d4d6be8269c61be7728250bcfca3657",
+    "docs\\tweet_audit_2026-11-02\\conservative_evidence_next.csv": "ffe6d38ac8f4d2c3b0dee09ef0105b898c1b7956741cad0bf76030f763a17100",
+    "docs\\tweet_audit_2026-11-02\\conservative_existing_round3.csv": "3eb6095daa1f15a692ce20d58087e0ad8c9bde0c7f93e4646a04c11644ca6d7a",
+    "docs\\tweet_audit_2026-11-02\\conservative_screen_round3.csv": "7730a2968dcee598319b721ebc85ab75cef1399f33cfb9bee8e7cf2aa73579d3",
+    "docs\\tweet_audit_2026-11-02\\conservative_extended_round3.csv": "2d43468523611585d9b4d0d7c56ccb0ebbbc61ef0b9154b9a87bd2e43c1590b9",
+    "docs\\tweet_audit_2026-11-02\\conservative_extended_middle_round3.csv": "2e51d277295bf6a0c800c1545602419f8de7b3ae350085840488fe3c6da6983a",
+    "docs\\tweet_audit_2026-11-02\\conservative_extended_tail_round3.csv": "35ac042fef6811dd58430bc9a894ddecf12ec351e9f958b4b58087a83a2d88ee",
+    "docs\\tweet_audit_2026-11-02\\conservative_extended_last_round3.csv": "c6ca6feebb786d97d51b3758a92b4cd746c835d76d15e8631b718dded31aa982",
+    "docs\\tweet_audit_2026-11-02\\conservative_extended_continue.csv": "98b83d95bff6d7f074a6d0136ce86ae4d6267b003862267144eb86fb7bbcbfb0",
+    "docs\\tweet_audit_2026-11-02\\conservative_extended_mid_continue.csv": "2d4bc330507a935e6c534882f68a3fdd82ffc2ea54d45359c58db8475e8b1aa0",
+    "docs\\tweet_audit_2026-11-02\\conservative_extended_late_continue.csv": "dff5fd63fa8a7b4c6740c1965a54e3a645c136d0b3f611e2b454c11c9056dc7f",
+    "docs\\tweet_audit_2026-11-02\\conservative_hold_manual_continue.csv": "36de676a2723d98e0ffb58678e893226a1cbbb304006e2db548b773bc8a0283c",
+    "docs\\tweet_audit_2026-11-02\\conservative_evidence_round3.csv": "f23a333cf3f484f851822d84d77b72b91821b4e699c265635d367cd90c2b5349",
+    "docs\\tweet_audit_2026-11-02\\conservative_recovery_round3.csv": "9f97e70dbee605c73414e02f1946155d7781f5f6809d36189a30b841b8560376"
+  }
+}

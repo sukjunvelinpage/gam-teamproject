@@ -1,0 +1,68 @@
+{
+  "source_files": {
+    "raw": {
+      "path": "data\\trump_tweets_1st_term_raw.csv",
+      "sha256": "0eb55dc345d50a04f1ce973de7a558325d7684f74b111f177710ce48b3ed9015"
+    },
+    "classified": {
+      "path": "data\\trump_policy_tweets_context_classified.csv",
+      "sha256": "46564f4f120cf01569be5df4186baa8b44c828710ae545b325319b3cdf0c4da8"
+    },
+    "market": {
+      "path": "data\\trump_market_extended_data.csv",
+      "sha256": "2c8345e71b25c55417530f405f4db1edf1e7cd11e7358e59903ec6300de9412f"
+    }
+  },
+  "raw_rows": 26239,
+  "classified_rows": 1246,
+  "market_rows": 1007,
+  "market_columns": 120,
+  "raw_timestamp_min": "2017-01-20 00:40:51+00:00",
+  "raw_timestamp_max": "2021-01-08 15:44:28+00:00",
+  "raw_id_duplicate_extra_rows": 1,
+  "raw_ids_ending_00": 26239,
+  "raw_time_text_duplicate_extra_rows": 0,
+  "classified_unmatched_time_text": 0,
+  "raw_missing_from_classified": 24993,
+  "core_omission_candidates": 437,
+  "optional_only_candidates": 858,
+  "no_hit_rows": 23698,
+  "signal_counts": {
+    "Noise": 468,
+    "Negative": 421,
+    "Positive": 357
+  },
+  "subtype_counts": {
+    "NOISE_Non_Market": 468,
+    "POS_Deal_Progress": 227,
+    "NEG_Protectionist_Attack": 199,
+    "NEG_Fed_Rate_Attack": 105,
+    "NEG_Tariff_Threat_Action": 90,
+    "POS_US_Industry_Econ_Boom": 72,
+    "POS_Purchase_Agri_Support": 58,
+    "NEG_Company_Tech_Pressure": 27
+  },
+  "entity_flags_existing": 48,
+  "repeated_text_conflict_rows": 0,
+  "fixed16_mapping_mismatch_rows": 0,
+  "actual_close_mapping_mismatch_rows": 1,
+  "raw_snowflake_timestamp_conflicts": 311,
+  "classified_snowflake_timestamp_conflicts": 19,
+  "snowflake_fixed16_mapping_mismatch_rows": 1,
+  "snowflake_actual_close_mapping_mismatch_rows": 2,
+  "snowflake_actual_close_mapping_changed_signal_counts": {
+    "Positive": 2
+  },
+  "market_calendar_missing_dates": [],
+  "market_calendar_extra_dates": [],
+  "daily_aggregation_mismatch_cells": 0,
+  "daily_columns_checked": 25,
+  "reason_literal_replacement_rows": 0,
+  "reason_hangul_median_fraction": 0.7185299295774648,
+  "raw_retweet_rows": 9787,
+  "classified_retweet_rows": 268,
+  "classified_fragment_rows": 529,
+  "classified_link_only_rows": 1,
+  "raw_before_inauguration_utc": 3,
+  "numpy_seed": 42
+}

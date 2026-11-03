@@ -1,0 +1,11 @@
+[
+ {"raw_row":11639,"candidate_raw_row":11640,"assessment":"probable_fed_context","reason_ko":"앞글이 미국 연준과 Powell의 느린 대응·타국 대비 높은 금리를 구체적으로 설명하고 뒷글은 경쟁상 불이익을 이어 쓴다. 연준 비판 문맥이나 단독 신규 사건으로 중복 집계하지 않는다."},
+ {"raw_row":15184,"candidate_raw_row":15185,"assessment":"unresolved_possible_missing_middle","reason_ko":"시간상 앞글에는 대중 무역적자와 어려운 회담이, 뒷글에는 일자리 손실과 기업 대안 모색이 나온다. 두 조각 사이에 빠진 본문이 있을 수 있으므로 연결 및 대중 무역 관련성은 잠정 후보이며 구체 관세 신설로 단정하지 않는다."},
+ {"raw_row":23586,"candidate_raw_row":23587,"assessment":"probable_fed_nomination_context","reason_ko":"앞글은 Judy Shelton의 연준 이사 지명, 뒷글은 경력 설명이다. 인선 관련 후속 조각이나 신규 금리 인하 또는 주가 호재로 단정하지 않는다."},
+ {"raw_row":23589,"candidate_raw_row":23590,"assessment":"probable_fed_nomination_context","reason_ko":"앞글은 Christopher Waller의 연준 이사 지명, 뒷글은 경력 설명이다. 동일 인선 사건의 후속 글로 검토하되 통화 방향은 미확정이다."},
+ {"raw_row":5775,"candidate_raw_row":5776,"assessment":"probable_fiscal_legislation_context","reason_ko":"앞글은 재무·노동장관의 중소기업 관련 규정과 법안 찬성을, 뒷글은 최종 법안 서명 의사를 언급한다. 직전 추가 조각 복원 전 법안 이름과 규모는 미확정이다."},
+ {"raw_row":3685,"candidate_raw_row":3686,"assessment":"probable_macro_commentary_context","reason_ko":"앞글의 과거 주식시장 실적에 대한 정치적 논평을 마무리하는 글이다. 과거 실적 회고이며 신규 경제정책 발표가 아니다."},
+ {"raw_row":292,"candidate_raw_row":293,"assessment":"probable_campaign_context","reason_ko":"앞뒤 글은 바이든에 대한 선거 비판과 노동자 관련 정치 수사를 이어간다. 구체적인 신규 정책조치는 확인되지 않는다."},
+ {"raw_row":293,"candidate_raw_row":294,"assessment":"probable_campaign_context","reason_ko":"앞글은 바이든과 중국을 둘러싼 선거 수사이며 뒷글도 노동자와 관련한 정치적 공격이다. 무역협상이나 관세의 새 조치는 드러나지 않는다."},
+ {"raw_row":5401,"candidate_raw_row":5419,"assessment":"probable_health_context","reason_ko":"앞글에서 코로나 대응과 인공호흡기 공급을 말하며 뒷글은 물량·검사·보호구 내용을 이어간다. 보건 대응 문맥이나 신규 조치 시점과 관련 자산은 별도 확인이 필요하다."}
+]

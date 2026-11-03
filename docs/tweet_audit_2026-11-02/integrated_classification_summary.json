@@ -1,0 +1,26 @@
+{
+  "rows": 26239,
+  "source_groups": {
+    "additional_24556": 24556,
+    "existing_1246": 1246,
+    "screened_437": 437
+  },
+  "scope_status": {
+    "provisional_exclude": 16645,
+    "candidate_needs_scope_review": 4352,
+    "context_required": 3638,
+    "existing_label_needs_scope_review": 1239,
+    "review_required": 358,
+    "performance_commentary": 7
+  },
+  "analysis_ready": {
+    "no": 26239
+  },
+  "review_update_count": 51,
+  "source_sha256": {
+    "docs\\tweet_audit_2026-11-02\\full_corpus_review_coverage.csv": "d4fd8bf50ad2fa10d1eb86bfab3dabd79e02d2c6fff057017a0940e7d7561ece",
+    "docs\\tweet_audit_2026-11-02\\existing_review_ledger.csv": "6162a92178a4b368c4befaaa5932e3065bbd873ef053e77b0eff9d25a5c0d4ae",
+    "docs\\tweet_audit_2026-11-02\\omission_review_ledger.csv": "00407630c1a04ad79dde149c17038f882573fa5df8665a857318bfff183bf925",
+    "docs\\tweet_audit_2026-11-02\\remaining_individual_review_ledger.csv": "55f75763ecd6de6e7e3b33240d14f646e8dbca97ae78fdd7eea1c905064285bd"
+  }
+}

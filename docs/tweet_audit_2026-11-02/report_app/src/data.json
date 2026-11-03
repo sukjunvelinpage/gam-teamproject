@@ -1,0 +1,436 @@
+{
+  "title": "트럼프 트윗 분류·누락 감사 보고서",
+  "generatedAt": "2026-11-02T00:00:00Z",
+  "buildStatus": "complete",
+  "queries": {
+    "audit": {
+      "rows": [
+        {
+          "check": "raw_rows",
+          "count": 26239
+        },
+        {
+          "check": "classified_rows",
+          "count": 1246
+        },
+        {
+          "check": "market_rows",
+          "count": 1007
+        },
+        {
+          "check": "market_columns",
+          "count": 120
+        },
+        {
+          "check": "raw_id_duplicate_extra_rows",
+          "count": 1
+        },
+        {
+          "check": "raw_ids_ending_00",
+          "count": 26239
+        },
+        {
+          "check": "raw_time_text_duplicate_extra_rows",
+          "count": 0
+        },
+        {
+          "check": "classified_unmatched_time_text",
+          "count": 0
+        },
+        {
+          "check": "raw_missing_from_classified",
+          "count": 24993
+        },
+        {
+          "check": "core_omission_candidates",
+          "count": 437
+        },
+        {
+          "check": "optional_only_candidates",
+          "count": 858
+        },
+        {
+          "check": "no_hit_rows",
+          "count": 23698
+        },
+        {
+          "check": "entity_flags_existing",
+          "count": 48
+        },
+        {
+          "check": "repeated_text_conflict_rows",
+          "count": 0
+        },
+        {
+          "check": "fixed16_mapping_mismatch_rows",
+          "count": 0
+        },
+        {
+          "check": "actual_close_mapping_mismatch_rows",
+          "count": 1
+        },
+        {
+          "check": "raw_snowflake_timestamp_conflicts",
+          "count": 311
+        },
+        {
+          "check": "classified_snowflake_timestamp_conflicts",
+          "count": 19
+        },
+        {
+          "check": "snowflake_fixed16_mapping_mismatch_rows",
+          "count": 1
+        },
+        {
+          "check": "snowflake_actual_close_mapping_mismatch_rows",
+          "count": 2
+        },
+        {
+          "check": "daily_aggregation_mismatch_cells",
+          "count": 0
+        },
+        {
+          "check": "daily_columns_checked",
+          "count": 25
+        },
+        {
+          "check": "reason_literal_replacement_rows",
+          "count": 0
+        },
+        {
+          "check": "raw_retweet_rows",
+          "count": 9787
+        },
+        {
+          "check": "classified_retweet_rows",
+          "count": 268
+        },
+        {
+          "check": "classified_fragment_rows",
+          "count": 529
+        },
+        {
+          "check": "classified_link_only_rows",
+          "count": 1
+        },
+        {
+          "check": "raw_before_inauguration_utc",
+          "count": 3
+        },
+        {
+          "check": "numpy_seed",
+          "count": 42
+        }
+      ],
+      "source": {
+        "label": "로컬 원문 및 분류 데이터 전수 감사",
+        "files": [
+          "data/trump_tweets_1st_term_raw.csv",
+          "data/trump_policy_tweets_context_classified.csv",
+          "data/trump_market_extended_data.csv"
+        ],
+        "description": "26,239행 원문 스크리닝, 1,246행 기존 분류 및 437행 추가 후보 점검. 무경보 행의 의미 정확성은 보증하지 않음.",
+        "methodology": "scripts/audit_context_classification.py; SHA-256은 audit_summary.json 참조",
+        "caveats": [
+          "독립 정답 라벨과 복수 평가자 합의 없음",
+          "첨부 링크·이미지·영상 전수 복원 미실시"
+        ]
+      }
+    },
+    "audit_table_00": {
+      "rows": [
+        {
+          "c0": "전체 원문",
+          "c1": "26,239행",
+          "c2": "자동 전수 점검; 모두 개별 의미 판독한 것은 아님"
+        },
+        {
+          "c0": "기존 분류",
+          "c1": "1,246행 / 원문 대조 불일치 0",
+          "c2": "357 Positive + 421 Negative + 468 Noise"
+        },
+        {
+          "c0": "확장 테마 추가 후보",
+          "c1": "437행",
+          "c2": "그중 59행 추가 분류 필요; 나머지는 소음·보류·범위 후보"
+        },
+        {
+          "c0": "거시·재정만 검출",
+          "c1": "858행",
+          "c2": "정책 모집단 확대 여부 결정 후 개별 판독 필요"
+        },
+        {
+          "c0": "확장 규칙 무경보",
+          "c1": "23,698행",
+          "c2": "무경보가 정책 관련 글 부재를 보증하지 않음"
+        },
+        {
+          "c0": "시장 자료",
+          "c1": "1,007일 × 120열",
+          "c2": "NYSE 거래일 누락·추가 0; 원본 열 보존"
+        },
+        {
+          "c0": "집계 연결",
+          "c1": "25열 × 1,007일 = 25,175셀, 불일치 0",
+          "c2": "현재 라벨·저장된 매핑을 재현한 결과"
+        },
+        {
+          "c0": "의미 검토 유지/추가 점검",
+          "c1": "유지 1094 / 추가 점검 152",
+          "c2": "정확도 산출용 독립 정답 판정이 아님"
+        }
+      ],
+      "source": {
+        "label": "감사 범위와 확인 결과",
+        "files": [
+          "docs/tweet_audit_2026-11-02/audit_summary.json",
+          "docs/tweet_audit_2026-11-02/review_summary.json",
+          "docs/tweet_audit_2026-11-02/review_decisions.json"
+        ],
+        "description": "원문 대조·검토 원장에서 작성한 감사 결과. 분류 정확도나 누락률의 추정치가 아님.",
+        "methodology": "scripts/audit_context_classification.py + 명시적 review_decisions.json + scripts/build_tweet_audit_report.py",
+        "caveats": [
+          "로컬 26,239행은 자동 전수 점검. 기존 분류 1,246행 및 1차 누락 후보 437행은 텍스트 본문을 개별 열람해 판정. 링크·이미지·영상의 전수 복원 및 무경보 23,698행·거시 확장 후보 858행의 개별 의미 판독은 완료하지 않았음. 유지 판정은 독립된 정답 라벨이나 복수 평가자 합의를 뜻하지 않음."
+        ]
+      }
+    },
+    "audit_table_01": {
+      "rows": [
+        {
+          "c0": "NEG_Company_Tech_Pressure",
+          "c1": "27",
+          "c2": "3",
+          "c3": "정의·범주·문맥 이슈를 포함; 오류율 아님"
+        },
+        {
+          "c0": "NEG_Fed_Rate_Attack",
+          "c1": "105",
+          "c2": "3",
+          "c3": "정의·범주·문맥 이슈를 포함; 오류율 아님"
+        },
+        {
+          "c0": "NEG_Protectionist_Attack",
+          "c1": "199",
+          "c2": "23",
+          "c3": "정의·범주·문맥 이슈를 포함; 오류율 아님"
+        },
+        {
+          "c0": "NEG_Tariff_Threat_Action",
+          "c1": "90",
+          "c2": "21",
+          "c3": "정의·범주·문맥 이슈를 포함; 오류율 아님"
+        },
+        {
+          "c0": "NOISE_Non_Market",
+          "c1": "468",
+          "c2": "26",
+          "c3": "정의·범주·문맥 이슈를 포함; 오류율 아님"
+        },
+        {
+          "c0": "POS_Deal_Progress",
+          "c1": "227",
+          "c2": "37",
+          "c3": "정의·범주·문맥 이슈를 포함; 오류율 아님"
+        },
+        {
+          "c0": "POS_Purchase_Agri_Support",
+          "c1": "58",
+          "c2": "8",
+          "c3": "정의·범주·문맥 이슈를 포함; 오류율 아님"
+        },
+        {
+          "c0": "POS_US_Industry_Econ_Boom",
+          "c1": "72",
+          "c2": "31",
+          "c3": "정의·범주·문맥 이슈를 포함; 오류율 아님"
+        }
+      ],
+      "source": {
+        "label": "세부유형별 기존 건수와 추가 점검 건수",
+        "files": [
+          "docs/tweet_audit_2026-11-02/audit_summary.json",
+          "docs/tweet_audit_2026-11-02/review_summary.json",
+          "docs/tweet_audit_2026-11-02/review_decisions.json"
+        ],
+        "description": "원문 대조·검토 원장에서 작성한 감사 결과. 분류 정확도나 누락률의 추정치가 아님.",
+        "methodology": "scripts/audit_context_classification.py + 명시적 review_decisions.json + scripts/build_tweet_audit_report.py",
+        "caveats": [
+          "로컬 26,239행은 자동 전수 점검. 기존 분류 1,246행 및 1차 누락 후보 437행은 텍스트 본문을 개별 열람해 판정. 링크·이미지·영상의 전수 복원 및 무경보 23,698행·거시 확장 후보 858행의 개별 의미 판독은 완료하지 않았음. 유지 판정은 독립된 정답 라벨이나 복수 평가자 합의를 뜻하지 않음."
+        ]
+      }
+    },
+    "audit_table_02": {
+      "rows": [
+        {
+          "c0": "C466 농가 재난지원법",
+          "c1": "2019-06-03 11:58:38",
+          "c2": "Snowflake 23:58:38 UTC → NY 19:58, 장 마감 후",
+          "c3": "2019-06-03",
+          "c4": "2019-06-04"
+        },
+        {
+          "c0": "C1236 백신 보급",
+          "c1": "2020-12-24 20:30:57",
+          "c2": "NY 15:30; 당일 13시 조기폐장 이후",
+          "c3": "2020-12-24",
+          "c4": "2020-12-28"
+        }
+      ],
+      "source": {
+        "label": "거래일 변경이 필요한 기존 분류",
+        "files": [
+          "docs/tweet_audit_2026-11-02/audit_summary.json",
+          "docs/tweet_audit_2026-11-02/review_summary.json",
+          "docs/tweet_audit_2026-11-02/review_decisions.json"
+        ],
+        "description": "원문 대조·검토 원장에서 작성한 감사 결과. 분류 정확도나 누락률의 추정치가 아님.",
+        "methodology": "scripts/audit_context_classification.py + 명시적 review_decisions.json + scripts/build_tweet_audit_report.py",
+        "caveats": [
+          "로컬 26,239행은 자동 전수 점검. 기존 분류 1,246행 및 1차 누락 후보 437행은 텍스트 본문을 개별 열람해 판정. 링크·이미지·영상의 전수 복원 및 무경보 23,698행·거시 확장 후보 858행의 개별 의미 판독은 완료하지 않았음. 유지 판정은 독립된 정답 라벨이나 복수 평가자 합의를 뜻하지 않음."
+        ]
+      }
+    },
+    "audit_table_03": {
+      "rows": [
+        {
+          "c0": "themes",
+          "c1": "Trade / Fed / ECB / FX / Firm / Farm / Fiscal / Health / Geopolitics (다중 선택)",
+          "c2": "복합 주제 강제 단일화 방지"
+        },
+        {
+          "c0": "trade_stance",
+          "c1": "Escalation / Deescalation / Mixed / Neutral / Uncertain / NA",
+          "c2": "협상갈등 방향을 별도 기록"
+        },
+        {
+          "c0": "monetary_stance",
+          "c1": "Easing / Tightening / Neutral / Uncertain / NA",
+          "c2": "Fed 비난 어조와 정책방향 분리"
+        },
+        {
+          "c0": "action_stage",
+          "c1": "Implemented / Announced / Conditional_Threat / Investigation / Talks / Advocacy / Commentary",
+          "c2": "직접 조치와 수사·기대 구분"
+        },
+        {
+          "c0": "novelty",
+          "c1": "New / Update / Repeat / Retrospective / Unknown",
+          "c2": "사후 홍보와 새 정보 구분"
+        },
+        {
+          "c0": "asset_exposure",
+          "c1": "수혜·피해 기업/산업을 텍스트 근거로 복수 기록",
+          "c2": "시장 전체 단일 부호 강제 금지"
+        },
+        {
+          "c0": "context_status",
+          "c1": "Sufficient / Thread_Required / Link_Required / Media_Required",
+          "c2": "본문 부족을 Noise와 분리"
+        },
+        {
+          "c0": "speaker_type",
+          "c1": "Trump_Original / Self_RT / Third_Party_RT / Quote",
+          "c2": "최초 발언과 재배포 구분"
+        },
+        {
+          "c0": "source_time_verified",
+          "c1": "원시 문자열 + Snowflake + 검증 근거",
+          "c2": "정확한 정보집합 시점 보존"
+        },
+        {
+          "c0": "event_id / event_first_public_at",
+          "c1": "동일 정책사건 묶음 / 최초 공개시각",
+          "c2": "스레드·재게시 중복과 시점 편향 관리"
+        },
+        {
+          "c0": "review_state",
+          "c1": "Retain / Revise / Ambiguous / Context_Required / Out_Of_Scope",
+          "c2": "미확정을 확정값으로 덮지 않음"
+        }
+      ],
+      "source": {
+        "label": "권고 분류 필드",
+        "files": [
+          "docs/tweet_audit_2026-11-02/audit_summary.json",
+          "docs/tweet_audit_2026-11-02/review_summary.json",
+          "docs/tweet_audit_2026-11-02/review_decisions.json"
+        ],
+        "description": "원문 대조·검토 원장에서 작성한 감사 결과. 분류 정확도나 누락률의 추정치가 아님.",
+        "methodology": "scripts/audit_context_classification.py + 명시적 review_decisions.json + scripts/build_tweet_audit_report.py",
+        "caveats": [
+          "로컬 26,239행은 자동 전수 점검. 기존 분류 1,246행 및 1차 누락 후보 437행은 텍스트 본문을 개별 열람해 판정. 링크·이미지·영상의 전수 복원 및 무경보 23,698행·거시 확장 후보 858행의 개별 의미 판독은 완료하지 않았음. 유지 판정은 독립된 정답 라벨이나 복수 평가자 합의를 뜻하지 않음."
+        ]
+      }
+    },
+    "audit_table_04": {
+      "rows": [
+        {
+          "c0": "full_corpus_review_coverage.csv",
+          "c1": "26,239행 전수 스크리닝과 개별 의미 열람 여부"
+        },
+        {
+          "c0": "existing_review_ledger.csv",
+          "c1": "1,246행 기존 라벨·제안·이유·원문·시각 검증"
+        },
+        {
+          "c0": "omission_review_ledger.csv",
+          "c1": "437행 확대 후보, 포함 필요·제외 예시·보류 구분"
+        },
+        {
+          "c0": "confirmed_scope_omissions.csv",
+          "c1": "추가 분류가 필요한 59행 최소 확인 목록"
+        },
+        {
+          "c0": "raw_timestamp_audit.csv",
+          "c1": "모든 원문 시각과 Snowflake 차이, 311행 경보"
+        },
+        {
+          "c0": "trading_date_audit.csv",
+          "c1": "고정 16시·실제 NYSE 폐장·Snowflake별 매핑 비교"
+        },
+        {
+          "c0": "daily_aggregation_mismatches.csv",
+          "c1": "현재 라벨을 재집계한 25열 불일치 목록(0행)"
+        },
+        {
+          "c0": "exact_id_crosswalk.csv",
+          "c1": "별도 아카이브와의 근접 ID·본문 유사도·URL 대조"
+        },
+        {
+          "c0": "audit_summary.json / review_summary.json",
+          "c1": "자동 및 개별 검토의 집계값"
+        },
+        {
+          "c0": "review_decisions.json",
+          "c1": "명시적 범주 수정·애매 사례·추가 분류 필요 결정"
+        },
+        {
+          "c0": "source_manifest.json",
+          "c1": "입력·외부 참조의 SHA-256 및 출처"
+        }
+      ],
+      "source": {
+        "label": "검토 근거 파일",
+        "files": [
+          "docs/tweet_audit_2026-11-02/audit_summary.json",
+          "docs/tweet_audit_2026-11-02/review_summary.json",
+          "docs/tweet_audit_2026-11-02/review_decisions.json"
+        ],
+        "description": "원문 대조·검토 원장에서 작성한 감사 결과. 분류 정확도나 누락률의 추정치가 아님.",
+        "methodology": "scripts/audit_context_classification.py + 명시적 review_decisions.json + scripts/build_tweet_audit_report.py",
+        "caveats": [
+          "로컬 26,239행은 자동 전수 점검. 기존 분류 1,246행 및 1차 누락 후보 437행은 텍스트 본문을 개별 열람해 판정. 링크·이미지·영상의 전수 복원 및 무경보 23,698행·거시 확장 후보 858행의 개별 의미 판독은 완료하지 않았음. 유지 판정은 독립된 정답 라벨이나 복수 평가자 합의를 뜻하지 않음."
+        ]
+      }
+    }
+  },
+  "surface": "report",
+  "report": {
+    "asOf": "2026-11-02"
+  },
+  "id": "report:1e001cea-0503-497d-937d-ecd89fe4f976",
+  "exportPreferences": {
+    "selected": null,
+    "destinations": []
+  }
+}

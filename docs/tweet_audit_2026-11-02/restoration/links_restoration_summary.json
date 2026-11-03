@@ -1,0 +1,29 @@
+{
+  "input_rows": 3627,
+  "rows_with_tco": 2991,
+  "tco_occurrences": 3107,
+  "unique_tco": 2932,
+  "attempted_unique_tco": 2932,
+  "redirect_outcomes": {
+    "redirect": 2919,
+    "not_redirect": 12,
+    "request_failed": 1
+  },
+  "evidence_states_occurrences": {
+    "media_not_recovered": 1645,
+    "redirect_only_no_content": 1359,
+    "not_redirect": 12,
+    "exact_linked_status_id_local_reference": 89,
+    "request_failed": 1,
+    "linked_reference_truncated_or_short": 1
+  },
+  "tweets_with_exact_reference": 89,
+  "input_sha256": "de549f6850863114da99483d59ef159792b08707c5be7be1abde1ee393701909",
+  "limitations": [
+    "리다이렉트만 확인한 글은 원문 복원이 아님",
+    "X 링크라도 링크 대상과 원 트윗 본문이 같다는 뜻이 아님",
+    "아카이브 인코딩·잘림·공개시각 검증 필요",
+    "이미지·영상·기사 본문은 자동 복원하지 않음",
+    "서로 다른 ID는 동일 문구여도 별도 사건이며 동일 ID는 중복 게시 가능"
+  ]
+}

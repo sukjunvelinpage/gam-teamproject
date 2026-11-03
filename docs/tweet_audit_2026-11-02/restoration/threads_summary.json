@@ -1,0 +1,20 @@
+{
+  "scope": "기존 needs_context 3,627개 전체; 원시 26,239행을 비교 기준으로 사용",
+  "target_rows": 3627,
+  "targets_with_candidates": 64,
+  "targets_without_candidates": 3563,
+  "target_retweets_excluded_from_thread_inference": 901,
+  "candidate_links": 72,
+  "candidate_relation_counts": {
+    "earlier": 52,
+    "later": 15,
+    "same_second_uncertain": 5
+  },
+  "algorithm": "정렬된 원시 게시물 중 인접한 본인 게시물, 120초 이내, 앞글 말줄임과 뒷글 선행 말줄임 동시 충족. RT 제외. 같은 초여도 양쪽 ID가 보조 아카이브에 고유 매칭되고 텍스트 유사도 0.97 이상이며 밀리초가 다르면 시각 순서만 추론. 답글 연결은 여전히 미검증.",
+  "limitations": "Twitter 답글·스레드 원관계 필드가 없어 모든 연결은 가설이다. 인접한 별개의 글·누락된 중간글을 식별하지 못하며 비인접 스레드와 링크·이미지·영상은 검색하지 않는다. Snowflake ID 하위자릿수 손상으로 원본 ID와 초 경계를 완전히 복원할 수 없다. 이후 게시물은 사건 시점 판정에 절대 사용하지 않는다.",
+  "sha256": {
+    "data\\trump_tweets_1st_term_raw.csv": "0eb55dc345d50a04f1ce973de7a558325d7684f74b111f177710ce48b3ed9015",
+    "docs\\tweet_audit_2026-11-02\\remaining_context_required.csv": "de549f6850863114da99483d59ef159792b08707c5be7be1abde1ee393701909",
+    "docs\\tweet_audit_2026-11-02\\exact_id_crosswalk.csv": "c72d89dacdef0a309f870c273665e5addef7768d20b134a8843264cd3dbcea9e"
+  }
+}

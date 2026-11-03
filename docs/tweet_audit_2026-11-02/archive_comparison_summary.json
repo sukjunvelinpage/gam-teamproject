@@ -1,0 +1,16 @@
+{
+  "local_rows": 26239,
+  "upstream_in_period_rows": 26239,
+  "upstream_rows_missing_locally": 0,
+  "local_rows_missing_upstream": 0,
+  "secondary_reference_rows": 23075,
+  "secondary_unique_urls": 23065,
+  "near_id_matched_raw_rows": 23050,
+  "matched_text_similarity_ge_08": 19204,
+  "secondary_unmatched_rows": 15,
+  "source_hashes": {
+    "archive_reference.json": "d4ff0b360eb31c63050a594356994a8a2a15849da6d79f4b12ba4fe748192c3b",
+    "independent_archive_reference.csv": "5b35db527bff9bc730e0eb4d8947cb7229a14ef894d9f43abd7b1caf0f40e319"
+  },
+  "match_rule": "저장ID와 참조ID 차이 512 이내의 근접 후보 중 본문 SequenceMatcher 유사도 최대값. 잠정 연결이며 ID 복원 보증 아님."
+}

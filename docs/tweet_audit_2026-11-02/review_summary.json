@@ -1,0 +1,18 @@
+{
+  "review_flagged_existing_unique": 152,
+  "review_retained_existing": 1094,
+  "review_flags_by_signal": {
+    "Positive": 76,
+    "Negative": 50,
+    "Noise": 26
+  },
+  "confirmed_scope_omissions": 59,
+  "confirmed_scope_omission_signal_days_fixed16": 44,
+  "expanded_search_false_positive_examples": 20,
+  "raw_fixed16_trading_date_changes_from_snowflake": 48,
+  "semantic_existing_texts_read": 1246,
+  "semantic_omission_candidate_texts_read": 437,
+  "semantic_unreviewed_raw_rows": 24556,
+  "independent_reference_matched_raw_rows_by_near_id": 23050,
+  "independent_reference_text_similarity_ge_08": 19204
+}

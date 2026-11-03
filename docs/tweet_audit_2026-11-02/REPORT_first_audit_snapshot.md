@@ -1,0 +1,573 @@
+# 트럼프 트윗 분류·누락 감사 보고서
+
+GAM 팀프로젝트 · 감사일 2026-11-02 · 원본 보존 검토
+
+
+## Executive Summary · 핵심 판단
+
+현재 분류는 **동명이인·관용구를 걸러 낸 연구 초안으로 유용하지만, 누락 없는 전수 분류나 일관된 시장 호재·악재 라벨로 확정하기에는 부족하다.** 원본 26,239행을 자동으로 전수 대조하고 기존 분류 1,246행과 추가 후보 437행의 본문을 개별 열람한 결과, 현행 범주와 대조해 추가 분류가 필요한 글을 **59건** 특정했다. ‘trade wars’ 복수형, ‘trade deals’ 복수형, KORUS, 회사명 사전 밖 기업 등이 주요 누락 경로이다. 이는 확정된 정책사건 수나 전체 누락률이 아니라 **본문상 포함 검토가 필요한 최소 확인 목록**이다.
+
+기존 분류에서는 **152건**에 범주 수정, 부호 재설계, 스레드·링크 보완 또는 범위 일관성 검토를 제안했다. 이 숫자는 오분류 확정 건수나 오류율이 아니다. 동명이인·관용구 경보 48건의 기존 Noise 판정은 본문상 타당했다. 가장 큰 해석 문제는 **무역갈등 방향, 국내 산업 수혜, 연준 비판의 어조, 경제 성과 홍보를 같은 Positive/Negative 축에 섞었다는 점**이다.
+
+시각 검증에서는 원본 **311건**, 기존 분류 **19건**의 `date_utc`가 Snowflake 생성 시각과 약 12시간 어긋났다. 실제 NYSE 폐장시각까지 반영하면 기존 분류 **2건**의 거래일 수정이 필요하다. 반면 현재 라벨·저장된 날짜를 그대로 이용한 25개 일별 집계열은 1,007일 모두 일치했다. **내부 집계가 맞는 것과 원문 분류·사건 시각이 맞는 것은 별개**다.
+
+권고는 기존 원본을 보존하고, 분류 기준을 다축으로 재설계한 별도 버전을 만든 뒤 누락·시각·신규성을 함께 정리하는 것이다. 이 감사에서는 라벨이나 시장 데이터를 덮어쓰지 않았고, 수정 전후 시장효과를 새로 확정하지 않았다.
+
+## 1. ‘전수조사’의 범위와 판단 단위
+
+감사 모집단은 프로젝트에 저장된 트럼프 1기 아카이브 26,239행이다. 리트윗도 포함한다. ‘원글’이라는 표현은 데이터에 보존된 본문을 뜻하며, 트럼프 본인이 새로 쓴 글만을 의미하지 않는다. 본인 작성 글만을 분석할 경우 RT 포함 연구와 별도로 모집단을 다시 정의해야 한다.
+
+**전수 완료 범위:** 모든 행의 원문·작성시각·식별자·기존 분류 포함 여부·확장 테마 경보·RT/단편 여부를 자동 검사했다. 분류된 1,246행은 본문 전체를 열람했고, 기존 분류 밖 437개 추가 후보도 본문을 열람해 확인 목록을 작성했다. 라벨은 검토 제안이며 복수 독립 평가자가 만든 정답지가 아니다.
+
+**완료하지 않은 범위:** 무경보 23,698행과 거시·재정 범위만 검출된 858행, 합계 24,556행은 개별 의미 판독을 끝내지 않았다. 연결된 기사·인용글·이미지·영상·전체 RT 원문의 전수 복원도 실시하지 않았다. 따라서 ‘26,239개 원글을 모두 의미 판독했고 누락이 더 없다’는 결론을 내릴 수 없다. 이 제한은 특히 키워드가 전혀 없는 후속 스레드와 링크·영상만 있는 글에서 중요하다.
+
+본문의 C번호는 `tweet_idx`(0부터 시작), R번호는 원본 CSV 데이터 행의 0기반 위치다. CSV 물리적 줄 번호는 본문 줄바꿈 때문에 다를 수 있다. 연결키는 날짜+정규화 본문의 SHA-256이며 손상된 ID에 의존하지 않는다. 검토에 시장 수익률이나 사후 VIX 급등 여부를 사용하지 않았다.
+
+### 감사 범위와 확인 결과
+
+| 점검 | 범위·결과 | 해석 |
+| --- | --- | --- |
+| 전체 원문 | 26,239행 | 자동 전수 점검; 모두 개별 의미 판독한 것은 아님 |
+| 기존 분류 | 1,246행 / 원문 대조 불일치 0 | 357 Positive + 421 Negative + 468 Noise |
+| 확장 테마 추가 후보 | 437행 | 그중 59행 추가 분류 필요; 나머지는 소음·보류·범위 후보 |
+| 거시·재정만 검출 | 858행 | 정책 모집단 확대 여부 결정 후 개별 판독 필요 |
+| 확장 규칙 무경보 | 23,698행 | 무경보가 정책 관련 글 부재를 보증하지 않음 |
+| 시장 자료 | 1,007일 × 120열 | NYSE 거래일 누락·추가 0; 원본 열 보존 |
+| 집계 연결 | 25열 × 1,007일 = 25,175셀, 불일치 0 | 현재 라벨·저장된 매핑을 재현한 결과 |
+| 의미 검토 유지/추가 점검 | 유지 1094 / 추가 점검 152 | 정확도 산출용 독립 정답 판정이 아님 |
+
+## 2. 누락은 존재하며, 검색 범위를 넓히는 것만으로 해결되지는 않는다
+
+기존 `audit_trade_tweets.py`는 `trade war`, `trade deal`을 단어 경계로 검색한다. 이 설정은 `trade wars`, `trade deals`의 끝 경계와 맞지 않아 다른 키워드가 없으면 글을 놓친다. KORUS, WTO, 무역 관련 일반 `trade`, President Xi의 축약형, GM·Ford·Harley·TikTok·Amazon 등도 기존 1차 사전에 충분히 들어 있지 않다. 반면 최종 분류에는 GM·Google·Qualcomm·Harley 등 사전 밖 기업을 이미 포함한 사례가 있어, 최종 분류 범위와 후보 추출 범위가 어긋난다.
+
+누락 후보 437건을 그대로 누락 확정치로 보고하지 않았다. 확대 검색에서는 World Trade Center, Witness Trade, drug trade, duties(직무), GM(교통기관 general manager), Ford(항공모함·인명·병원), Amazon(열대우림), phase one(건강검진·백신 임상)이 새 오탐으로 들어온다. 이 가운데 20건을 명확한 제외 예시로 원장에 기록했다.
+
+누락의 의미도 구분해야 한다. 원본에 존재하지만 분류 파일에 없는 **후보 선택 누락**, 아카이브 자체에 빠진 **수집 누락**, 정책 문맥은 있지만 신호·방향을 정하기 어려운 **판정 보류**는 서로 다르다. 아래 목록은 첫 번째 문제를 확인한 것이며, 연결 매체와 신규성 검토까지 마친 사건 정답지는 아니다.
+
+### R18710. 복수형 trade wars 때문에 빠진 대표적 보호무역 수사
+
+**추적:** R18710 · 저장 UTC 2018-03-02 10:50:34+00:00 · 원문+시각 연결키 `a9198e2d52a924238e5870e7d88ec990dd7ee960a48548ac89d50d08d26bf650`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/969525362580484098)
+
+> When a country (USA) is losing many billions of dollars on trade with virtually every country it does business with, trade wars are good, and easy to win. Example, when we are down $100 billion with a certain country and they get cute, don’t trade anymore-we win big. It’s easy!
+
+**판정:** Trade_Protectionism / Escalation. 무역전쟁 정당화, 불공정무역 대응조치, WTO 개발도상국 특혜 시정 지시가 명시되어 기존 범위에서 추가 분류가 필요하다. 원문 보도·행정조치가 있는 링크는 별도 보존한다.
+
+### R18565. 한미 FTA(KORUS) 합의 발표 누락
+
+**추적:** R18565 · 저장 UTC 2018-03-28 16:14:34+00:00 · 원문+시각 연결키 `ed308f009f981d943cdd68e9e883f193b519dc36afc1281ccddf1a87a095592f`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/979028987858112512)
+
+> .@USTradeRep just announced an agreement in principle with South Korea on KORUS! A great deal for American and Korean workers. Let’s now focus on our important security relationship.
+
+**판정:** Trade_Deal_Progress / Deescalation/Positive. 한미 FTA 합의·서명, 미멕시코 협정, 미일 협상 진전·합의, 미EU 무역관계 개선, 미중 1단계 서명이라는 직접 정책 문맥이 있다. 짧은 RT는 신규성·원문 보완을 병행한다.
+
+### R16605. 한미 FTA 서명식 공지 누락
+
+**추적:** R16605 · 저장 UTC 2018-09-24 20:44:24+00:00 · 원문+시각 연결키 `5349402d3654ca9e06c04ac5e15a07c8acc4e5df100f781cb510153fa92b8326`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1044326708151820289)
+
+> US-Korea Free Trade Agreement Signing Ceremony! https://t.co/yLFkAZgagG
+
+**판정:** Trade_Deal_Progress / Deescalation/Positive. 한미 FTA 합의·서명, 미멕시코 협정, 미일 협상 진전·합의, 미EU 무역관계 개선, 미중 1단계 서명이라는 직접 정책 문맥이 있다. 짧은 RT는 신규성·원문 보완을 병행한다.
+
+### R16920. 캐나다 협상 미타결이라는 악재 누락
+
+**추적:** R16920 · 저장 UTC 2018-09-01 22:51:29+00:00 · 원문+시각 연결키 `d6f3a81d985a556e319672e7347b087f9a50c7718d156eff3d512a0561a2813d`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1036023767489814528)
+
+> No Deal! Trade Talks with Canada Conclude for the Week with No Agreement | Breitbart https://t.co/87vi7OqopY via @BreitbartNews
+
+**판정:** Trade_Deal_Setback / Escalation/Negative. 캐나다 협상 결렬·합의 미도달을 직접 알리는 제목이다. 링크 없이도 정책 불확실성 정보가 있다.
+
+### R23057. WTO 시정조치 지시 누락
+
+**추적:** R23057 · 저장 UTC 2019-07-26 18:29:22+00:00 · 원문+시각 연결키 `59be78c265c849112ce5cfdfb965641ca163cd944ffe5faeeed38ee0d9bccbaa`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1154821023197474817)
+
+> The WTO is BROKEN when the world’s RICHEST countries claim to be developing countries to avoid WTO rules and get special treatment. NO more!!! Today I directed the U.S. Trade Representative to take action so that countries stop CHEATING the system at the expense of the USA!
+
+**판정:** Trade_Protectionism / Escalation. 무역전쟁 정당화, 불공정무역 대응조치, WTO 개발도상국 특혜 시정 지시가 명시되어 기존 범위에서 추가 분류가 필요하다. 원문 보도·행정조치가 있는 링크는 별도 보존한다.
+
+### R17703. Harley 이전 시 과세 위협 누락
+
+**추적:** R17703 · 저장 UTC 2018-06-26 12:17:49+00:00 · 원문+시각 연결키 `16fb1e86d1856c3dbbfa2e1e8916e60ec102fc1109d63db136dac378e92e1155`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1011584315040419840)
+
+> A Harley-Davidson should never be built in another country-never! Their employees and customers are already very angry at them. If they move, watch, it will be the beginning of the end - they surrendered, they quit! The Aura will be gone and they will be taxed like never before!
+
+**판정:** Company_Pressure / Pressure/Asset_Dependent. 할리·GM·자동차업체·아마존에 대한 이전 억제·공장 재개·세금·배송료·생산 요구이다. 기존 NEG_Company_Tech_Pressure의 GM·Google 등 확장 범위와 동일 원칙을 적용해야 한다. 산업 보호 효과와 개별 기업 비용 증가는 별개다.
+
+### R10866. GM·Ford에 대한 인공호흡기 생산 요구 누락
+
+**추적:** R10866 · 저장 UTC 2020-03-27 15:23:53+00:00 · 원문+시각 연결키 `4deaee54b8c3420b4a899d15f8ec220a8bb92462720cf40d433b35bfe7091b45`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1243559373395410957)
+
+> General Motors MUST immediately open their stupidly abandoned Lordstown plant in Ohio, or some other plant, and START MAKING VENTILATORS, NOW!!!!!! FORD, GET GOING ON VENTILATORS, FAST!!!!!! @GeneralMotors @Ford
+
+**판정:** Company_Pressure / Pressure/Asset_Dependent. 할리·GM·자동차업체·아마존에 대한 이전 억제·공장 재개·세금·배송료·생산 요구이다. 기존 NEG_Company_Tech_Pressure의 GM·Google 등 확장 범위와 동일 원칙을 적용해야 한다. 산업 보호 효과와 개별 기업 비용 증가는 별개다.
+
+### R8886. Amazon 배송료 인상 요구 누락
+
+**추적:** R8886 · 저장 UTC 2020-08-18 22:49:11+00:00 · 원문+시각 연결키 `fc4c3547da1e65b2d8643008c6e7bd4a5318968ea05bdf43ee660272e878f83a`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1295855291523723264)
+
+> .@Amazon, and others in that business, should be charged (by the U.S. Postal System) much more per package, and the Post Office would be immediately brought back to “good health”, now vibrant, with ALL jobs saved. No pass on to customers. Get it done!
+
+**판정:** Company_Pressure / Pressure/Asset_Dependent. 할리·GM·자동차업체·아마존에 대한 이전 억제·공장 재개·세금·배송료·생산 요구이다. 기존 NEG_Company_Tech_Pressure의 GM·Google 등 확장 범위와 동일 원칙을 적용해야 한다. 산업 보호 효과와 개별 기업 비용 증가는 별개다.
+
+### R3829. TikTok 행정명령 RT 누락
+
+**추적:** R3829 · 저장 UTC 2020-08-07 12:41:26+00:00 · 원문+시각 연결키 `0c152fa8dba560348e5d5555ca80431732d564cdabc75050fe2976a4327eec1b`. 원글 링크는 정확한 ID 복원이 확인되지 않아 생략했다.
+
+> RT @QuickTake: BREAKING: Trump signs executive order forcing the divestment of TikTok by it’s owner, ByteDance. Any company still doing bu…
+
+**판정:** Technology_Regulation / Pressure/Uncertain. TikTok 금지·매각명령·Google 조사 등 기술기업 규제 문맥이다. 기존 Google·Huawei 제재 범위와 같은 기준으로 후보를 포함하고 실제 조치·검토·제3자 주장·재전달을 구분한다.
+
+### R4806. 코로나 여행제한의 무역 적용 배제 정정 누락
+
+**추적:** R4806 · 저장 UTC 2020-03-12 02:13:32+00:00 · 원문+시각 연결키 `7c5228a00036053fde042d9833bc4ec4e1c1b372799b50c211f5171e1c8d5544`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1237924658185469954)
+
+> Hoping to get the payroll tax cut approved by both Republicans and Democrats, and please remember, very important for all countries &amp; businesses to know that trade will in no way be affected by the 30-day restriction on travel from Europe. The restriction stops people not goods.
+
+**판정:** Trade_Restriction_Clarification / Deescalation/Neutral. 유럽 여행제한·캐나다 국경폐쇄가 무역·화물에는 적용되지 않는다고 명시한다. 코로나 단어로 제외하면 실제 무역제한 범위 정정 정보를 잃는다.
+
+### R7436. 캐나다 국경폐쇄와 상품무역을 구분한 글 누락
+
+**추적:** R7436 · 저장 UTC 2020-03-18 13:37:46+00:00 · 원문+시각 연결키 `0a2bfca44a1b3e77d530b6e5a08e17ca43e698d21597f267beafe1a442d0c90a`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1240271178692005889)
+
+> We will be, by mutual consent, temporarily closing our Northern Border with Canada to non-essential traffic. Trade will not be affected. Details to follow!
+
+**판정:** Trade_Restriction_Clarification / Deescalation/Neutral. 유럽 여행제한·캐나다 국경폐쇄가 무역·화물에는 적용되지 않는다고 명시한다. 코로나 단어로 제외하면 실제 무역제한 범위 정정 정보를 잃는다.
+
+### R13537. Broadcom 미국 투자·생산 관련 발표 누락
+
+**추적:** R13537 · 저장 UTC 2017-11-02 20:33:18+00:00 · 원문+시각 연결키 `1171426750d63a7b18da80b192ba5d989bfefbee590bc5169b4838c6c152b77c`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/926185468911382529)
+
+> Broadcom's move to America=$20 BILLION of annual rev into U.S.A., $3+ BILLION/yr. in research/engineering &amp, $6 BILLION/yr. in manufacturing. https://t.co/NsJ4PtVTtl
+
+**판정:** Industry_Investment_or_Production / Asset_Dependent/Positive. 미국 내 투자·공장·일자리 또는 DPA 관련 자동차업체 생산조치이다. 현재 POS_US_Industry_Econ_Boom 및 Company 범위와 대조하면 회사명 사전 제한으로 누락된 사례이다. 단순 만남은 낮은 강도로 별도 관리한다.
+
+### R23404. Facebook Libra 규제 문맥 누락
+
+**추적:** R23404 · 저장 UTC 2019-07-12 00:15:23+00:00 · 원문+시각 연결키 `068c5b75716ace7adc52c3e1911562de92dd8a90566e9016c632fd53a1ffc635`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1149472284702208000)
+
+> ....Similarly, Facebook Libra’s “virtual currency” will have little standing or dependability. If Facebook and other companies want to become a bank, they must seek a new Banking Charter and become subject to all Banking Regulations, just like other Banks, both National...
+
+**판정:** Crypto_FX_Regulation / Mixed/Uncertain. Bitcoin·Libra·은행규제·달러를 다룬 연속 글이다. 기존 FX 범위에 포함할지 명시적으로 결정하고 암호자산 규제와 달러 선호를 구분한다.
+
+## 3. 동명이인·관용구는 대체로 잘 제거되어 있다
+
+48개 명시적 동명이인·관용구 경보는 모두 현재 Noise이며, 본문 검토상 유지가 적절하다. Sidney Powell·Colin Powell·Dina Powell을 Jerome Powell로 오인하거나, Shawn Steel을 철강산업으로 연결한 흔적은 이 경보군에서 찾지 못했다. `fed up`, `being fed`, `apple cart`, `man of steel`, 국경의 steel slats/barrier도 실제 정책 테마와 구분되어 있다. 경보 규칙이 모든 동음이의어를 포괄한다는 뜻은 아니다.
+
+이 결과는 1차 키워드 사전의 오탐이 최종 문맥 분류에서 상당 부분 교정됐다는 근거다. 다만 기존 `Trade_Tweet_Dummy`, `Fed_Tweet_Dummy`는 원래 키워드 기준을 그대로 보존하므로, 최종 Noise가 기존 더미 분석에서 자동으로 제외된 것은 아니다. 두 종류의 분석을 발표에서 혼용하면 안 된다.
+
+### C29. Shawn Steel은 사람 이름
+
+**추적:** C29, R2715 · 저장 UTC 2017-07-03 20:44:27+00:00 · 원문+시각 연결키 `7639f9c2f25aafdb5788b65d84f7cbe7e0512f70af797d566a2fc52f5877ffee`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/881976958556549120)
+
+> Thank you to Shawn Steel for the nice words on @FoxNews.
+
+**판정:** 현재 Noise 유지. 본문의 고유명사·관용적 의미를 우선하고 키워드 일치 자체를 경제정책 신호로 취급하지 않는다.
+
+### C494. Sidney Powell은 Flynn의 변호사
+
+**추적:** C494, R23894 · 저장 UTC 2019-06-13 10:21:50+00:00 · 원문+시각 연결키 `266922448c01e4653f0fb8e55c662f899a59c30f4f31e4f8c53541fead372f69`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1139115655532298240)
+
+> General Michael Flynn, the 33 year war hero who has served with distinction, has not retained a good lawyer, he has retained a GREAT LAWYER, Sidney Powell. Best Wishes and Good Luck to them both!
+
+**판정:** 현재 Noise 유지. 본문의 고유명사·관용적 의미를 우선하고 키워드 일치 자체를 경제정책 신호로 취급하지 않는다.
+
+### C1053. Colin Powell은 연준 의장이 아님
+
+**추적:** C1053, R12178 · 저장 UTC 2020-06-07 14:19:03+00:00 · 원문+시각 연결키 `0a06012f54961c0b4794b16415852954f150ec1703e7fb6bb3156f947da876d0`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1269634983687315457)
+
+> Colin Powell, a real stiff who was very responsible for getting us into the disastrous Middle East Wars, just announced he will be voting for another stiff, Sleepy Joe Biden. Didn’t Powell say that Iraq had “weapons of mass destruction?” They didn’t, but off we went to WAR!
+
+**판정:** 현재 Noise 유지. 본문의 고유명사·관용적 의미를 우선하고 키워드 일치 자체를 경제정책 신호로 취급하지 않는다.
+
+### C146. apple cart는 관용구
+
+**추적:** C146, R18088 · 저장 UTC 2018-05-27 20:32:33+00:00 · 원문+시각 연결키 `ccf44e25be028405d78446f3e40ed6eb14899c86e15d78d230d4c54c8d1939f4`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1000837182297464832)
+
+> Why didn’t President Obama do something about the so-called Russian Meddling when he was told about it by the FBI before the Election? Because he thought Crooked Hillary was going to win, and he didn’t want to upset the apple cart! He was in charge, not me, and did nothing.
+
+**판정:** 현재 Noise 유지. 본문의 고유명사·관용적 의미를 우선하고 키워드 일치 자체를 경제정책 신호로 취급하지 않는다.
+
+### C208. man of steel은 골퍼 묘사
+
+**추적:** C208, R17176 · 저장 UTC 2018-08-13 17:11:21+00:00 · 원문+시각 연결키 `a6e14954fb04d103633dd56b228d4fa328e1c3ba7872ba4ba6cf7523c5d70736`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1029052803380076544)
+
+> Brooks Koepka just won his third Golf Major, and he did it not only with his powerful game, but with his powerful mind. He has been a man of steel on the Tour and will have many Victories, including Majors, ahead of him. Congrats to Brooks and his great team on a job well done!
+
+**판정:** 현재 Noise 유지. 본문의 고유명사·관용적 의미를 우선하고 키워드 일치 자체를 경제정책 신호로 취급하지 않는다.
+
+### C300. steel slats는 국경 구조물
+
+**추적:** C300, R15679 · 저장 UTC 2018-12-19 01:13:30+00:00 · 원문+시각 연결키 `b2bcf55707b4fe617ca499ac4ac1eb01e6140bc279705eb23f65695fdcb2e708`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1075197395892404231)
+
+> The Democrats, are saying loud and clear that they do not want to build a Concrete Wall - but we are not building a Concrete Wall, we are building artistically designed steel slats, so that you can easily see through it....
+
+**판정:** 현재 Noise 유지. 본문의 고유명사·관용적 의미를 우선하고 키워드 일치 자체를 경제정책 신호로 취급하지 않는다.
+
+## 4. 긍정·부정의 가장 큰 문제는 ‘무엇에 대한 방향인가’가 섞였다는 점이다
+
+기존 라벨 357 Positive·421 Negative·468 Noise 가운데 추가 점검 대상으로 특정한 글은 각각 **76·50·26건**이다. 검토 이슈는 범주 불일치, 정의 문제, 혼합 신호, 본문 부족, 낮은 신규성을 포함하며 전부 오류는 아니다. 유지로 남긴 글도 완전한 정확성을 보증하지 않는다.
+
+현재 정의는 ‘정책 불확실성 완화/고조’와 ‘미국 산업 성장’, ‘발화의 비난 어조’를 결합한다. 그 결과 관세가 철강업을 살렸다는 유사한 문장이 어떤 날은 Positive, 어떤 날은 Negative가 된다. 연준 금리 인하 요구는 Fed에 대한 비판일 수 있으나 주식·채권·달러에 동일한 부호를 갖는 악재라고 미리 정할 수 없다. 사후 주가 등락으로 라벨을 정하는 방법 역시 결과변수에 의한 선택 편향을 만든다.
+
+권고하는 방향은 Positive/Negative를 기계적으로 뒤집는 것이 아니다. **테마, 정책 갈등 방향, 통화정책 방향, 개별 자산 노출, 발표 강도, 신규성, 불확실성**을 분리해야 한다. ‘Noise’도 ‘어떤 시장에도 영향 없음’이 아니라 ‘이번 연구의 사전 정의 밖이거나 관련 정보 부족’으로 정의하는 편이 정확하다.
+
+### 세부유형별 기존 건수와 추가 점검 건수
+
+| 기존 세부유형 | 전체 | 추가 점검 | 주의 |
+| --- | --- | --- | --- |
+| NEG_Company_Tech_Pressure | 27 | 3 | 정의·범주·문맥 이슈를 포함; 오류율 아님 |
+| NEG_Fed_Rate_Attack | 105 | 3 | 정의·범주·문맥 이슈를 포함; 오류율 아님 |
+| NEG_Protectionist_Attack | 199 | 23 | 정의·범주·문맥 이슈를 포함; 오류율 아님 |
+| NEG_Tariff_Threat_Action | 90 | 21 | 정의·범주·문맥 이슈를 포함; 오류율 아님 |
+| NOISE_Non_Market | 468 | 26 | 정의·범주·문맥 이슈를 포함; 오류율 아님 |
+| POS_Deal_Progress | 227 | 37 | 정의·범주·문맥 이슈를 포함; 오류율 아님 |
+| POS_Purchase_Agri_Support | 58 | 8 | 정의·범주·문맥 이슈를 포함; 오류율 아님 |
+| POS_US_Industry_Econ_Boom | 72 | 31 | 정의·범주·문맥 이슈를 포함; 오류율 아님 |
+
+### C499. Michael Steel 인용과 거시 낙관론: 회사·산업 키워드가 아님
+
+**추적:** C499, R23756 · 저장 UTC 2019-06-20 14:14:13+00:00 · 원문+시각 연결키 `655c724e18cb97b73b5f2457ba21d45ddf94f8cde102670b0bce6908e5d688f8`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1141710851617034240)
+
+> “The President has a really good story to tell. We have unemployment lower than we’ve seen in decades. We have people who stopped looking for work coming back into the labor force. We are in a record growth period.” Michael Steel @MSNBC (do you believe?)
+
+**기존:** Positive / `POS_US_Industry_Econ_Boom`.
+
+**검토:** 인용자의 성이 Steel이며 철강산업 발언이 아니다. 본문은 일반적인 고용·성장 평가이므로 광의의 Macro_Commentary로 보존할 수는 있다. 그러나 이 글을 포함하려면 회사명·산업 키워드가 없는 동일한 경기 낙관론도 같은 모집단에서 추출해야 한다. 따라서 동명이인만으로 Noise 확정하지 않고 범위 선택 편향을 지적한다.
+
+### C519. 농민 지지율은 농산물 구매·농가 지원이 아님
+
+**추적:** C519, R23622 · 저장 UTC 2019-06-30 00:07:39+00:00 · 원문+시각 연결키 `a1b80387d2e6909d42d339dbd23e8136ab5e82e64ff1a37743195bf2b3e18594`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1145121683193421826)
+
+> The highly respected Farm Journal has just announced my Approval Rating with our great Farmers at 74%, and that despite all of the Fake &amp, Corrupt News that they are forced to endure. Farmers have been unfairly treated for many years - and that is turning around FAST!
+
+**기존:** Positive / `POS_Purchase_Agri_Support`.
+
+**검토:** 지지율·선거 전망·정권 성과 홍보가 중심이며 신규 구매·농가지원·산업투자 조치가 없다. 특히 C519는 농민 지지율을 실제 농가 구매지원으로 분류했다.
+
+### C355. 연준 인선을 산업 호재로 처리한 비대칭
+
+**추적:** C355, R25291 · 저장 UTC 2019-03-22 16:47:33+00:00 · 원문+시각 연결키 `042233c4cf74dc396d92c526d7177229e5368c0b7b5b6b7488bf470e7f98c8f8`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1109134531771150336)
+
+> It is my pleasure to announce that @StephenMoore, a very respected Economist, will be nominated to serve on the Fed Board. I have known Steve for a long time – and have no doubt he will be an outstanding choice!
+
+**기존:** Positive / `POS_US_Industry_Econ_Boom`.
+
+**검토:** 연준 인선·지명·철회는 실제 통화정책 관련 정보이다. Moore 지명은 산업호재, Powell·Waller·Shelton 지명 및 Cain·Moore 철회는 Noise로 처리한 기준이 비대칭이다. 인선 사실과 완화/긴축 방향을 별도 기록해야 한다.
+
+### C497. ECB 금리 인하 전망을 Fed 공격으로 분류
+
+**추적:** C497, R23715 · 저장 UTC 2019-06-18 14:09:23+00:00 · 원문+시각 연결키 `bab7c6f685a7ea2062b5959707a400300e1d55696c58154676ff843ced33ac08`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1140984860628213760)
+
+> “ECB officials see Rate Cut as primary tool for any new stimulus.” @business
+
+**기존:** Negative / `NEG_Fed_Rate_Attack`.
+
+**검토:** ECB의 금리 인하 전망을 인용한 글이며 미국 연준이나 Powell을 공격하는 내용이 없다. 경제·통화 신호는 맞지만 NEG_Fed_Rate_Attack은 부적절하다.
+
+### C1234. 1832년 Andrew Jackson의 중앙은행 대립
+
+**추적:** C1234, R2424 · 저장 UTC 2020-12-20 16:53:00+00:00 · 원문+시각 연결키 `8389301b09b96a098fadeb6aa9b1cb75a1c799514dd51c8d3f4876f2cbda9422`. 원글 링크는 정확한 ID 복원이 확인되지 않아 생략했다.
+
+> RT @KanekoaTheGreat: Can you imagine a president taking on the Federal Reserve System today? That's what Andrew Jackson did in 1832 and it…
+
+**기존:** Negative / `NEG_Fed_Rate_Attack`.
+
+**검토:** Andrew Jackson의 1832년 역사적 중앙은행 대립을 언급한다. 현 연준 정책에 대한 신규 요구가 본문에 없으므로 현대 Fed 공격 사건과 구분한다. 잘린 RT 후반의 원문 복원은 별도 필요하다.
+
+### C330. 관세의 철강산업 수혜를 Positive로 판정한 사례
+
+**추적:** C330, R25890 · 저장 UTC 2019-01-28 13:16:32+00:00 · 원문+시각 연결키 `6cf5becbbe0e2b35e73a6d11ee9dfc8edf30411852cd4c126e46d93a936213c8`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1089874871247687683)
+
+> Tariffs on the “dumping” of Steel in the United States have totally revived our Steel Industry. New and expanded plants are happening all over the U.S. We have not only saved this important industry, but created many jobs. Also, billions paid to our treasury. A BIG WIN FOR U.S.
+
+**기존:** Positive / `POS_US_Industry_Econ_Boom`.
+
+**검토:** 관세 유지·효과 찬사와 국내 산업 수혜를 호재로 처리했지만 C111·C199·C390·C439·C786 등 유사 내용은 보호무역 악재이다. 정책 갈등 방향과 철강 등 개별 자산 수혜를 두 축으로 분리해야 한다.
+
+### C199. 관세의 철강산업 수혜를 Negative로 판정한 유사 사례
+
+**추적:** C199, R17252 · 저장 UTC 2018-08-04 19:53:22+00:00 · 원문+시각 연결키 `03e742e4fc5a3a22f7c6c0b2f5d11ec81eb844f9ab05ffeadb1074268b3256e5`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1025832084521119745)
+
+> ....Tariffs have had a tremendous positive impact on our Steel Industry. Plants are opening all over the U.S., Steelworkers are working again, and big dollars are flowing into our Treasury. Other countries use Tariffs against, but when we use them, foolish people scream!
+
+**기존:** Negative / `NEG_Protectionist_Attack`.
+
+**검토:** 관세 효과와 경제 성과를 칭찬하는 유사 문장들이 Positive에도 분포한다. 어느 쪽으로 일괄 뒤집기보다 보호무역 방향·국내 산업 영향·신규성 분리 후 재코딩한다.
+
+### C145. ZTE 제재 조건과 영업재개 완화가 함께 있는 글
+
+**추적:** C145, R18106 · 저장 UTC 2018-05-25 23:07:19+00:00 · 원문+시각 연결키 `f938d4c89df77a442d6af4ad4f229682f62e9a6adbade72ad43e98b1fe460cff`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1000151354701213696)
+
+> Senator Schumer and Obama Administration let phone company ZTE flourish with no security checks. I closed it down then let it reopen with high level security guarantees, change of management and board, must purchase U.S. parts and pay a $1.3 Billion fine. Dems do nothing....
+
+**기존:** Negative / `NEG_Company_Tech_Pressure`.
+
+**검토:** ZTE를 폐쇄한 뒤 조건부 재개를 허용했다는 글이다. 벌금·보안조건은 규제지만 영업재개는 제재 완화이다. C130의 ZTE 구제 Positive와 함께 읽고 재개 대비 조건 강화라는 기준점을 명시해야 한다.
+
+### C55. 중국과의 관계 덕담을 무역합의 진전으로 분류
+
+**추적:** C55, R13476 · 저장 UTC 2017-11-09 13:58:32+00:00 · 원문+시각 연결키 `dc3f4dbd04a378283cb66a9edc5a00c7a6f502d5308d09630b2a3cebbed94113`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/928622838487007260)
+
+> In the coming months and years ahead I look forward to building an even STRONGER relationship between the United States and China. 🇺🇸🇨🇳 https://t.co/mK3SB7t3EV
+
+**기존:** Positive / `POS_Deal_Progress`.
+
+**검토:** C55는 양국 관계 덕담, C598은 홍콩 시위의 평화적 해결과 개인 회동 제안이다. 본문에 무역합의 진전이 없으므로 POS_Deal_Progress 근거가 부족하다. 무역과 연결된 인접 문맥은 별도 표시한다.
+
+### C598. 홍콩 시위 해결 제안을 무역합의 진전으로 분류
+
+**추적:** C598, R22717 · 저장 UTC 2019-08-14 22:59:13+00:00 · 원문+시각 연결키 `e277af400fe395b1ade4ca0e5213deb1a9e782fbd4f57ff87d0b21e7498c1add`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1161774305895694336)
+
+> I know President Xi of China very well. He is a great leader who very much has the respect of his people. He is also a good man in a “tough business.” I have ZERO doubt that if President Xi wants to quickly and humanely solve the Hong Kong problem, he can do it. Personal meeting?
+
+**기존:** Positive / `POS_Deal_Progress`.
+
+**검토:** C55는 양국 관계 덕담, C598은 홍콩 시위의 평화적 해결과 개인 회동 제안이다. 본문에 무역합의 진전이 없으므로 POS_Deal_Progress 근거가 부족하다. 무역과 연결된 인접 문맥은 별도 표시한다.
+
+### C770. Powell과의 회동을 무역합의 진전으로 분류
+
+**추적:** C770, R19996 · 저장 UTC 2019-11-18 03:49:55+00:00 · 원문+시각 연결키 `e122616c3f7d396dfc9d7484a34be59aa15554f5749b5cb27278467bee8707e5`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1196455500940038144)
+
+> Just finished a very good &amp, cordial meeting at the White House with Jay Powell of the Federal Reserve. Everything was discused including interest rates, negative interest, low inflation, easing, Dollar strength &amp, its effect on manufacturing, trade with China, E.U. &amp, others, etc.
+
+**기존:** Positive / `POS_Deal_Progress`.
+
+**검토:** Powell과의 우호적 회동이며 금리·환율·무역을 논의한 사실을 적었다. 무역협상 진전이나 정책금리 인하 합의로 볼 수 없다. 같은 날 C773은 Fed 공격이어서 정책 Pure Positive 판정의 의미도 점검해야 한다.
+
+### C273. #USMCA와 링크만 있는 글
+
+**추적:** C273, R15844 · 저장 UTC 2018-11-30 13:08:27+00:00 · 원문+시각 연결키 `1fdbb0d5d49f846e9db31334014e172d90d7e942c3ece304ca5c5ede5d71b5b9`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1068491952696557575)
+
+> #USMCA🇺🇸🇲🇽🇨🇦 https://t.co/7CYsYBYbd1
+
+**기존:** Positive / `POS_Deal_Progress`.
+
+**검토:** #USMCA 및 링크만으로는 해당 글에 새로 공개된 합의·조건·시각을 특정할 수 없다. 외부 매체 복원 전 강한 긍정 정책사건으로 확정하지 않는다.
+
+### C1006. 코로나 비난을 하드 관세 위협으로 분류
+
+**추적:** C1006, R8710 · 저장 UTC 2020-05-13 14:33:15+00:00 · 원문+시각 연결키 `af2b0cd45b5dd919e7adef23b83a6bbd7034c02f7b3ad1e84407e82f9b5607ad`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1260578860992737285)
+
+> As I have said for a long time, dealing with China is a very expensive thing to do. We just made a great Trade Deal, the ink was barely dry, and the World was hit by the Plague from China. 100 Trade Deals wouldn’t make up the difference - and all those innocent lives lost!
+
+**기존:** Negative / `NEG_Tariff_Threat_Action`.
+
+**검토:** 코로나 피해는 무역합의 100개로도 보상할 수 없다는 비난이다. 본문에 신규 관세·세율·시한·조건부 부과 위협이 없어 하드 관세 충격으로 보기 어렵다.
+
+### C530. 농산물 구매 실망과 직접 관세 선포의 차이
+
+**추적:** C530, R23415 · 저장 UTC 2019-07-11 14:04:16+00:00 · 원문+시각 연결키 `af58cbb54f8c552632745271017ba2e1bba9ba2ce596a373b62b87f598d59a80`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1149318492711264257)
+
+> Mexico is doing great at the Border, but China is letting us down in that they have not been buying the agricultural products from our great Farmers that they said they would. Hopefully they will start soon!
+
+**기존:** Negative / `NEG_Tariff_Threat_Action`.
+
+**검토:** 약속한 농산물 구매 부진을 비판한 글이다. 악재 방향은 가능하지만 직접 관세 선포·세율 인상은 없어 NEG_Tariff_Threat_Action보다 협상·구매 이행 차질이 적절하다.
+
+### C568. 낙관적인 후속 문장이 하드 관세 악재가 된 사례
+
+**추적:** C568, R22929 · 저장 UTC 2019-08-01 17:26:11+00:00 · 원문+시각 연결키 `ed3f450d4b0cc019aaf8b62630a6943e50dd9c3e7f27f44880db6e35b42f7c55`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1156979450560548864)
+
+> ...We look forward to continuing our positive dialogue with China on a comprehensive Trade Deal, and feel that the future between our two countries will be a very bright one!
+
+**기존:** Negative / `NEG_Tariff_Threat_Action`.
+
+**검토:** 같은 스레드의 하드 충격을 모든 조각에 전파하면 C568의 낙관 문장과 C458의 관세 철회 문장도 단독 악재가 된다. 사건 단위로 묶되 최초 정보 공개시각을 유지하고 미래 조각으로 과거 라벨을 확정하지 않는다.
+
+### C458. 관세가 제거될 조건을 적은 후속 문장
+
+**추적:** C458, R23839 · 저장 UTC 2019-05-30 23:30:20+00:00 · 원문+시각 연결키 `d31a511e975b613c28255fb1288d3aa0c876dd2eb215738350c72fd8b7cddee0`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1134240657621438464)
+
+> ....at which time the Tariffs will be removed. Details from the White House to follow.
+
+**기존:** Negative / `NEG_Tariff_Threat_Action`.
+
+**검토:** 같은 스레드의 하드 충격을 모든 조각에 전파하면 C568의 낙관 문장과 C458의 관세 철회 문장도 단독 악재가 된다. 사건 단위로 묶되 최초 정보 공개시각을 유지하고 미래 조각으로 과거 라벨을 확정하지 않는다.
+
+### C824. Fake News 표현이 있어도 실제 관세 보도 부인일 수 있음
+
+**추적:** C824, R19275 · 저장 UTC 2019-12-13 14:06:40+00:00 · 원문+시각 연결키 `48ac21ce7c867e4cd8376aed8fa7050276f86e3d0fc547ed2af5ba76740ef034`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1205489214546235393)
+
+> The Wall Street Journal story on the China Deal is completely wrong, especially their statement on Tariffs. Fake News. They should find a better leaker!
+
+**기존:** Noise / `NOISE_Non_Market`.
+
+**검토:** 미중 합의와 관세에 관한 WSJ 보도를 직접 부인한다. Fake News라는 문구만으로 정치 소음으로 처리할 수 없다. 어떤 조건을 부인했는지는 당시 보도와 이미 알려진 정보에 의존하므로 단일 부호를 확정하지 않는다.
+
+### C794. USMCA 붕괴 가능성을 Noise로 제외한 애매한 사례
+
+**추적:** C794, R19608 · 저장 UTC 2019-12-07 18:54:36+00:00 · 원문+시각 연결키 `915cdb5f69261c4c11e458cc11f0cefb0893a03f5c00b5afe1d12bbef328343b`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1203387348274360322)
+
+> Hard to believe, but if Nancy Pelosi had put our great Trade Deal with Mexico and Canada, USMCA, up for a vote long ago, our economy would be even better. If she doesn’t move quickly, it will collapse!
+
+**기존:** Noise / `NOISE_Non_Market`.
+
+**검토:** 통과 지연을 직접 지적하며 C794는 지연 시 합의 붕괴 가능성을 언급한다. 정치적 비판을 포함해도 정책 불확실성 정보가 있으므로 무조건 Noise 배제는 비대칭이다.
+
+### C1077. 방역·사망률 찬사를 산업 호재로 처리
+
+**추적:** C1077, R8512 · 저장 UTC 2020-07-06 18:36:50+00:00 · 원문+시각 연결키 `660ac26b484fe1c82bd03f048bd60ad3b1077937f883b314a401b169a9ddb9a2`. 원글 링크는 정확한 ID 복원이 확인되지 않아 생략했다.
+
+> BREAKING NEWS: The Mortality Rate for the China Virus in the U.S. is just about the LOWEST IN THE WORLD! Also, Deaths in the U.S. are way down, a tenfold decrease since the Pandemic height (and, our Economy is coming back strong!).
+
+**기존:** Positive / `POS_US_Industry_Econ_Boom`.
+
+**검토:** 방역 수치·백신 성과·경기회복 찬사이며 신규 무역·산업 정책과 다르다. 유사한 백신 관련 C1128·C1225는 Noise이다. 보건 뉴스로 별도 관리할 수 있지만 시장 무관 여부와 Positive를 단정하지 않는다.
+
+### C1236. 백신 보급 성과를 산업 호재로 처리하고 조기폐장도 놓침
+
+**추적:** C1236, R2347 · 저장 UTC 2020-12-24 20:30:57+00:00 · 원문+시각 연결키 `c70ae2e31bc37c596f79806d1114aa71cd9ee0b8c3097406a833e6b4bcd9a7e2`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1342206148649299969)
+
+> More than one million Americans have already received the China Virus Vaccine, a record pace!
+
+**기존:** Positive / `POS_US_Industry_Econ_Boom`.
+
+**검토:** 방역 수치·백신 성과·경기회복 찬사이며 신규 무역·산업 정책과 다르다. 유사한 백신 관련 C1128·C1225는 Noise이다. 보건 뉴스로 별도 관리할 수 있지만 시장 무관 여부와 Positive를 단정하지 않는다.
+
+### C1233. 직접 재정 지급 요구를 Noise로 처리
+
+**추적:** C1233, R2396 · 저장 UTC 2020-12-20 05:18:50+00:00 · 원문+시각 연결키 `b007f1fa42c422d238fda3b8a9766f64390630c296c896608bdf043adf184cbe`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1340527057151930369)
+
+> Why isn’t Congress giving our people a Stimulus Bill? It wasn’t their fault, it was the fault of China. GET IT DONE, and give them more money in direct payments.
+
+**기존:** Noise / `NOISE_Non_Market`.
+
+**검토:** 코로나 농가지원·인프라 제안은 Positive인데 실업급여·직접 지급액 600/2000달러 협상은 Noise 또는 기업압박으로 분산되어 있다. 거시 재정정책 포함 여부를 사전 확정하고 금액·정책단계·신규성을 별도 코딩한다.
+
+### C370. 보잉 개선 조언과 강제정책·제재의 경계
+
+**추적:** C370, R25036 · 저장 UTC 2019-04-15 10:29:27+00:00 · 원문+시각 연결키 `63704e52a75b793a1f30ea7f0b95b0e745352d7e1eb02c289a2da678f3423992`. [독립 아카이브의 원글 링크](https://twitter.com/realDonaldTrump/status/1117736685721223168)
+
+> What do I know about branding, maybe nothing (but I did become President!), but if I were Boeing, I would FIX the Boeing 737 MAX, add some additional great features, &amp, REBRAND the plane with a new name.No product has suffered like this one. But again, what the hell do I know?
+
+**기존:** Negative / `NEG_Company_Tech_Pressure`.
+
+**검토:** 737 MAX 개선·브랜드 변경에 대한 조언이다. 보잉 관련 발언은 맞지만 새로운 제재나 강제정책이 없고 사전 주가 방향도 확정하기 어렵다.
+
+## 5. 스레드·리트윗·정보 강도를 별도 관리해야 한다
+
+기존 분류 1,246행 중 RT 표시 또는 RT 접두어가 있는 글은 268행이다. 원본 전체에는 9,787행이 있다. RT는 트럼프가 다시 배포한 정보라는 의미가 있지만, 본인이 새 조치를 발표한 글과 동일한 정보 충격으로 간주할 수 없다. 원문 작성시각과 트럼프의 재전달시각을 둘 다 보존하고, 동일 정책사건에 `event_id`를 부여해 최초 공개와 반복 노출을 구분해야 한다.
+
+529행은 본문의 앞 또는 끝에 `...`/`…`가 있다. 이는 **단편·생략 가능성 경보**이며 529개 모두 데이터가 잘렸다는 뜻은 아니다. 작성자가 이어 쓴 스레드, RT의 표시 길이 제한, 의도적인 말줄임이 섞여 있다. C567의 신규 관세 조치와 C568의 낙관적 후속 글을 하나의 사건으로 연결할 수 있지만, 서로의 단독 문장 부호까지 같아야 하는 것은 아니다.
+
+정확한 반복 본문은 추가 19행이며 동일 본문에 신호나 세부유형이 다르게 붙은 사례는 없었다. 그렇더라도 문구를 조금 고친 재게시·RT·하루 사이의 사건 중첩은 남는다. 단순 개수 차이의 Net Signal은 같은 정책을 길게 나눠 쓴 사람이 더 강한 충격을 준 것처럼 보이게 할 수 있다.
+
+스레드 복원에는 시간 제약이 필요하다. 뒤에 게시된 글을 이용해 앞선 시점의 정보집합을 완성하면 사후 정보가 섞인다. 최초로 조치가 확인되는 시각에서 사건을 발생시키고, 후속 글은 추가 정보로만 집계해야 한다. 날짜를 먼저 고친 뒤 가까운 시각의 스레드를 연결해야 12시간 오류 때문에 엉뚱한 글을 연결하는 문제도 줄일 수 있다.
+
+아카이브의 최종 retweet/favorite 수는 발표 시점에 알려진 값이 아니다. 동시점 수집 이력이 없다면 설명용 인기도 지표로만 사용하고, 충격 표본 선정·사전 강도·포트폴리오 신호에는 사용하지 않아야 한다. VIX나 사후 수익률이 크게 움직인 날만 ‘진짜 충격’으로 선별하는 방식도 피해야 한다.
+
+## 6. 시각과 거래일: 현재 집계는 재현되지만 원천 오류가 남아 있다
+
+### 6.1 손상된 식별자와 원본 수집 범위
+
+26,239개 ID가 모두 끝 두 자리 `00`으로 저장되어 있고, 서로 다른 두 RT가 같은 ID·같은 초를 갖는다. 작성시각+본문 조합의 중복은 0개이다. 64비트 Snowflake는 문자열로 보관해야 한다는 [X 공식 문서](https://docs.x.com/fundamentals/x-ids)와도 부합하는 문제다. 다만 각 ID의 원래 하위 자릿수는 이 파일만으로 복구할 수 없으므로 기존 숫자를 그대로 X 링크로 조립하지 않았다.
+
+프로젝트의 [기존 공개 원본 JSON](https://github.com/ttzztztz/TrumpTwitterArchive)을 다시 내려받아 기간을 동일하게 제한했을 때, 로컬과 날짜+본문의 다중집합이 **26,239행 전부 일치**했다. 이는 로컬 추출이 해당 원본을 빠뜨리지 않았다는 뜻이며, 그 원본이 실제 트윗 전체를 완전히 보존했다는 독립 증명은 아니다. ID·시각 오류도 상위 원본에 이미 존재한다.
+
+[별도 아카이브](https://github.com/MarkHershey/CompleteTrumpTweetsArchive)의 23,075행(고유 URL 23,065개)과 추가 대조하여 ID 근접 후보 **23,050행**의 교차키를 만들었다. 본문 유사도 0.8 이상은 **19,204행**이다. 나머지는 RT 길이·문자 인코딩·반복 문장 등이 달라 잠정 링크로만 보존한다. 별도 아카이브에서 근접 ID로 연결되지 않은 15행은 수집 범위·삭제·잘림 차이가 있는 미해결 대조 항목이며 곧바로 15개 누락 확정으로 세지 않았다. 두 아카이브는 같은 Twitter Archive 계열 자료일 수 있으므로 완전히 독립된 정답 자료라고 가정하지 않았다.
+
+관측된 최종 게시일은 2021-01-08이다. 별도 아카이브도 같은 날의 계정 정지를 설명한다. 따라서 1월 20일까지 매일 트윗이 있어야 한다고 판단하면 안 된다. 반대로 UTC 자정부터 재임기간을 잡아 취임식(2017-01-20 17:00 UTC) 이전 글 3개를 포함한 경계는 연구 모집단 정의에 명시해야 한다.
+
+### 6.2 12시간 어긋난 시각은 원천 파싱 문제를 시사한다
+
+생성시각은 `((int(id) >> 22) + 1288834974657)` 밀리초로 재구성했다. 비트 배치와 epoch는 [Twitter의 원 구현](https://raw.githubusercontent.com/twitter-archive/snowflake/snowflake-2010/src/main/scala/com/twitter/service/snowflake/IdWorker.scala)에서 확인했다. 하위 ID 반올림 손상은 초 경계 주변의 밀리초 오차를 만들 수 있지만 12시간 차이를 설명하지 못한다. 그래서 2초 초과를 충돌 기준으로 사용했다.
+
+원본 311행은 약 ±43,200초 차이가 나며, 기존 분류 안에는 19행이 있다. AM/PM 혼동과 일치하는 패턴이지만 당시 수집·변환 로그가 없어 **구체적인 발생 원인은 가설**로 남긴다. 원본 전체를 16시 기준으로 다시 매핑하면 **48행**의 거래일이 달라진다. 기존 분류에서는 아래 C466 한 행이 해당한다. 원본 전체의 거래일 변경에는 기존 분류 밖 글도 포함되므로, 19개 분류 시각 오류가 모두 이벤트일을 바꿨다고 표현하면 안 된다.
+
+### 6.3 고정 16시 규칙과 실제 조기폐장을 구분
+
+저장된 `date_utc`를 신뢰하면 1,246건 모두 프로젝트의 고정 16시 규칙을 정확히 재현한다. 그러나 NYSE의 실제 폐장시각을 적용하면 C1236은 다음 거래일로 이동해야 한다. 2020-12-24 13시 조기폐장은 [NYSE/ICE 당시 공식 공지](https://ir.theice.com/press/news-details/2019/NYSE-Group-Announces-2020-2021-and-2022-Holiday-and-Early-Closings-Calendar/default.aspx)와 대조했다. 시각 오류와 조기폐장을 함께 반영할 때 거래일 변경 대상은 총 2건이다.
+
+### 거래일 변경이 필요한 기존 분류
+
+| 글 | 저장 UTC | 검증 UTC·사유 | 기존 거래일 | 권고 거래일 |
+| --- | --- | --- | --- | --- |
+| C466 농가 재난지원법 | 2019-06-03 11:58:38 | Snowflake 23:58:38 UTC → NY 19:58, 장 마감 후 | 2019-06-03 | 2019-06-04 |
+| C1236 백신 보급 | 2020-12-24 20:30:57 | NY 15:30; 당일 13시 조기폐장 이후 | 2020-12-24 | 2020-12-28 |
+
+C1236은 분류 자체도 산업정책 호재로 보기 어려우므로, 향후 수정에서는 ‘날짜 이동’과 ‘분석 범위 제외/보건 테마 분리’를 따로 기록해야 한다. 현재 자료에서 매핑된 2행은 모두 Positive지만 실제 수정 후 신호일 수의 변화는 다른 글과의 동시 발생 여부에 따라 달라진다.
+
+### 6.4 25개 집계열의 일치는 라벨의 타당성을 보장하지 않는다
+
+원문 분류에서 Trade/Fed/Policy/Hard Tariff/Deal 관련 Count·Dummy·Pure Dummy·Net Signal·Retweet Sum을 독립 재집계했으며 25,175셀의 차이는 0이었다. 시장자료의 1,007개 거래일도 NYSE 일정과 일치한다. 반면 기존 라벨에서 발견한 범주·부호·누락 문제는 그대로 집계에 전달된다.
+
+추가로 Policy Pure Positive 137일 중 13일에는 Fed_Neg_Dummy도 1이다. Policy Pure Negative 113일 중 14일도 Fed 공격과 겹친다. 이는 ‘순수’가 **모든 정책 테마를 통틀어 호재만/악재만 있다는 뜻이 아니라, 현재 Policy 정의 안에서 반대 신호가 없다는 뜻**임을 보여 준다. 연준과 무역을 별도 층으로 분석하고 교차 노출을 통제해야 한다. 특히 Powell과의 우호적 회동이 Policy Positive에 포함되고 Fed 공격은 Policy Negative에서 제외되는 비대칭은 먼저 해소할 필요가 있다.
+
+## 7. 기존 시장효과 해석에서 유지할 것과 다시 검증할 것
+
+이 감사는 분류·연결 품질 검토이며 새 시장효과 추정이 아니다. 앞선 결과의 p값을 그대로 재인용해 수정된 라벨에서도 결론이 유지된다고 주장하지 않았다. S&P 500의 비유의는 ‘효과 없음’이나 ‘산업 간 상쇄가 입증됨’과 같지 않다. 표본 선택·신호 정의·산업별 차이·시각 오차가 정리된 후 다시 비교해야 한다.
+
+`empirical_context_sentiment.py`는 2·3일 복리수익률에서 전체 표본의 평균 복리수익률을 빼서 CAR라고 부른다. 고정 평균을 빼는 것은 같은 기간의 두 집단 평균차에는 영향을 주지 않지만, 사건별 기대수익률 모형에 기반한 표준적인 비정상수익률과는 다르다. 발표에서는 ‘전체 표본 평균을 차감한 누적수익률’로 명시하거나, 사건 전 추정구간으로 기대수익률을 추정하는 별도 모형을 사용해야 한다. 전체 표본 평균에는 사건 이후 정보가 들어가므로 실시간 전략 신호로 쓰지 않는다.
+
+TNX_Return은 금리 수준의 상대적 변화율이다. TNX_Return의 집단 평균차가 −0.573%p라고 해서 10년물 금리가 57.3bp 떨어졌다는 뜻은 아니다. 금리 충격은 `100 × (TNX_Close[t] − TNX_Close[t−1])` bp로 별도 계산해야 한다. CNY=X와 다른 자산도 각자의 세션·가격 확정 시각을 확인해야 하며 미국 16시 일괄 매핑이 모든 글로벌 자산에 정확하다고 가정해서는 안 된다.
+
+재추정 시에는 프로젝트 기준대로 T, T+1, CAR[0,+1], CAR[0,+2]를 모두 비교하고 Welch 검정(`equal_var=False`)을 유지한다. 신호가 연속한 날에는 누적 창이 겹치므로 관측 독립성 문제가 생긴다. 사건 클러스터 또는 시계열 블록을 반영한 추론을 보완하고, 다수 자산·기간·비교의 다중검정도 표시해야 한다. 부호와 표본을 시장 결과를 보고 조정하지 않는 것이 우선이다.
+
+## 8. 권고 분류체계와 수정 순서
+
+하나의 글에 하나의 유형·부호만 강제하기보다, 독립적인 필드를 두는 것이 재현성과 금융 해석을 함께 개선한다. 기존 열은 보존하고 새 버전의 감사 열을 추가하는 방식이 적절하다.
+
+### 권고 분류 필드
+
+| 필드 | 허용값·설계 | 목적 |
+| --- | --- | --- |
+| themes | Trade / Fed / ECB / FX / Firm / Farm / Fiscal / Health / Geopolitics (다중 선택) | 복합 주제 강제 단일화 방지 |
+| trade_stance | Escalation / Deescalation / Mixed / Neutral / Uncertain / NA | 협상갈등 방향을 별도 기록 |
+| monetary_stance | Easing / Tightening / Neutral / Uncertain / NA | Fed 비난 어조와 정책방향 분리 |
+| action_stage | Implemented / Announced / Conditional_Threat / Investigation / Talks / Advocacy / Commentary | 직접 조치와 수사·기대 구분 |
+| novelty | New / Update / Repeat / Retrospective / Unknown | 사후 홍보와 새 정보 구분 |
+| asset_exposure | 수혜·피해 기업/산업을 텍스트 근거로 복수 기록 | 시장 전체 단일 부호 강제 금지 |
+| context_status | Sufficient / Thread_Required / Link_Required / Media_Required | 본문 부족을 Noise와 분리 |
+| speaker_type | Trump_Original / Self_RT / Third_Party_RT / Quote | 최초 발언과 재배포 구분 |
+| source_time_verified | 원시 문자열 + Snowflake + 검증 근거 | 정확한 정보집합 시점 보존 |
+| event_id / event_first_public_at | 동일 정책사건 묶음 / 최초 공개시각 | 스레드·재게시 중복과 시점 편향 관리 |
+| review_state | Retain / Revise / Ambiguous / Context_Required / Out_Of_Scope | 미확정을 확정값으로 덮지 않음 |
+
+수정은 다음 순서로 진행하는 것이 타당하다.
+
+1. 기존 세 파일의 체크섬을 고정하고, 원래 ID와 문자열 정밀 ID·감사용 복합키를 별도 보관한다. 생성시각과 충돌하는 311행 및 조기폐장일의 매핑부터 정리한다.
+2. 기존 연구의 범위를 무역·연준 중심으로 둘지, 기업·거시·재정·보건까지 포함할지 명시한다. 연구 범위를 넓히면 거시·재정 후보 858건뿐 아니라 키워드 없는 글도 포함한 전체 텍스트 분류가 필요하다.
+3. 추가 분류 필요 목록과 기존 수정 권고를 다축 체계로 재코딩한다. 애매한 글은 Uncertain/Context_Required로 남기고, 독립 평가자 2인이 같은 코드북으로 판단한 뒤 불일치를 조정한다. 현재 감사만으로 평가자 간 일치도·정확도를 산출하지 않는다.
+4. 같은 정책의 반복 게시와 스레드를 사건 단위로 연결하되 최초 공개시각을 보존한다. 최종 RT 수·VIX·수익률을 사건 선정 기준으로 쓰지 않는다.
+5. 1,007일의 기존 열을 보존한 파생 데이터에 재집계하고, 동일 표본·기간·단위를 유지해 T/T+1/2일/3일 반응과 표본수 변화를 함께 보고한다. 재추정 전에는 기존 발표 결론을 강화하는 근거로 이 감사를 사용하지 않는다.
+
+## 9. 재현 방법과 산출물
+
+저장소 루트에서 `python scripts/audit_tweet_archive_sources.py`로 저장된 공개 참조 사본과의 교차키를 재현하고, `python scripts/audit_context_classification.py`를 실행하면 원본·분류·시장의 자동 감사 CSV와 JSON이 생성된다. 그 뒤 `python scripts/build_tweet_audit_report.py`를 실행하면 명시적 검토 결정과 연결한 원장 및 이 보고서가 생성된다. 참조 사본이 없을 때만 첫 스크립트에 `--download-missing`을 지정해 공개 URL에서 받는다. NYSE 일정 검증에는 requirements에 명시한 `pandas_market_calendars`를 사용한다. 난수 시드는 42이며 표본 추출은 하지 않았다.
+
+검토 결정은 `review_decisions.json`에 기록되어 있고, 원문 1,246건을 검토했다는 서술은 이 작업의 실제 열람 기록을 뜻한다. 재실행 스크립트가 의미 판독을 다시 수행하는 것은 아니다. 기존 판정 근거를 데이터에 연결해 재현할 뿐이다. 원본 스냅샷이나 결정 파일이 바뀌면 보고서의 버전과 수치를 함께 갱신해야 한다.
+
+공개 원본과 별도 아카이브는 이 폴더에 참조용 사본을 저장했다. 다운받은 시점의 파일 해시를 manifest에 보관했으며, 정밀 ID 교차키는 근접 ID와 본문 유사도에 기초한 잠정 연결이다. 링크 열람 성공이나 26,239건의 정확한 ID 복원을 주장하지 않는다. 기사·영상·보호된 데이터에 대한 접근을 우회하지 않았다.
+
+### 검토 근거 파일
+
+| 파일 | 내용 |
+| --- | --- |
+| full_corpus_review_coverage.csv | 26,239행 전수 스크리닝과 개별 의미 열람 여부 |
+| existing_review_ledger.csv | 1,246행 기존 라벨·제안·이유·원문·시각 검증 |
+| omission_review_ledger.csv | 437행 확대 후보, 포함 필요·제외 예시·보류 구분 |
+| confirmed_scope_omissions.csv | 추가 분류가 필요한 59행 최소 확인 목록 |
+| raw_timestamp_audit.csv | 모든 원문 시각과 Snowflake 차이, 311행 경보 |
+| trading_date_audit.csv | 고정 16시·실제 NYSE 폐장·Snowflake별 매핑 비교 |
+| daily_aggregation_mismatches.csv | 현재 라벨을 재집계한 25열 불일치 목록(0행) |
+| exact_id_crosswalk.csv | 별도 아카이브와의 근접 ID·본문 유사도·URL 대조 |
+| audit_summary.json / review_summary.json | 자동 및 개별 검토의 집계값 |
+| review_decisions.json | 명시적 범주 수정·애매 사례·추가 분류 필요 결정 |
+| source_manifest.json | 입력·외부 참조의 SHA-256 및 출처 |
+
+## 10. 출처와 증거 한계
+
+**[S1] 로컬 원문** `data/trump_tweets_1st_term_raw.csv`. 저장된 게시시각 기준 2017-01-20~2021-01-08, 26,239행. 입력 원문을 그대로 보존했다.
+
+**[S2] 기존 문맥 분류** `data/trump_policy_tweets_context_classified.csv`, 1,246행. 기존 신호·세부유형·한국어 근거는 감사 대상이지 독립 정답이 아니다. 본문의 모든 트윗 인용은 사용자가 제공한 로컬 원문에서 가져왔다.
+
+**[S3] 시장 자료와 생성 코드** `data/trump_market_extended_data.csv`, `scripts/audit_trade_tweets.py`, `scripts/empirical_context_sentiment.py`, `scripts/pipeline_extended.py`. 현재 집계·후보 선택·CAR 정의를 확인했다. 시장 가격을 새로 내려받거나 원자료의 가격 정확성까지 감사하지 않았다.
+
+**[S4] 기존 수집 원본** [ttzztztz/TrumpTwitterArchive](https://github.com/ttzztztz/TrumpTwitterArchive). 공개 JSON을 내려받아 기간 제한 후 날짜·본문 다중집합을 로컬과 대조했다. 상위 원본과의 동일성만 확인한 것이며, 공통 오류까지 제거되는 것은 아니다.
+
+**[S5] 보조 아카이브** [MarkHershey/CompleteTrumpTweetsArchive](https://github.com/MarkHershey/CompleteTrumpTweetsArchive). 공개 CSV의 문자열 URL 및 본문으로 ID 교차키를 작성했다. 인코딩·잘림·중복·수집 범위가 달라 독립 정답으로 간주하지 않았다.
+
+**[S6] X 식별자 문서 및 Twitter 원 구현** [X IDs](https://docs.x.com/fundamentals/x-ids), [IdWorker.scala](https://raw.githubusercontent.com/twitter-archive/snowflake/snowflake-2010/src/main/scala/com/twitter/service/snowflake/IdWorker.scala). ID의 정밀 보관 원칙과 생성시각 계산식을 검증했다.
+
+**[S7] 거래소 일정** [NYSE/ICE 2020~2022 휴장·조기폐장 공지](https://ir.theice.com/press/news-details/2019/NYSE-Group-Announces-2020-2021-and-2022-Holiday-and-Early-Closings-Calendar/default.aspx), [NYSE 정규 거래시간](https://www.nyse.com/trade/hours-calendars). 2020-12-24 조기폐장 사례와 정규 16시 마감을 확인했다. 전체 일정 재계산에는 설치된 NYSE 캘린더 패키지를 사용했으며 모든 과거 날짜를 별도 공식 공지와 하나씩 대조한 것은 아니다.
+
+**감사일:** 2026-11-02, Asia/Seoul. 현재 보고서의 완성은 정해진 감사 범위의 결과를 문서화했다는 의미다. 원글 전량의 의미 판정, 모든 매체 복원, 수정 라벨 확정, 수정 후 시장효과 검증이 모두 완료됐다는 뜻은 아니다.

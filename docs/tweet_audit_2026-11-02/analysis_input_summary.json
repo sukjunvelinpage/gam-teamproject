@@ -1,0 +1,65 @@
+{
+  "tweet_rows": 26239,
+  "legacy_signal_counts": {
+    "nan": 24993,
+    "Noise": 468,
+    "Negative": 421,
+    "Positive": 357
+  },
+  "strict_review_state": {
+    "not_reviewed_under_conservative_standard": 20232,
+    "hold": 3389,
+    "excluded_core": 2616,
+    "provisional_include": 2
+  },
+  "strict_provisional_flag_counts": {
+    "<NA>": 23621,
+    "0": 2616,
+    "1": 2
+  },
+  "additional_tone_eligible": 4377,
+  "additional_tone_status": {
+    "out_of_scope": 21862,
+    "reviewed": 4377
+  },
+  "additional_tone_counts": {
+    "nan": 21862,
+    "positive": 2532,
+    "negative": 1047,
+    "mixed": 507,
+    "neutral": 291
+  },
+  "time_conflict": 311,
+  "unmapped_trading_date": 311,
+  "daily_rows": 1007,
+  "daily_provisional_event_counts": {
+    "<NA>": 990,
+    "0": 15,
+    "1": 2
+  },
+  "provisional_rows": [
+    {
+      "raw_row": "5605",
+      "trading_date": "2019-12-02",
+      "source_group": "existing_1246"
+    },
+    {
+      "raw_row": "24641",
+      "trading_date": "2019-05-06",
+      "source_group": "existing_1246"
+    }
+  ],
+  "input_sha256": {
+    "data\\trump_policy_tweets_integrated_review.csv": "07eb78f49705bc35e1eb0110a402429732206cfcb3d37cbfc6a0245fa9c0c3a6",
+    "docs\\tweet_audit_2026-11-02\\conservative_review_integrated_2026-11-03.csv": "e5fd7b60c87222dc034cd03161383c74bac40d1cddfd6388d15cc88f8b8c7db0",
+    "docs\\tweet_audit_2026-11-02\\raw_timestamp_audit.csv": "5c13db233bb4516fb5e742e0cd719aa3bf40b5fcf44f649f86f8f78427ca00c8",
+    "data\\trump_market_extended_data.csv": "2c8345e71b25c55417530f405f4db1edf1e7cd11e7358e59903ec6300de9412f"
+  },
+  "tone_source_sha256": {
+    "docs\\tweet_audit_2026-11-02\\tone_core_manual.csv": "a58f20cec3d2791188eb81ab866c26de633fd38f032fc46a80d007c4d2580db4",
+    "docs\\tweet_audit_2026-11-02\\tone_extended_a.csv": "ad34c7b0d8f450d72cd47d9a13332fcb881f6ce5550deea4322a82fb81333244",
+    "docs\\tweet_audit_2026-11-02\\tone_extended_b.csv": "c47d95777a0e89deb12252310fe5740340012be636f18f14291481a6cd26816a",
+    "docs\\tweet_audit_2026-11-02\\tone_extended_c.csv": "778d5fa8bb9563752fe3283952254690b434ccf6db72ec4a9e984702d00d69a1",
+    "docs\\tweet_audit_2026-11-02\\tone_screen_manual.csv": "71e8bb972e2f9052eaac9779f28e5664a702871cedabb8e93960767a5d545ffa"
+  }
+}

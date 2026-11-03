@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-02",
+  "checks": [
+    "원본 3개 SHA-256 보존",
+    "1246/437/26239/59 행수 및 키 대조",
+    "152개 검토 이슈·분류별 합계 대조",
+    "기존/후보 원문 집합 배타성",
+    "보고서 주요 수치 및 UTF-8 확인",
+    "독립 아카이브 대조 스크립트 재실행",
+    "Python 3개 스크립트 py_compile"
+  ],
+  "status": "passed",
+  "html_build_status": "failed: Invalid prebuilt Data runtime: Invalid prebuilt source path assets\\visualize-data\\assets\\cdn.json",
+  "html_render_check": "not performed; Markdown report is the delivered format"
+}
