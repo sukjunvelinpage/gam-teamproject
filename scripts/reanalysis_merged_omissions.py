@@ -15,6 +15,7 @@
 출력
     docs/reanalysis_2026-11-10/reanalysis_full.csv     : 전체 검정 결과 (기존 vs 병합)
     docs/reanalysis_2026-11-10/reanalysis_robustness.csv : 핵심 결과의 강건성 점검
+    docs/reanalysis_2026-11-10/reanalysis_covid.csv      : 코로나 시기 통제 방식 5가지 점검 (병합 기준)
 
 실행
     python scripts/build_merged_market_variables.py   # Merged_* 열이 없을 때 먼저 실행
@@ -144,6 +145,61 @@ def robustness(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+COVID_START, COVID_END = "2020-02-20", "2020-06-30"  # S&P 500 고점(2/19) 직후 ~ VIX 진정 시작(6월 말)
+
+COVID_KEY = [
+    ("A_무역_순수부정_vs_무무역일", "SP500", "Day_T"),
+    ("A_무역_통합_vs_무무역일", "VIX", "Day_T"),
+    ("A_무역_순수부정_vs_무무역일", "VIX", "Day_T"),
+    ("A_무역_소음만_vs_무무역일", "VIX", "Day_T"),
+    ("A_무역_순수부정_vs_무무역일", "BA", "Day_T"),
+    ("A_무역_순수부정_vs_무무역일", "AAPL", "Day_T"),
+    ("A_무역_순수부정_vs_무무역일", "SOXX", "Day_T"),
+    ("A_무역_순수부정_vs_무무역일", "TNX", "Day_T"),
+    ("A_무역_순수부정_vs_무무역일", "CNY", "CAR[0,+1]"),
+    ("A_무역_순수긍정_vs_무무역일", "AAPL", "Day_T"),
+    ("A_무역_순수긍정_vs_무무역일", "FXI", "CAR[0,+1]"),
+    ("C_협상진전_vs_관세위협", "FXI", "CAR[0,+1]"),
+    ("C_협상진전_vs_관세위협", "CNY", "CAR[0,+1]"),
+]
+
+
+def covid_robustness(df: pd.DataFrame) -> pd.DataFrame:
+    """병합 기준 핵심 결과를 코로나 시기 통제 방식 5가지로 다시 검정한다.
+
+    - 코로나 급락기 제외: 2020-02-20 ~ 2020-06-30 (92거래일)
+    - 2020년 이후 제외
+    - 변동성 표준화: 수익률 / 전날까지 20거래일 표준편차 (2일 누적은 √2배). 사전 정보만 쓴다
+    - 변동성 표준화 + 코로나 급락기 제외
+    - 월 고정효과, 순위 검정(Mann-Whitney U, 차이는 중앙값 차이)
+    """
+    date = pd.to_datetime(df["Date"])
+    covid = (date >= COVID_START) & (date <= COVID_END)
+    pre2020 = date < "2020-01-01"
+    month = date.dt.to_period("M")
+    comps = comparisons(df, "Merged_")
+    rows = []
+    for name, asset, win in COVID_KEY:
+        ev, ct = comps[name]
+        r = df[f"{asset}_Return"]
+        s = windows(r)[win]
+        vol = r.rolling(20).std().shift(1) * 100 * (np.sqrt(2) if win != "Day_T" else 1)
+        z = s / vol
+        fe = s - s.groupby(month).transform("mean")
+        x, y = s[ev].dropna(), s[ct].dropna()
+        row = {"비교": name, "자산": asset, "윈도우": win, "N_이벤트": len(x), "N_이벤트_코로나기간": int((ev & covid).sum())}
+        for label, series, a, b in [
+            ("기준", s, ev, ct), ("코로나제외", s, ev & ~covid, ct & ~covid), ("2020제외", s, ev & pre2020, ct & pre2020),
+            ("변동성표준화", z, ev, ct), ("변동성표준화_코로나제외", z, ev & ~covid, ct & ~covid), ("월FE", fe, ev, ct),
+        ]:
+            diff, p, _, _ = welch(series, a, b)
+            row[f"{label}_차이"], row[f"{label}_p"] = diff, p
+        row["순위검정_중앙값차이"] = x.median() - y.median()
+        row["순위검정_p"] = stats.mannwhitneyu(x, y).pvalue
+        rows.append(row)
+    return pd.DataFrame(rows)
+
+
 def main():
     df = pd.read_csv(MARKET_PATH)
     assert "Merged_Trade_Tweet_Dummy" in df.columns, "먼저 scripts/build_merged_market_variables.py를 실행하세요"
@@ -153,6 +209,8 @@ def main():
     full.to_csv(OUT_DIR / "reanalysis_full.csv", index=False, encoding="utf-8-sig")
     rob = robustness(df)
     rob.to_csv(OUT_DIR / "reanalysis_robustness.csv", index=False, encoding="utf-8-sig")
+    cov = covid_robustness(df)
+    cov.to_csv(OUT_DIR / "reanalysis_covid.csv", index=False, encoding="utf-8-sig")
 
     pd.set_option("display.width", 250)
     wide = rob.pivot_table(index=["비교", "자산", "윈도우"], columns="기준",
@@ -160,6 +218,9 @@ def main():
     print(wide.round(3).to_string())
     print("\nBH(q<0.10) 통과 건수:")
     print(full.groupby(["비교", "기준"])["BH_통과"].sum().unstack().to_string())
+    print(f"\n코로나 시기 점검 (병합 기준, 코로나 급락기 {COVID_START} ~ {COVID_END}):")
+    pcols = ["비교", "자산", "윈도우"] + [c for c in cov.columns if c.endswith("_p")]
+    print(cov[pcols].round(3).to_string(index=False))
 
 
 if __name__ == "__main__":
