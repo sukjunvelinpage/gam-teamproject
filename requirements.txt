@@ -4,3 +4,4 @@ yfinance>=0.2.30
 requests>=2.28.0
 scipy>=1.10.0
 pandas_market_calendars>=4.0.0  # 감사용 NYSE 휴장·조기 폐장 시각 검증
+openpyxl>=3.1.0  # 트윗 분류 검수용 엑셀 생성·읽기
