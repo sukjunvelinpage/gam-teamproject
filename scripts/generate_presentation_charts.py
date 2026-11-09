@@ -2,6 +2,7 @@
 발표용 차트 4종 생성 스크립트.
 
 - 입력: data/trump_market_analysis_input.csv (1,007거래일)
+- 분류 기준: 기존 1,246건 + 누락 후보 138건을 합친 병합 변수(Merged_*). 먼저 scripts/build_merged_market_variables.py 실행
 - 출력: presentation_charts/chart1~4 PNG (300 DPI)
 - 모든 수치와 표본 수는 실행 시 데이터에서 계산한다. 차트 안에 값을 직접 적지 않는다.
 - 검정: Welch's t-test, 유의수준 표기 p<0.1(*), p<0.05(**), p<0.01(***)
@@ -37,7 +38,8 @@ COLOR_BASE = "#c3c2b7"
 COLOR_SURFACE = "#fcfcfb"
 
 BASIS_TRADE = "대조군: 무역 트윗이 없는 날 | Welch's t-test | 가는 선: 95% 신뢰구간 | *p<0.1, **p<0.05, ***p<0.01"
-EXPLORATORY = "다중검정(BH) 보정 후 유의한 결과는 없어 탐색적 결과로 해석"
+PREFIX = "Merged_"  # 기존 1,246건만 쓰려면 ""로 바꾼다
+EXPLORATORY = "검정 64개 BH 보정(q<0.10) 시 통과는 VIX 통합 등 일부뿐이어서 탐색적 결과로 해석"
 
 
 def windows(returns: pd.Series) -> dict:
@@ -70,9 +72,9 @@ def welch(series: pd.Series, event: pd.Series, control: pd.Series) -> dict:
 
 
 def build_masks(df: pd.DataFrame) -> dict:
-    """저장된 통합 결과의 무역 트윗일을 톤별로 나눈다."""
-    trade = df["Trade_Tweet_Dummy"] == 1
-    has_pos, has_neg = df["Trade_Pos_Count"] > 0, df["Trade_Neg_Count"] > 0
+    """무역 트윗일(1,246건 + 누락 후보 138건 병합 기준)을 톤별로 나눈다."""
+    trade = df[f"{PREFIX}Trade_Tweet_Dummy"] == 1
+    has_pos, has_neg = df[f"{PREFIX}Trade_Pos_Count"] > 0, df[f"{PREFIX}Trade_Neg_Count"] > 0
     return {
         "trade": trade,
         "ctrl": ~trade,
@@ -80,7 +82,7 @@ def build_masks(df: pd.DataFrame) -> dict:
         "neg": trade & has_neg & ~has_pos,
         "noise": trade & ~has_pos & ~has_neg,
         "fed": df["Fed_Tweet_Dummy"] == 1,
-        "fed_neg": df["Fed_Neg_Dummy"] == 1,
+        "fed_neg": df[f"{PREFIX}Fed_Neg_Dummy"] == 1,
     }
 
 
@@ -199,7 +201,7 @@ def chart2_industry_asymmetry(df: pd.DataFrame, m: dict) -> None:
     ax.barh([np.nan], [np.nan], color=COLOR_NEG, label=f"순수 부정 ({m['neg'].sum()}일)")
     ax.legend(loc="upper right", frameon=False, fontsize=11, ncol=2, bbox_to_anchor=(1.0, 1.07))
     finish(fig, "통합 분석에 가려졌던 부정 트윗일의 당일 약세",
-           "7개 자산 중 보잉·반도체·애플만 p<0.05로 약세이고, 철강의 수혜 반응은 확인되지 않음",
+           "보잉·반도체·애플이 p<0.05로 약세. 관세 수혜주로 예상한 철강도 오르지 않고 약세 경향",
            f"{BASIS_TRADE}\n{EXPLORATORY}", "chart2_industry_asymmetry.png")
 
 
@@ -224,7 +226,7 @@ def chart3_fed_bonds(df: pd.DataFrame, m: dict) -> None:
 def chart4_international_spillover(df: pd.DataFrame, m: dict) -> None:
     """위안화, 중국 주식, 금의 반응을 톤별로 비교한다."""
     panels = [("CNY", "CAR[0,+1]", "USD/CNY CAR[0,+1]"),
-              ("FXI", "당일", "중국 대형주(FXI) 당일"),
+              ("FXI", "CAR[0,+1]", "중국 대형주(FXI) CAR[0,+1]"),
               ("GLD", "당일", "금(GLD) 당일")]
     labels = tone_labels(m)[:3]
     fig, axes = plt.subplots(1, 3, figsize=(15, 6.2))
@@ -234,8 +236,8 @@ def chart4_international_spillover(df: pd.DataFrame, m: dict) -> None:
         draw_columns(ax, results, labels, [COLOR_LUMP, COLOR_POS, COLOR_NEG], title)
         for key, r in zip(["통합", "긍정", "부정"], results):
             report("chart4", f"{title} {key}", r)
-    finish(fig, "위안화는 부정 트윗에, 중국 주식은 긍정 트윗에 반응했다",
-           "USD/CNY 상승은 위안화 약세를 뜻함. 금은 긍정·부정일 모두 상승해 톤별 차이가 뚜렷하지 않음",
+    finish(fig, "위안화는 부정 트윗일에 약세, 중국 주식의 긍정일 강세는 약하다",
+           "USD/CNY 상승은 위안화 약세를 뜻함. FXI 긍정일 반응은 p<0.1 수준이며, 금은 톤별 차이가 뚜렷하지 않음",
            f"{BASIS_TRADE}\n패널마다 세로축 범위가 다름 | {EXPLORATORY}", "chart4_international_spillover.png")
 
 

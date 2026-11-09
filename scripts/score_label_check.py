@@ -11,6 +11,8 @@
 실행 (한국어판·베트남어판 모두 같은 명령)
     python scripts/score_label_check.py                       # 기본 경로의 한국어판 엑셀 사용
     python scripts/score_label_check.py 채운파일.xlsx           # 다른 파일 지정 (예: ..._vi.xlsx)
+    python scripts/score_label_check.py docs/label_check/omission_label_check_132.xlsx  # 누락 후보 검수
+      (누락 후보는 data/trump_omission_candidates_138_classified.csv의 LLM 분류와 비교)
 """
 
 import sys
@@ -21,6 +23,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 TWEETS_PATH = ROOT / "data" / "trump_tweets_analysis_input.csv"
 DEFAULT_XLSX = ROOT / "docs" / "label_check" / "label_check_sample_100.xlsx"
+OMISSION_PATH = ROOT / "data" / "trump_omission_candidates_138_classified.csv"
 OUT_DIR = ROOT / "docs" / "label_check"
 
 LLM_TO_KO = {"Positive": "긍정", "Negative": "부정", "Noise": "소음"}
@@ -54,6 +57,12 @@ def main(xlsx_path: Path):
     done = human[human["내 분류"].isin(LABELS)].copy()
 
     tweets = pd.read_csv(TWEETS_PATH, low_memory=False, usecols=["audit_key", "legacy_signal", "legacy_subtype", "existing_context_reason_ko"])
+    tweets = tweets[tweets["legacy_signal"].notna()]
+    # 누락 후보 138건 검수 파일이면 scripts/classify_omission_candidates.py의 분류를 기준으로 쓴다
+    if OMISSION_PATH.exists():
+        om = pd.read_csv(OMISSION_PATH, encoding="utf-8-sig", usecols=["audit_key", "signal", "subtype", "reason_ko"])
+        om = om.rename(columns={"signal": "legacy_signal", "subtype": "legacy_subtype", "reason_ko": "existing_context_reason_ko"})
+        tweets = pd.concat([tweets, om[~om["audit_key"].isin(tweets["audit_key"])]])
     merged = done.merge(tweets, on="audit_key", how="left", validate="one_to_one")
     assert merged["legacy_signal"].notna().all(), "audit_key가 원본과 맞지 않는 행이 있습니다 (열을 수정했는지 확인)"
     merged["LLM 분류"] = merged["legacy_signal"].map(LLM_TO_KO)
