@@ -2,7 +2,19 @@
 
 > **숭실대학교 글로벌금융자산관리 (김수현 교수님) 팀프로젝트 1조**  
 > **발표 대주제:** *"트윗 한 줄에 시장이 흔들렸을까? — 지수는 조용했고, 반응은 '무역 갈등 트윗'과 '중국 노출 자산'에만 있었다"*  
-> **핵심 질문:** *"트럼프 1기 트윗이 금융시장에 영향을 주었다면, 어떤 트윗이 어떤 자산을 움직였는가?"*
+> **핵심 질문:** *"트럼프 1기 트윗이 금융시장에 영향을 주었다면, 어떤 트윗이 어떤 자산을 움직였는가?"*  
+> **발표 메시지 (스토리보드 v2):** *"무역 트윗은 S&P 500을 움직이지 못했다. 충격은 지수 안쪽(중국 노출 기업)과 바깥(미 국채 금리·위안화)으로 흩어졌다. 그러니 지수가 아니라 '노출'을 점검하라."*
+
+### 📅 발표 준비 현황 (2026-11-21 기준)
+
+| 항목 | 상태 | 위치 |
+| :--- | :--- | :--- |
+| 중간 보고서 | 완료 (11/18 최종 수정) | 구글 독스 「트럼프 1기 무역 트윗과 글로벌 자산 반응_중간 보고서」 |
+| 발표 스토리보드 v2 (15장, 13분 30초) | 완료, 팀 확인 대기 | [`docs/presentation_storyboard_15min.md`](docs/presentation_storyboard_15min.md) · 구글 독스 「발표 스토리보드 v2 (15분)」 |
+| 15분 발표 대본 | **재작성 예정** (기존 12장 대본은 폐기) | `docs/presentation_script_15min.md` |
+| 발표용 차트 | **재작성 예정** (스토리보드 4절의 C1~C9) | `presentation_charts/` |
+| PPT 제작 | 11/24~25 예정 | — |
+| 제출 / 발표 | 11/30(월) 19:00 메일 제출 / 12/1(화) 발표 | [`docs/PRESENTATION_SUBMISSION_NOTICE.md`](docs/PRESENTATION_SUBMISSION_NOTICE.md) |
 
 ---
 
@@ -13,9 +25,9 @@
 | 찾으시는 목적 / 작업 | 바로가기 폴더 | 핵심 파일 및 설명 |
 | :--- | :---: | :--- |
 | 📊 **데이터셋 조회 및 다운로드**<br>- 1,007 거래일 통합 금융 시계열<br>- 문맥 기반 긍정/부정/소음 트윗<br>- 기존 버전 아카이브 | [`data/`](data) | • **`trump_market_analysis_input.csv` (핵심 일별)**: 1,007거래일 금융 시계열 + 트윗 일별 변수. **발표 기준은 `Merged_*` 열** (기존 1,246건 + 누락 후보 138건)<br>• **`trump_tweets_analysis_input.csv` (핵심 트윗)**: 26,239건 원문과 기존 1,246건 분류(`legacy_signal`)<br>• **`trump_omission_candidates_138_classified.csv`**: 누락 후보 138건의 긍정/부정/소음 분류와 판정 사유<br>• `archive/`: 과거 중간 산출물 및 이전 버전 데이터셋 보관 |
-| ⚙️ **파이프라인 실행 및 분석 코드** | [`scripts/`](scripts) | • `classify_omission_candidates.py`: 누락 후보 138건을 1,246건과 같은 기준으로 분류<br>• `build_merged_market_variables.py`: 1,246건 + 138건 병합 일별 변수(`Merged_*`) 생성<br>• `reanalysis_merged_omissions.py`: 기존 vs 병합 기준 재분석·강건성 점검<br>• `generate_presentation_charts.py`: 발표용 차트 4종 (병합 기준)<br>• `empirical_context_sentiment.py`: 기존 1,246건 기준 검정<br>• `archive/compare_1246_vs_4377.py`: **폐기된** 4,377건 비교 (기록용) |
-| 🖼️ **발표용 고해상도 차트 이미지** | [`presentation_charts/`](presentation_charts) | • `chart1_core_puzzle.png`: S&P 500과 VIX의 통합 vs 톤별 반응<br>• `chart2_industry_asymmetry.png`: 기업·섹터의 통합 vs 순수 부정일 당일 반응<br>• `chart3_fed_bonds.png`: 연준 트윗일 vs 무역 트윗일의 10년물 금리 반응<br>• `chart4_international_spillover.png`: 위안화, 중국 주식, 금의 톤별 반응 |
-| 📝 **발표 준비 및 연구 보고서** | [`docs/`](docs) | • **`PROJECT_STATUS_AND_FINAL_STORYLINE.md`**: 분석 흐름 정리, 최종 주제·결론, 검증 결과, 예상 Q&A<br>• **`PRESENTATION_SUBMISSION_NOTICE.md`**: 발표일(12/1 화)·제출 마감(11/30 월 19시)·평가 기준 공지<br>• `presentation_script_15min.md`: 12장 15분 발표 대본<br>• `TWEET_CLASSIFICATION_METHODOLOGY_QA.md`: 분류 방법론·기준 Q&A<br>• `reanalysis_2026-11-10/`: 기존 vs 병합 재분석 결과표<br>• `label_check/`: 팀원 블라인드 검수 엑셀(1,246건 중 100건, 누락 후보 132건) |
+| ⚙️ **파이프라인 실행 및 분석 코드** | [`scripts/`](scripts) | • `classify_omission_candidates.py`: 누락 후보 138건을 1,246건과 같은 기준으로 분류<br>• `build_merged_market_variables.py`: 1,246건 + 138건 병합 일별 변수(`Merged_*`) 생성<br>• `reanalysis_merged_omissions.py`: 기존 vs 병합 기준 재분석·강건성 점검 (월 고정효과·코로나 통제 5가지)<br>• `multiple_testing_placebo.py`: 핵심 가설군 5개 보정(Bonferroni·Holm·BH)과 위약 검정 1,000회<br>• `mixed_day_robustness.py`: 혼재일 처리 규칙을 바꾼 강건성 점검 (Q&A 대비)<br>• `korea_spillover_analysis.py`: 한국 시장 전이 분석 (보조 근거)<br>• `generate_presentation_charts.py`: 이전 구성의 발표용 차트 4종 (병합 기준)<br>• `empirical_context_sentiment.py`: 기존 1,246건 기준 검정<br>• `archive/compare_1246_vs_4377.py`: **폐기된** 4,377건 비교 (기록용) |
+| 🖼️ **발표용 고해상도 차트 이미지** | [`presentation_charts/`](presentation_charts) | • `chart1_core_puzzle.png`: S&P 500과 VIX의 통합 vs 톤별 반응<br>• `chart2_industry_asymmetry.png`: 기업·섹터의 통합 vs 순수 부정일 당일 반응<br>• `chart3_fed_bonds.png`: 연준 트윗일 vs 무역 트윗일의 10년물 금리 반응<br>• `chart4_international_spillover.png`: 위안화, 중국 주식, 금의 톤별 반응<br>• `chart5_korea_spillover.png`: 한국 시장 전이 (보조 근거)<br>⚠ chart1~4는 이전 12장 구성 기준입니다. 특히 chart2는 기각된 '철강 상쇄' 가설을 전제로 합니다. 스토리보드 v2용 차트(C1~C9)는 새로 그립니다. |
+| 📝 **발표 준비 및 연구 보고서** | [`docs/`](docs) | • **`PROJECT_STATUS_AND_FINAL_STORYLINE.md`**: 분석 흐름 정리, 최종 주제·결론, 검증 결과, 예상 Q&A<br>• **`presentation_storyboard_15min.md`**: 발표 스토리보드 v2 (15장, 13분 30초, 백업 슬라이드·필요 차트 목록 포함)<br>• **`PRESENTATION_SUBMISSION_NOTICE.md`**: 발표일(12/1 화)·제출 마감(11/30 월 19시)·평가 기준 공지<br>• `presentation_script_15min.md`: ⚠ 이전 12장 대본 (폐기, 스토리보드 v2 기준으로 재작성 예정)<br>• `LITERATURE_REVIEW.md`: 선행연구 정리 (Fama 1965, Born 외 2017, Wolff 2019)<br>• `TWEET_CLASSIFICATION_METHODOLOGY_QA.md`: 분류 방법론·기준 Q&A<br>• `reanalysis_2026-11-10/`: 병합 기준 재분석·코로나 통제·다중검정·위약 검정·혼재일 점검 결과표<br>• `korea_spillover_2026-11-11/`: 한국 시장 전이 분석 (보조 근거)<br>• `hands_on_2026-11-20/`: 원데이터 실습 자료 (엑셀로 핵심 결과 직접 재현)<br>• `meeting_notes/`: 팀 회의록<br>• `label_check/`: 팀원 블라인드 검수 엑셀(1,246건 중 100건, 누락 후보 132건) |
 | 🔍 **트윗 라벨링 & 웹 감사 도구** | [`Draft/`](Draft) | • `index.html`: 트윗 스와이프 감사 웹앱<br>• `server.py`: 로컬 감사 결과 자동 저장 서버<br>• `merge_audits.py`: 팀원 간 교차 검수 머지 도구 |
 | 📜 **협업 규칙** | **루트 (`/`)** | • `AGENTS.md`: AI 에이전트 행동 지침, 발표·제출 조건<br>• `requirements.txt`: 필수 파이썬 라이브러리 목록 |
 
@@ -104,6 +116,7 @@
   * 코로나 급락기를 빼면 **FXI 긍정일 반응이 오히려 유의해집니다**($p=0.078 \to 0.009$). 코로나 기간은 긍정 쪽 결과를 가리고 있었습니다.
   * 소음일 VIX 상승도 코로나 급락기를 빼고 유지되므로, "불안한 시기에 무역 트윗이 많았다"는 해석은 코로나만의 현상이 아닙니다.
   * 본 분석은 결과를 보고 기간을 자르지 않도록 전체 기간을 쓰고, 코로나 점검은 강건성 검증으로 제시합니다.
+* **혼재일 처리 규칙 점검:** 부정이 더 많은 혼재일 9일을 넣어도(132일) 보잉 $-0.77\%p$ ($p=0.002$), 금리 $-0.73\%$ ($p=0.007$)로 같고, 부정이 있는 날을 모두 넣어도(146일) 보잉 $p=0.006$, 금리 $p=0.047$로 유지됩니다 (`scripts/mixed_day_robustness.py`).
 * **철강:** 부정일 Nucor $-0.295\%p$ ($p=0.156$), SLX $-0.348\%p$ ($p=0.091$)로 관세 수혜 반응은 없고 오히려 약세 경향입니다.
 * **연준 트윗:** 연준 트윗일 금리 $-0.208\%p$ ($p=0.760$), 연준 공격일 $+0.074\%p$ ($p=0.938$)로 비유의입니다.
 * **10년물 금리 단위:** 표의 값은 금리 수준의 차이가 아니라 금리의 **일별 변화율(%)** 차이입니다. 발표에서는 bp로 말합니다.
@@ -114,10 +127,12 @@
 
 ## 5. 교수님 평가 기준 부합 및 글로벌 자산배분(GAM) 시사점
 
-1. **이해도 우선:** 복잡한 계량 수식 대신, 직관적인 **[트윗 발생일 vs 미발생일] 평균 차이 검정($t$-test)** 및 4장의 핵심 비교 차트 중심으로 구성.
+1. **이해도 우선:** 복잡한 계량 수식 대신, 직관적인 **[트윗 발생일 vs 미발생일] 평균 차이 검정($t$-test)** 과 결론을 먼저 보여 주는 증권사 리포트식 구성 (스토리보드 v2).
 2. **선명한 단 하나의 스토리:**  
-   *"지수는 소음이었다. 시장은 무역 갈등을 키우는 트윗에만, 중국에 노출된 기업·금리·위안화에서 하루 동안 반응했다."*  
-   (핵심 근거: 보잉·10년물 금리·위안화의 부정일 반응. 코로나 시기를 어떻게 통제해도 유지됨)
+   *"지수는 소음이었다. 시장은 무역 갈등을 키우는 트윗에만, 중국에 노출된 기업·금리·위안화에서 반응했다."*  
+   * 주식(S&P 500·보잉·애플)은 당일 하락 뒤 다음 날 되돌아왔고, 위안화 약세는 사흘에 걸쳐 쌓였다(시차).
+   * 핵심 근거: 보잉·10년물 금리(5가지 점검 모두 통과), 위안화(같은 달 안 비교에서만 약해짐 → 협상 진전 vs 관세 위협 직접 비교로 보강). 애플·반도체·한국은 보조 근거.
+   * 강건성 점검은 "결론을 어디까지 받아들일 수 있는지 선을 긋는 작업"이다. 그래서 결론은 "인과 증명"이 아니라 "일관된 정황"으로 말한다.
 3. **글로벌 자산배분(GAM) 실무 원칙:**
    * **거시 지수 패닉 셀링 경계:** 순수 부정일 S&P 500은 당일 $-0.252\%p$ ($p=0.030$) 뒤 익일 $+0.257\%p$ ($p=0.019$)로 반등해, 2일 누적 차이가 $+0.007\%p$ ($p=0.961$)입니다. 평균적 결과이며 개별 사건의 회복을 보장하지 않습니다.
    * **지수가 아니라 노출(익스포저) 점검:** 무역 부정일의 반응은 중국 매출 비중이 큰 기업(보잉·애플·반도체), 국채 금리, 위안화에 몰렸습니다. 이 자산들을 하나의 무역 갈등 노출 묶음으로 점검합니다.
@@ -141,6 +156,9 @@
    python scripts/classify_omission_candidates.py
    python scripts/build_merged_market_variables.py
    python scripts/reanalysis_merged_omissions.py
+   python scripts/multiple_testing_placebo.py
+   python scripts/mixed_day_robustness.py
+   python scripts/korea_spillover_analysis.py
    python scripts/generate_presentation_charts.py
    ```
 *(※ 과거 중간 파일 및 이전 버전 파일들은 `data/archive/` 폴더에 보관되어 있습니다.)*
