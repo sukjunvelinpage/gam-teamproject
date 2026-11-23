@@ -50,14 +50,15 @@ def welch(s: pd.Series, a: pd.Series, b: pd.Series):
     return x.mean() - y.mean(), stats.ttest_ind(x, y, equal_var=False).pvalue, len(x), len(y)
 
 
-def bh(p: pd.Series, q: float = 0.10) -> pd.Series:
-    """Benjamini-Hochberg: 보정 후 통과 여부."""
-    order = p.sort_values()
-    m = len(order)
-    passed = order <= (np.arange(1, m + 1) / m) * q
-    k = passed[passed].index.max() if passed.any() else None
-    cutoff = order.loc[k] if k is not None else -1
-    return p <= cutoff
+def bh_adjusted_p(p: pd.Series) -> pd.Series:
+    """비교 묶음의 Benjamini–Hochberg 보정 p값을 원래 인덱스로 반환한다."""
+    # 계산할 수 없는 검정도 계획된 비교 수에 포함하되 보정값은 결측으로 둔다.
+    ordered = p.fillna(1.0).sort_values()
+    ranks = np.arange(1, len(ordered) + 1)
+    scaled = ordered.to_numpy() * len(ordered) / ranks
+    # 순위가 더 큰 검정의 기준도 반영하도록 뒤에서부터 누적 최솟값을 구한다.
+    adjusted = np.minimum.accumulate(scaled[::-1])[::-1].clip(0, 1)
+    return pd.Series(adjusted, index=ordered.index).reindex(p.index).where(p.notna())
 
 
 def comparisons(df: pd.DataFrame, prefix: str) -> dict:
@@ -91,7 +92,9 @@ def full_table(df: pd.DataFrame) -> pd.DataFrame:
                     rows.append({"기준": label, "비교": name, "자산": asset, "윈도우": win,
                                  "차이": diff, "p": p, "N_이벤트": n1, "N_대조": n2})
     out = pd.DataFrame(rows)
-    out["BH_통과"] = out.groupby(["기준", "비교"])["p"].transform(bh)
+    adjusted_p = out.groupby(["기준", "비교"])["p"].transform(bh_adjusted_p)
+    out["BH_통과"] = adjusted_p <= 0.10
+    out["BH_보정_p"] = adjusted_p
     return out
 
 
